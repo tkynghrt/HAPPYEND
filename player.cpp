@@ -28,7 +28,9 @@ float frand(void);
 // グローバル変数
 //*****************************************************************************
 static PLAYER g_Player;
-int U = 0;
+
+//操作キャラの画像の種類
+int himeTEXTURE = 0;
 
 int V = 0;
 int cont = 0;
@@ -79,12 +81,12 @@ void UpdatePlayer(void)
 	}
 	if (GetKeyboardPress(DIK_LEFT))
 	{
-		U = 1;
+		himeTEXTURE = 1;
 		g_Player.move.x = -3.0f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
-		U = 2;
+		himeTEXTURE = 2;
 		g_Player.move.x = +3.0f;
 	}
 	
@@ -120,7 +122,7 @@ void UpdatePlayer(void)
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		
-		if (U == 2)
+		if (himeTEXTURE == 2)
 		{
 			//g_Player.power += g_Player.power;
 
@@ -137,7 +139,7 @@ void UpdatePlayer(void)
 	}
 	if (GetKeyboardTrigger(DIK_X))
 	{
-		if (U == 2)
+		if (himeTEXTURE == 2)
 		{
 			//g_Player.power += g_Player.power;
 
@@ -176,11 +178,11 @@ void DrawPlayer(void)
 
 	if (g_Player.tex==1)
 	{
-		DrawSprite(g_Player.texNo, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, U * 0.081, 0.33f, 0.081f);
+		DrawSprite(g_Player.texNo, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 	}
 	else
 	{
-		DrawSprite(g_Player.texNo2, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, U * 0.081, 0.33f, 0.081f);
+		DrawSprite(g_Player.texNo2, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 	}
 	
 
@@ -196,7 +198,7 @@ PLAYER *GetPlayer(void)
 }
 int GetPlayer_U(void)
 {
-	return U;
+	return himeTEXTURE;
 }
 
 
