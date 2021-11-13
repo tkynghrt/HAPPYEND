@@ -7,7 +7,7 @@
 #include "main.h"
 #include "collision.h"
 #include "player.h"
-#include "bullet.h"
+#include "ball.h"
 #include "attack.h"
 #include "input.h"
 
@@ -31,6 +31,7 @@ int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTO
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
+
 int space = 0;
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
@@ -40,7 +41,7 @@ F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ
 void UpdateCollision(void)
 {
 	PLAYER *player = GetPlayer();		// プレイヤーのポインターを初期化
-	BULLET *bullet = GetBullet();		// バレットのポインターを初期化
+	BALL *ball = GetBall();		// バレットのポインターを初期化
 	ATTACK *attack = GetAttack();
 	if (space > 0)//当たり判定が消えていればカウントを進め消えて居なければ実行
 	{
@@ -48,11 +49,11 @@ void UpdateCollision(void)
 	}
 	else
 	{
-		if (bullet->mode >= 1)
+		if (ball->mode >= 1)
 		{
 			if (attack->mode == 1)
 			{
-				InitShapes(attack->pos, attack->h - 35, bullet->pos, bullet->h - 20, D3DXVECTOR2(-bullet->move.x, -bullet->move.y));//-35-20判定を小さめにする
+				InitShapes(attack->pos, attack->h - 35, ball->pos, ball->h - 20, D3DXVECTOR2(-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
 
 				if (CheckHit(&crCircle, &rcRectCircle))
 				{
@@ -65,11 +66,11 @@ void UpdateCollision(void)
 						{
 							if (U == 2)
 							{
-								SetBullet(2, attack->pos, D3DXVECTOR2(player->power.x / 2, -player->power.x / 2));
+								SetBall(2, attack->pos, D3DXVECTOR2(player->power.x / 2, -player->power.x / 2));
 							}
 							else
 							{
-								SetBullet(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, -player->power.x / 2));
+								SetBall(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, -player->power.x / 2));
 							}
 							space = 20;//20フレーム当たり判定を消す
 						}
@@ -77,11 +78,11 @@ void UpdateCollision(void)
 						{
 							if (U == 2)
 							{
-								SetBullet(2, attack->pos, D3DXVECTOR2(player->power.x / 2, player->power.x / 2));
+								SetBall(2, attack->pos, D3DXVECTOR2(player->power.x / 2, player->power.x / 2));
 							}
 							else
 							{
-								SetBullet(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, player->power.x / 2));
+								SetBall(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, player->power.x / 2));
 							}
 							space = 20;//20フレーム当たり判定を消す
 						}
@@ -90,11 +91,11 @@ void UpdateCollision(void)
 					{
 						if (U == 2)
 						{
-							SetBullet(2, attack->pos, player->power);
+							SetBall(2, attack->pos, player->power);
 						}
 						else
 						{
-							SetBullet(2, attack->pos, D3DXVECTOR2(player->power.x * -1, player->power.y));
+							SetBall(2, attack->pos, D3DXVECTOR2(player->power.x * -1, player->power.y));
 						}
 						space = 20;//20フレーム当たり判定を消す
 					}
@@ -102,22 +103,22 @@ void UpdateCollision(void)
 			}
 		}
 
-		if (bullet->mode >= 1)
+		if (ball->mode >= 1)
 		{
 			if (attack->mode == 2)
 			{
-				InitShapes(attack->pos, attack->h -35, bullet->pos, bullet->h -20, D3DXVECTOR2 (-bullet->move.x, -bullet->move.y));//-35-20判定を小さめにする
+				InitShapes(attack->pos, attack->h -35, ball->pos, ball->h -20, D3DXVECTOR2 (-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
 
 				if (CheckHit(&crCircle,  &rcRectCircle))
 				{
 					int U = GetPlayer_U();
 					if (U == 2)
 					{
-						SetBullet(1, attack->pos, D3DXVECTOR2(0, -15));
+						SetBall(1, attack->pos, D3DXVECTOR2(0, -15));
 					}
 					else
 					{
-						SetBullet(1, attack->pos, D3DXVECTOR2(0, -15));
+						SetBall(1, attack->pos, D3DXVECTOR2(0, -15));
 					}
 					space = 20; // 20フレーム当たり判定を消す
 				}

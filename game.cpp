@@ -12,7 +12,7 @@
 #include "input.h"
 #include "fade.h"
 #include "player.h"
-#include "bullet.h"
+#include "ball.h"
 #include "Attack.h"
 #include "collision.h"
 
@@ -41,7 +41,7 @@
 void InitGame(void)
 {
 	InitPlayer();
-	InitBullet();
+	InitBall();
 	InitAttack();
 }
 
@@ -50,7 +50,7 @@ void InitGame(void)
 ------------------------------------------------------------------------------*/
 void UninitGame()
 {
-	UninitBullet();
+	UninitBall();
 	UninitPlayer();
 	UninitAttack();
 }
@@ -61,7 +61,7 @@ void UninitGame()
 void UpdateGame(void)
 {
 	UpdatePlayer();
-	UpdateBullet();
+	UpdateBall();
 	UpdateAttack();
 	UpdateCollision();
 
@@ -79,7 +79,7 @@ void UpdateGame(void)
 ------------------------------------------------------------------------------*/
 void DrawGame(void)
 {
-	DrawBullet();
+	DrawBall();
 	DrawAttack();
 	DrawPlayer();
 
