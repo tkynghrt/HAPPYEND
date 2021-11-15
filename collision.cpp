@@ -15,6 +15,7 @@
 // マクロ定義
 //*****************************************************************************
 
+#define HIMELEFT	2
 
 //*****************************************************************************
 // 構造体定義
@@ -28,24 +29,27 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2);
 int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle);
 int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move);
+
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
 
-int space = 0;
+int NoFlame = 0;	//当たり判定を〇フレーム消す
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
+
 //=============================================================================
 // 当たり判定処理
 //=============================================================================
+
 void UpdateCollision(void)
 {
 	PLAYER *player = GetPlayer();		// プレイヤーのポインターを初期化
 	BALL *ball = GetBall();		// バレットのポインターを初期化
 	ATTACK *attack = GetAttack();
-	if (space > 0)//当たり判定が消えていればカウントを進め消えて居なければ実行
+	if (NoFlame > 0)//当たり判定が消えていればカウントを進め消えて居なければ実行
 	{
-		space--;
+		NoFlame--;
 	}
 	else
 	{
@@ -57,14 +61,16 @@ void UpdateCollision(void)
 
 				if (CheckHit(&crCircle, &rcRectCircle))
 				{
-					int U = GetPlayer_U();
+					//姫の向き
+					int HimeDirection = GetPlayer_Direction();
+
 					if (player->power.x <= 200)
 						player->power += player->power;
 					if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_DOWN))
 					{
 						if (GetKeyboardPress(DIK_UP))
 						{
-							if (U == 2)
+							if (HimeDirection == HIMELEFT)
 							{
 								SetBall(2, attack->pos, D3DXVECTOR2(player->power.x / 2, -player->power.x / 2));
 							}
@@ -72,11 +78,12 @@ void UpdateCollision(void)
 							{
 								SetBall(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, -player->power.x / 2));
 							}
-							space = 20;//20フレーム当たり判定を消す
+							//20フレーム当たり判定を消す
+							NoFlame = 20;
 						}
 						else
 						{
-							if (U == 2)
+							if (HimeDirection == HIMELEFT)
 							{
 								SetBall(2, attack->pos, D3DXVECTOR2(player->power.x / 2, player->power.x / 2));
 							}
@@ -84,12 +91,13 @@ void UpdateCollision(void)
 							{
 								SetBall(2, attack->pos, D3DXVECTOR2(-player->power.x / 2, player->power.x / 2));
 							}
-							space = 20;//20フレーム当たり判定を消す
+							//20フレーム当たり判定を消す
+							NoFlame = 20;
 						}
 					}
 					else
 					{
-						if (U == 2)
+						if (HimeDirection == HIMELEFT)
 						{
 							SetBall(2, attack->pos, player->power);
 						}
@@ -97,7 +105,7 @@ void UpdateCollision(void)
 						{
 							SetBall(2, attack->pos, D3DXVECTOR2(player->power.x * -1, player->power.y));
 						}
-						space = 20;//20フレーム当たり判定を消す
+						NoFlame = 20;//20フレーム当たり判定を消す
 					}
 				}
 			}
@@ -111,8 +119,8 @@ void UpdateCollision(void)
 
 				if (CheckHit(&crCircle,  &rcRectCircle))
 				{
-					int U = GetPlayer_U();
-					if (U == 2)
+					int HimeDirection = GetPlayer_Direction();
+					if (HimeDirection == HIMELEFT)
 					{
 						SetBall(1, attack->pos, D3DXVECTOR2(0, -15));
 					}
@@ -120,7 +128,7 @@ void UpdateCollision(void)
 					{
 						SetBall(1, attack->pos, D3DXVECTOR2(0, -15));
 					}
-					space = 20; // 20フレーム当たり判定を消す
+					NoFlame = 20; // 20フレーム当たり判定を消す
 				}
 			}
 		}
@@ -208,6 +216,7 @@ int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTO
 	rcRectCircle.r = r2;
 	return 0;
 }
+
 int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle) // Collision チェック 
 {
 	int nResult = false;

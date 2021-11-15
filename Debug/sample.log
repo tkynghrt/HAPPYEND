@@ -1,4 +1,4 @@
-﻿  player.cpp
-C:\Users\koba2\Desktop\HappyEnd\player.cpp(184,109): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\player.cpp(188,110): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+﻿  game.cpp
+  moveblock.cpp
+  コードを生成中...
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

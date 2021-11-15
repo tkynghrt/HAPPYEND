@@ -15,6 +15,7 @@
 #include "ball.h"
 #include "Attack.h"
 #include "collision.h"
+#include "moveblock.h"
 
 
 /*------------------------------------------------------------------------------
@@ -43,6 +44,7 @@ void InitGame(void)
 	InitPlayer();
 	InitBall();
 	InitAttack();
+	InitMoveBlock();
 }
 
 /*------------------------------------------------------------------------------
@@ -53,6 +55,7 @@ void UninitGame()
 	UninitBall();
 	UninitPlayer();
 	UninitAttack();
+	UninitMoveBlock();
 }
 
 /*------------------------------------------------------------------------------
@@ -63,6 +66,7 @@ void UpdateGame(void)
 	UpdatePlayer();
 	UpdateBall();
 	UpdateAttack();
+	UpdateMoveBlock();
 	UpdateCollision();
 
 
@@ -82,6 +86,7 @@ void DrawGame(void)
 	DrawBall();
 	DrawAttack();
 	DrawPlayer();
+	DrawMoveBlock();
 
 }
 

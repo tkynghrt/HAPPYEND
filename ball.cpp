@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// バレット処理 [Ball.cpp]
+// ボール処理 [Ball.cpp]
 // Author : 
 //
 //=============================================================================
@@ -32,18 +32,18 @@ static BALL g_Ball;							// バレット構造体
 HRESULT InitBall(void)
 {
 
-	int texNo = LoadTexture("data/TEXTURE/tako.png");
-	int texNo2 = LoadTexture("data/TEXTURE/kage.png");
+	int BallTexture = LoadTexture("data/TEXTURE/tako.png");
+	int ShadowTexture = LoadTexture("data/TEXTURE/kage.png");
 
-	// バレット構造体の初期化
+	// ボール構造体の初期化
 	
 		g_Ball.mode   = 1;
 		g_Ball.w     = 40.0f;
 		g_Ball.h     = 40.0f;
 		g_Ball.pos   = D3DXVECTOR2(300, 300.0f);
 		g_Ball.rot   = 0.0f;
-		g_Ball.texNo = texNo;
-		g_Ball.texNo2 = texNo2;
+		g_Ball.BallTexture = BallTexture;
+		g_Ball.ShadowTexture = ShadowTexture;
 		g_Ball.move = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
 	return S_OK;
 }
@@ -84,17 +84,18 @@ void UpdateBall(void)
 	}
 	//位置更新
 	g_Ball.pos += g_Ball.move;
-	// 画面外まで進んだ？
+
+	// 画面端に行ったとき
 	if (g_Ball.pos.y < 70) {
 		g_Ball.pos.y = 70;
 		g_Ball.move.y *= -1;
 	}
-	if (g_Ball.pos.x > 960) {
-		g_Ball.pos.x = 960;
+	if (g_Ball.pos.x > 940) {
+		g_Ball.pos.x = 940;
 		g_Ball.move.x *= -1;
 	}
-	if (g_Ball.pos.x < 0) {
-		g_Ball.pos.x = 0;
+	if (g_Ball.pos.x < 20) {
+		g_Ball.pos.x = 20;
 		g_Ball.move.x *= -1;
 	}
 	if (g_Ball.pos.y > 500) {
@@ -118,7 +119,7 @@ void DrawBall(void)
 			float mx = g_Ball.move.x;	// バレットの移動量XY
 			float my = g_Ball.move.y;
 			float pr = g_Ball.rot;	//角度
-			float b = 3;				//影を引き延ばす倍率
+			float BallShadow = 3;				//ボールの残像を引き延ばす倍率
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 
@@ -128,7 +129,7 @@ void DrawBall(void)
 			case 0:
 				break;
 			case 1:
-				DrawSpriteColorRotate(g_Ball.texNo, px, py, pw, ph, 0.0f, 0.0f, 1.0f, 1.0f, col, pr);
+				DrawSpriteColorRotate(g_Ball.BallTexture, px, py, pw, ph, 0.0f, 0.0f, 1.0f, 1.0f, col, pr);
 				
 				break;
 			case 2:
@@ -140,7 +141,7 @@ void DrawBall(void)
 					{
 						if (g_Ball.move.x > 0) 
 						{
-							b = b * 1.4;
+							BallShadow = BallShadow * 1.4;
 							if (g_Ball.move.y > 0)
 							{
 								pr = 0.77;
@@ -152,7 +153,7 @@ void DrawBall(void)
 						}
 						else
 						{
-							b = b * 1.4;
+							BallShadow = BallShadow * 1.4;
 							if (g_Ball.move.y > 0)
 							{
 								pr = -0.77;
@@ -164,21 +165,20 @@ void DrawBall(void)
 						}
 					}
 						if (g_Ball.move.x < 0) {
-							DrawSpriteColorRotate(g_Ball.texNo2, px + ((mx * -3) / 2), py + ((my * -3) / 2),
-								mx * -b, 40.0f,
+							DrawSpriteColorRotate(g_Ball.ShadowTexture, px + ((mx * -3) / 2), py + ((my * -3) / 2),
+								mx * -BallShadow, 40.0f,
 								0.0f, 0.0f, 1.0f, 0.4f, col,
 								pr);
 						}
 						else
 						{
-							DrawSpriteColorRotate(g_Ball.texNo2, px + ((mx * -3) / 2), py + ((my * -3) / 2),
-								mx * b, 40.0f,
-								0.0f, 0.6f, 1.0f, 0.3f, col,
-								pr);
+							DrawSpriteColorRotate(g_Ball.ShadowTexture, px + ((mx * -3) / 2), py + ((my * -3) / 2),
+								mx * BallShadow, 40.0f,
+								0.0f, 0.6f, 1.0f, 0.3f, col,pr);
 						}
 					
 				}
-				DrawSpriteColorRotate(g_Ball.texNo, px, py, pw, ph, 0.0f, 0.0f, 1.0f, 1.0f, col, pr);
+				DrawSpriteColorRotate(g_Ball.BallTexture, px, py, pw, ph, 0.0f, 0.0f, 1.0f, 1.0f, col, pr);
 				break;
 			}
 		}
@@ -193,7 +193,6 @@ BALL* GetBall(void)
 {
 	return &g_Ball;
 }
-
 
 //=============================================================================
 // バレットの発射設定

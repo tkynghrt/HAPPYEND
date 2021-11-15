@@ -41,8 +41,10 @@ int cont = 0;
 HRESULT InitPlayer(void)
 {
 	//テクスチャ読み込み
-	g_Player.texNo = LoadTexture("data/TEXTURE/hime.png");
-	g_Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
+	g_Player.HimeTexture = LoadTexture("data/TEXTURE/hime.png");
+
+	//g_Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
+	
 	//初期化
 	g_Player.pos.x = SCREEN_WIDTH / 2;
 	g_Player.pos.y = 440;
@@ -50,8 +52,8 @@ HRESULT InitPlayer(void)
 	g_Player.h = 60.0f;
 	g_Player.use = true;
 	g_Player.hp = 5;
-	g_Player.tex = 1;
-	g_Player.texcont = 0;
+	//g_Player.tex = 1;
+	//g_Player.texcont = 0;
 	g_Player.move = D3DXVECTOR2(0.0f, 0.0f);
 	g_Player.power = D3DXVECTOR2(2.0f, 0.0f);
 	return S_OK;
@@ -110,11 +112,11 @@ void UpdatePlayer(void)
 	if (g_Player.pos.y < 70) {
 		g_Player.pos.y = 70;
 	}
-	if (g_Player.pos.x > 960) {
-			g_Player.pos.x = 960;
+	if (g_Player.pos.x > 940) {
+			g_Player.pos.x = 940;
 	}
-	if (g_Player.pos.x < 0) {
-		g_Player.pos.x = 0;
+	if (g_Player.pos.x < 20) {
+		g_Player.pos.x = 20;
 	}
 	if (g_Player.pos.y > 500) {
 		g_Player.pos.y = 500;
@@ -158,7 +160,7 @@ void UpdatePlayer(void)
 		}
 	}
 	//被弾
-	if (g_Player.texcont > 0) {
+	/*if (g_Player.texcont > 0) {
 		g_Player.texcont--;
 		if (cont % 5 == 1) {
 			if (g_Player.tex == 1)
@@ -170,7 +172,7 @@ void UpdatePlayer(void)
 				g_Player.tex = 1;
 			}
 		}
-	}
+	}*/
 }
 
 //=============================================================================
@@ -179,14 +181,14 @@ void UpdatePlayer(void)
 void DrawPlayer(void)
 {
 
-	if (g_Player.tex==1)
-	{
-		DrawSprite(g_Player.texNo, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
-	}
-	else
-	{
-		DrawSprite(g_Player.texNo2, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
-	}
+	//if (g_Player.tex==1)
+	//{
+		DrawSprite(g_Player.HimeTexture, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+	//}
+	//else
+	//{
+	//	DrawSprite(g_Player.texNo2, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+	//}
 	
 
 		
@@ -199,7 +201,7 @@ PLAYER *GetPlayer(void)
 {
 	return &g_Player;
 }
-int GetPlayer_U(void)
+int GetPlayer_Direction(void)
 {
 	return himeTEXTURE;
 }

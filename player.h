@@ -22,10 +22,12 @@ struct PLAYER
 	float					w, h;					// 幅と高さ
 	D3DXVECTOR2				pos;					// ポリゴンの座標
 	float					rot;					// ポリゴンの回転量
-	int						texNo;					// テクスチャ番号
+	int						HimeTexture;					// テクスチャの種類
 	int						texNo2;
-	int texcont;
-	int tex;
+
+	//int texcont;
+	//int tex;
+
 	int                     hp;
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
@@ -41,4 +43,4 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 
 PLAYER *GetPlayer(void);
-int GetPlayer_U(void);
+int GetPlayer_Direction(void);
