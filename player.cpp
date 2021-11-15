@@ -76,19 +76,21 @@ void UpdatePlayer(void)
 
 	if (GetKeyboardTrigger(DIK_SPACE))
 	{
+		
 		//U = 3;
+		if(g_Player.pos.y >=440)
 		g_Player.move.y -= 20.0f;
 
 	}
 	if (GetKeyboardPress(DIK_LEFT))
 	{
 		himeTEXTURE = 1;
-		g_Player.move.x = -3.0f;
+		g_Player.move.x = -5.0f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
 		himeTEXTURE = 2;
-		g_Player.move.x = +3.0f;
+		g_Player.move.x = +5.0f;
 	}
 	
 	cont++;
@@ -104,7 +106,7 @@ void UpdatePlayer(void)
 
 	g_Player.pos += g_Player.move;
 
-	//‰æ–Ê’p
+//‰æ–Ê’[
 	if (g_Player.pos.y < 70) {
 		g_Player.pos.y = 70;
 	}
