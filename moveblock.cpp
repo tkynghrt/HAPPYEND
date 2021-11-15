@@ -7,25 +7,20 @@
 #define MAXMOVEBLOCK	10
 
 MOVEBLOCK moveblock[MAXMOVEBLOCK];
-int FlameCount = 0;
+int MoveCount = 0;
 
 void InitMoveBlock(void)
 {
-	
-
-	for (int i = 0; i < MAXMOVEBLOCK; i++)
-	{
-		moveblock[i].Texture = LoadTexture("data/TEXTURE/green.png");
-		moveblock[i].pos.x = 0.0f;
-		moveblock[i].pos.y = 0.0f;
-		moveblock[i].size.x = 100.0f;
-		moveblock[i].size.y = 100.0f;
-		moveblock[i].velocity.x = 0.0f;
-		moveblock[i].velocity.y = 0.0f;
-		moveblock[i].rot = 0.0f;
-		//moveblock[i].Use = false;
-	
-	}
+		//ˆÚ“®ƒuƒƒbƒN‚»‚Ì1
+		moveblock[1].Texture = LoadTexture("data/TEXTURE/green.png");
+		moveblock[1].pos.x = 800.0f;
+		moveblock[1].pos.y = 400.0f;
+		moveblock[1].size.x = 100.0f;
+		moveblock[1].size.y = 30.0f;
+		moveblock[1].velocity.x = 5.0f;
+		moveblock[1].velocity.y = 0.0f;
+		moveblock[1].rot = 0.0f;
+		
 }
 
 void UninitMoveBlock(void)
@@ -35,11 +30,13 @@ void UninitMoveBlock(void)
 
 void UpdateMoveBlock(void)
 {
-	moveblock[1].pos.x = 500;
-	moveblock[1].pos.y = 200;
-
-	
-
+	moveblock[1].pos.x -= moveblock[1].velocity.x;
+	MoveCount++;
+	if (MoveCount >= 60)
+	{
+		moveblock[1].velocity.x *= -1;
+		MoveCount = 0;
+	}
 }
 
 void DrawMoveBlock(void)
