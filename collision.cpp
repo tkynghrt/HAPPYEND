@@ -16,6 +16,7 @@
 //*****************************************************************************
 
 #define HIMELEFT	2
+#define BALLACCELE	(5.0f)
 
 //*****************************************************************************
 // \‘¢‘Ì’è‹`
@@ -64,8 +65,14 @@ void UpdateCollision(void)
 					//•P‚ÌŒü‚«
 					int HimeDirection = GetPlayer_Direction();
 
+					//‹…‚Ì‰Á‘¬
 					if (player->power.x <= 200)
-						player->power += player->power;
+					{
+						player->power += D3DXVECTOR2(2.0f, 0.0f);
+				
+					}
+						
+
 					if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_DOWN))
 					{
 						if (GetKeyboardPress(DIK_UP))

@@ -12,12 +12,13 @@
 #include "sprite.h"
 #include "ball.h"
 #include "Attack.h"
+#include "xinput.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 
-
+#define PLAYERJUMP	(18.0f)
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -56,6 +57,7 @@ HRESULT InitPlayer(void)
 	//g_Player.texcont = 0;
 	g_Player.move = D3DXVECTOR2(0.0f, 0.0f);
 	g_Player.power = D3DXVECTOR2(2.0f, 0.0f);
+	g_Player.gravity = 1.0f;
 	return S_OK;
 }
 
@@ -81,7 +83,7 @@ void UpdatePlayer(void)
 		
 		//U = 3;
 		if(g_Player.pos.y >=440)
-		g_Player.move.y -= 20.0f;
+		g_Player.move.y -= PLAYERJUMP;
 
 	}
 	if (GetKeyboardPress(DIK_LEFT))
@@ -124,6 +126,7 @@ void UpdatePlayer(void)
 	}
 
 	// 攻撃
+	
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		
@@ -183,7 +186,9 @@ void DrawPlayer(void)
 
 	//if (g_Player.tex==1)
 	//{
+
 		DrawSprite(g_Player.HimeTexture, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+
 	//}
 	//else
 	//{

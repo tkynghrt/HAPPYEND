@@ -127,6 +127,7 @@
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="countblock.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Attack.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="countblock.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />

@@ -31,6 +31,8 @@ struct PLAYER
 	int                     hp;
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
+	float					gravity;
+	
 };
 
 

@@ -1,2 +1,7 @@
-﻿  moveblock.cpp
-  sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe
+﻿  countblock.cpp
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(37,19): error C2065: 'BallPos': 定義されていない識別子です。
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(37,30): error C2065: 'BallPos': 定義されていない識別子です。
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(37,41): error C2065: 'BallSize': 定義されていない識別子です。
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(37,53): error C2065: 'BallSize': 定義されていない識別子です。
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(37,7): error C3861: 'CollisionBB': 識別子が見つかりませんでした
+C:\Users\koba2\Desktop\HappyEnd\countblock.cpp(40,2): error C2059: 構文エラー: '}'

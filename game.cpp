@@ -16,6 +16,7 @@
 #include "Attack.h"
 #include "collision.h"
 #include "moveblock.h"
+#include "countblock.h"
 
 
 /*------------------------------------------------------------------------------
@@ -45,6 +46,7 @@ void InitGame(void)
 	InitBall();
 	InitAttack();
 	InitMoveBlock();
+	InitCountBlock();
 }
 
 /*------------------------------------------------------------------------------
@@ -56,6 +58,7 @@ void UninitGame()
 	UninitPlayer();
 	UninitAttack();
 	UninitMoveBlock();
+	UninitCountBlock();
 }
 
 /*------------------------------------------------------------------------------
@@ -67,6 +70,7 @@ void UpdateGame(void)
 	UpdateBall();
 	UpdateAttack();
 	UpdateMoveBlock();
+	UpdateCountBlock();
 	UpdateCollision();
 
 
@@ -87,6 +91,7 @@ void DrawGame(void)
 	DrawAttack();
 	DrawPlayer();
 	DrawMoveBlock();
+	DrawCountBlock();
 
 }
 
