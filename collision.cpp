@@ -23,7 +23,8 @@
 // \‘¢‘Ì’è‹`
 //*****************************************************************************
 
-MOVEBLOCK* moveblock = GetMoveBlock();
+static MOVEBLOCK* moveblock = GetMoveBlock();
+static COUNTBLOCK* countblock = GetCountBlock();
 PLAYER* player = GetPlayer();
 
 
@@ -159,7 +160,7 @@ void UpdateCollision(void)
 			if (CollisionBB(player->pos, moveblock[i].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock->size.x, moveblock->size.y)))
 			{
 
-				if (player->pos.y - player->size.y < moveblock[i].pos.y - (1.5f * moveblock[i].size.y))			//‚±‚Ì1.5‚Í‰½H
+				if (player->pos.y - player->size.y < moveblock[i].pos.y - (1.5f * moveblock[i].size.y))			
 				{
 					player->pos.y = moveblock[i].pos.y - (1.5f * moveblock[i].size.y);
 
@@ -181,9 +182,6 @@ void UpdateCollision(void)
 
 			}
 		}
-
-		
- 
 
 
 

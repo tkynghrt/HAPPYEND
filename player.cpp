@@ -14,6 +14,8 @@
 #include "Attack.h"
 #include "xinput.h"
 #include "moveblock.h"
+#include "countblock.h"
+#include "collision.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -32,8 +34,10 @@ float frand(void);
 // グローバル変数
 //*****************************************************************************
 static PLAYER g_Player;
+bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECTOR2 size2);
 
 static MOVEBLOCK* moveblock = GetMoveBlock();
+static COUNTBLOCK* countblock = GetCountBlock();
 
 //操作キャラの画像の種類
 int himeTEXTURE = 0;
@@ -98,19 +102,14 @@ void UpdatePlayer(void)
 	//ジャンプ
 	if (GetKeyboardTrigger(DIK_SPACE))
 	{
-	
 		//U = 3;
 
 		if (g_Player.player_doingjump == false)
 		{
 			g_Player.player_doingjump = true;
 			g_Player.move.y = -PLAYERJUMP;
-			
-
 		}
 		
-		
-
 	}
 	if (GetKeyboardPress(DIK_LEFT))
 	{
@@ -131,8 +130,15 @@ void UpdatePlayer(void)
 		if (V >= 3)
 			V = 0;
 	}
-	
 
+	//回数で壊れるブロックに当たっているとき
+	if (CollisionBB(g_Player.pos, countblock[1].pos, D3DXVECTOR2(g_Player.size.x, g_Player.size.y), D3DXVECTOR2(countblock[1].size.x, countblock[1].size.y)))
+	{
+
+		g_Player.move.x = 0.0f;
+
+	}
+	
 
 	//位置更新
 	g_Player.pos += g_Player.move;
@@ -192,6 +198,8 @@ void UpdatePlayer(void)
 			SetAttack(2, D3DXVECTOR2(g_Player.pos.x - 40, g_Player.pos.y));
 		}
 	}
+
+	
 	//被弾
 	/*if (g_Player.texcont > 0) {
 		g_Player.texcont--;

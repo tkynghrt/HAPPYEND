@@ -62,9 +62,6 @@ void DrawMoveBlock(void)
 }
 
 
-
-
-
 void setMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity)
 {
 	for (int i = 0; i < 10; i++)
@@ -79,6 +76,7 @@ void setMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity)
 		}
 	}
 }
+
 
 MOVEBLOCK* GetMoveBlock(void)
 {
