@@ -19,10 +19,11 @@
 struct PLAYER
 {
 	bool					use;					// true:使っている  false:未使用
-	float					w, h;					// 幅と高さ
+	D3DXVECTOR2				size;					// 幅と高さ
 	D3DXVECTOR2				pos;					// ポリゴンの座標
+	D3DXVECTOR2				velocity;				// ブロックに乗ってるときの加速
 	float					rot;					// ポリゴンの回転量
-	int						HimeTexture;					// テクスチャの種類
+	int						HimeTexture;			// テクスチャの種類
 	int						texNo2;
 
 	//int texcont;
@@ -32,7 +33,7 @@ struct PLAYER
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
 	float					gravity;
-	
+	bool					player_doingjump;
 };
 
 

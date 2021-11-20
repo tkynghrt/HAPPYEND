@@ -101,11 +101,11 @@ void DrawAttack(void)
 
 	if (g_Attack.mode >= 1)
 	{
-		//バレットの位置やテクスチャー座標を反映
-		float px = g_Attack.pos.x;	// バレットの表示位置X
-		float py = g_Attack.pos.y;	// バレットの表示位置Y
-		float pw = g_Attack.w;		// バレットの表示幅
-		float ph = g_Attack.h;		// バレットの表示高さ
+		//ボールの位置やテクスチャー座標を反映
+		float px = g_Attack.pos.x;	// ボールの表示位置X
+		float py = g_Attack.pos.y;	// ボールの表示位置Y
+		float pw = g_Attack.w;		// ボールの表示幅
+		float ph = g_Attack.h;		// ボールの表示高さ
 		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 		switch (g_Attack.mode)
@@ -133,7 +133,7 @@ void DrawAttack(void)
 
 
 //=============================================================================
-// バレット構造体の先頭アドレスを取得
+// ボール構造体の先頭アドレスを取得
 //=============================================================================
 ATTACK* GetAttack(void)
 {
@@ -142,7 +142,7 @@ ATTACK* GetAttack(void)
 
 
 //=============================================================================
-// バレットの発射設定
+// ボールの発射設定
 //=============================================================================
 void SetAttack(int mode, D3DXVECTOR2 pos)
 {

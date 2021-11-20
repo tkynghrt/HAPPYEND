@@ -1,10 +1,11 @@
 #include "countblock.h"
+#include "collision.h"
 #include "ball.h"
 #include "texture.h"
 #include "sprite.h"
 #include "player.h"
 
-COUNTBLOCK countblock[10];
+COUNTBLOCK countblock[MAX_COUNTBLOCK];
 
 
 void InitCountBlock(void)
@@ -13,16 +14,15 @@ void InitCountBlock(void)
 	
 	countblock[1].pos.x = 800.0f;
 	countblock[1].pos.y = 400.0f;
-	for (int i = 0; 0 < 10; i++)
-	{
-		countblock[i].Texture = LoadTexture("data/TEXTURE/block.png");
-		countblock[i].size.x = 30.0f;
-		countblock[i].size.y = 30.0f;
-		countblock[i].velocity.x = 3.0f;
-		countblock[i].velocity.y = 0.0f;
-		countblock[i].rot = 0.0f;
-		countblock[i].HitCount = 3;
-	}
+	
+		countblock[1].Texture = LoadTexture("data/TEXTURE/block.png");
+		countblock[1].size.x = 30.0f;
+		countblock[1].size.y = 30.0f;
+		countblock[1].velocity.x = 3.0f;
+		countblock[1].velocity.y = 0.0f;
+		countblock[1].rot = 0.0f;
+		countblock[1].HitCount = 3;
+	
 
 }
 
@@ -32,12 +32,7 @@ void UninitCountBlock(void)
 
 void UpdateCountBlock(void)
 {
-	if (countblock[1].Use)
-	{
-		if (CollisionBB(BallPos.x, BallPos.y, BallSize.x, BallSize.y,
-			countblock[1].pos.x, countblock[1].pos.y, countblock[1].size.x, countblock[1].size.y))
-			//SetHitFlag();
-	}
+	
 }
 
 void DrawCountBlock(void)

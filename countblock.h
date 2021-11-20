@@ -7,6 +7,9 @@ void UninitCountBlock(void);
 void UpdateCountBlock(void);
 void DrawCountBlock(void);
 
+//回数で壊れるブロック総数
+#define MAX_COUNTBLOCK	10
+
 void setCountBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity);
 
 //移動するブロックの構造体

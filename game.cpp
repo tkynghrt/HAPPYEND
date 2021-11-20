@@ -66,10 +66,10 @@ void UninitGame()
 ------------------------------------------------------------------------------*/
 void UpdateGame(void)
 {
+	UpdateMoveBlock();
 	UpdatePlayer();
 	UpdateBall();
 	UpdateAttack();
-	UpdateMoveBlock();
 	UpdateCountBlock();
 	UpdateCollision();
 

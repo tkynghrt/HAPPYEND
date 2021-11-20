@@ -13,6 +13,7 @@
 #include "ball.h"
 #include "Attack.h"
 #include "xinput.h"
+#include "moveblock.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -26,10 +27,13 @@
 float frand(void);
 
 
+
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
 static PLAYER g_Player;
+
+static MOVEBLOCK* moveblock = GetMoveBlock();
 
 //操作キャラの画像の種類
 int himeTEXTURE = 0;
@@ -49,8 +53,10 @@ HRESULT InitPlayer(void)
 	//初期化
 	g_Player.pos.x = SCREEN_WIDTH / 2;
 	g_Player.pos.y = 440;
-	g_Player.w = 60.0f;
-	g_Player.h = 60.0f;
+	g_Player.size.x = 60.0f;
+	g_Player.size.y = 60.0f;
+	g_Player.velocity.x = 0.0f;
+	g_Player.velocity.y = 0.0f;
 	g_Player.use = true;
 	g_Player.hp = 5;
 	//g_Player.tex = 1;
@@ -58,6 +64,8 @@ HRESULT InitPlayer(void)
 	g_Player.move = D3DXVECTOR2(0.0f, 0.0f);
 	g_Player.power = D3DXVECTOR2(2.0f, 0.0f);
 	g_Player.gravity = 1.0f;
+	g_Player.player_doingjump = false;
+	
 	return S_OK;
 }
 
@@ -75,15 +83,33 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 	//重力
-	g_Player.move.y += 1.0f;
-	g_Player.move.x = +0.0f;
+	g_Player.gravity = 1.0f;
+	g_Player.move.x = 0.0f;
+	
 
+	//ジャンプしてるかの判定
+	if (g_Player.pos.y >= 500)
+	{
+		g_Player.player_doingjump = false;
+
+	}
+	
+
+	//ジャンプ
 	if (GetKeyboardTrigger(DIK_SPACE))
 	{
-		
+	
 		//U = 3;
-		if(g_Player.pos.y >=440)
-		g_Player.move.y -= PLAYERJUMP;
+
+		if (g_Player.player_doingjump == false)
+		{
+			g_Player.player_doingjump = true;
+			g_Player.move.y = -PLAYERJUMP;
+			
+
+		}
+		
+		
 
 	}
 	if (GetKeyboardPress(DIK_LEFT))
@@ -106,9 +132,13 @@ void UpdatePlayer(void)
 			V = 0;
 	}
 	
-	//位置更新
 
+
+	//位置更新
 	g_Player.pos += g_Player.move;
+	g_Player.move.y += g_Player.gravity;
+	//g_Player.move.y = 0.0f;
+
 
 //画面端
 	if (g_Player.pos.y < 70) {
@@ -187,7 +217,7 @@ void DrawPlayer(void)
 	//if (g_Player.tex==1)
 	//{
 
-		DrawSprite(g_Player.HimeTexture, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+		DrawSprite(g_Player.HimeTexture, g_Player.pos.x, g_Player.pos.y, g_Player.size.x, g_Player.size.y, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 
 	//}
 	//else

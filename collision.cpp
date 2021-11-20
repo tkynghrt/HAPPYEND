@@ -2,7 +2,7 @@
 //
 // 当たり判定処理 [collision.cpp]
 // Author : 
-//
+//156行に先生に聞きたいとこアリ
 //=============================================================================
 #include "main.h"
 #include "collision.h"
@@ -10,7 +10,8 @@
 #include "ball.h"
 #include "attack.h"
 #include "input.h"
-
+#include "countblock.h"
+#include "moveblock.h"
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -21,6 +22,9 @@
 //*****************************************************************************
 // 構造体定義
 //*****************************************************************************
+
+MOVEBLOCK* moveblock = GetMoveBlock();
+PLAYER* player = GetPlayer();
 
 
 //*****************************************************************************
@@ -48,6 +52,9 @@ void UpdateCollision(void)
 	PLAYER *player = GetPlayer();		// プレイヤーのポインターを初期化
 	BALL *ball = GetBall();		// バレットのポインターを初期化
 	ATTACK *attack = GetAttack();
+	
+
+
 	if (NoFlame > 0)//当たり判定が消えていればカウントを進め消えて居なければ実行
 	{
 		NoFlame--;
@@ -58,7 +65,7 @@ void UpdateCollision(void)
 		{
 			if (attack->mode == 1)
 			{
-				InitShapes(attack->pos, attack->h - 35, ball->pos, ball->h - 20, D3DXVECTOR2(-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
+				InitShapes(attack->pos, attack->h - 35, ball->pos, ball->size.y - 20, D3DXVECTOR2(-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
 
 				if (CheckHit(&crCircle, &rcRectCircle))
 				{
@@ -69,9 +76,9 @@ void UpdateCollision(void)
 					if (player->power.x <= 200)
 					{
 						player->power += D3DXVECTOR2(2.0f, 0.0f);
-				
+
 					}
-						
+
 
 					if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_DOWN))
 					{
@@ -122,9 +129,9 @@ void UpdateCollision(void)
 		{
 			if (attack->mode == 2)
 			{
-				InitShapes(attack->pos, attack->h -35, ball->pos, ball->h -20, D3DXVECTOR2 (-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
+				InitShapes(attack->pos, attack->h - 35, ball->pos, ball->size.y - 20, D3DXVECTOR2(-ball->move.x, -ball->move.y));//-35-20判定を小さめにする
 
-				if (CheckHit(&crCircle,  &rcRectCircle))
+				if (CheckHit(&crCircle, &rcRectCircle))
 				{
 					int HimeDirection = GetPlayer_Direction();
 					if (HimeDirection == HIMELEFT)
@@ -142,6 +149,45 @@ void UpdateCollision(void)
 		// 自分と敵の弾(BC)
 
 		// 死亡したら状態遷移
+
+		//
+		
+		//移動するブロックとプレイヤーの当たり判定
+		
+		for (int i = 0; i < MAX_MOVEBLOCK; i++)
+		{
+			if (CollisionBB(player->pos, moveblock[i].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock->size.x, moveblock->size.y)))
+			{
+
+				if (player->pos.y - player->size.y < moveblock[i].pos.y - (1.5f * moveblock[i].size.y))			//この1.5は何？
+				{
+					player->pos.y = moveblock[i].pos.y - (1.5f * moveblock[i].size.y);
+
+					player->player_doingjump = false;
+					moveblock[i].RidingPlayer = true;
+					player->pos.x += moveblock[i].velocity.x;
+
+				}
+				else
+				{
+					player->pos.y = moveblock[i].pos.y + (1.5f * moveblock[i].size.y);
+				}
+
+				
+				if (moveblock[i].velocity.y > 0.0f)
+				{
+					player->pos.y += moveblock[i].velocity.y;
+				}
+
+			}
+		}
+
+		
+ 
+
+
+
+
 	}
 }
 

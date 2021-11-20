@@ -19,7 +19,7 @@
 struct BALL
 {
 	int						mode;					// ボールの状態
-	float					w, h;					// 幅と高さ
+	D3DXVECTOR2				size;					// 幅と高さ
 	D3DXVECTOR2				pos;					// バレットの座標
 	float					rot;					// バレットの回転量
 	D3DXVECTOR2				move;					// バレットの移動量
@@ -39,5 +39,9 @@ void DrawBall(void);
 
 BALL *GetBall(void);
 void SetBall(int mode,D3DXVECTOR2 pos, D3DXVECTOR2 power);
+
+D3DXVECTOR2* GetBallPos();
+D3DXVECTOR2* GetBallSize();
+
 
 

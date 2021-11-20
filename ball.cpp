@@ -38,8 +38,7 @@ HRESULT InitBall(void)
 	// ボール構造体の初期化
 	
 		g_Ball.mode   = 1;
-		g_Ball.w     = 40.0f;
-		g_Ball.h     = 40.0f;
+		g_Ball.size = D3DXVECTOR2(40.0f, 40.0f);
 		g_Ball.pos   = D3DXVECTOR2(300, 300.0f);
 		g_Ball.rot   = 0.0f;
 		g_Ball.BallTexture = BallTexture;
@@ -114,8 +113,8 @@ void DrawBall(void)
 			//バレットの位置やテクスチャー座標を反映
 			float px = g_Ball.pos.x;	// バレットの表示位置X
 			float py = g_Ball.pos.y;	// バレットの表示位置Y
-			float pw = g_Ball.w;		// バレットの表示幅
-			float ph = g_Ball.h;		// バレットの表示高さ
+			float pw = g_Ball.size.x;		// バレットの表示幅
+			float ph = g_Ball.size.y;		// バレットの表示高さ
 			float mx = g_Ball.move.x;	// バレットの移動量XY
 			float my = g_Ball.move.y;
 			float pr = g_Ball.rot;	//角度
@@ -207,3 +206,13 @@ void SetBall(int mode,D3DXVECTOR2 pos, D3DXVECTOR2 power)
 			return;							// 1発セットしたので終了する
 }
 
+//ゲッター&セッター（CountBlockで使用）
+D3DXVECTOR2* GetBallPos()
+{
+	return &g_Ball.pos;
+}
+
+D3DXVECTOR2* GetBallSize()
+{
+	return &g_Ball.size;
+}

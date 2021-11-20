@@ -12,7 +12,10 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
+
 #define _CRT_SECURE_NO_WARNINGS			// scanf のwarning防止
+#define CLASS_NAME		"GameWindow"		// ウインドウのクラス名
+
 #include <stdio.h>
 
 #include <d3d11.h>
@@ -38,7 +41,7 @@
 #pragma comment (lib, "dxerr.lib")
 #pragma comment (lib, "dxguid.lib")
 #pragma comment (lib, "dinput8.lib")
-
+#pragma comment (lib, "xinput.lib")
 
 //*****************************************************************************
 // マクロ定義
