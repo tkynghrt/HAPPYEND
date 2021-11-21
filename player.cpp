@@ -132,7 +132,9 @@ void UpdatePlayer(void)
 	}
 
 	//回数で壊れるブロックに当たっているとき
-	if (CollisionBB(g_Player.pos, countblock[1].pos, D3DXVECTOR2(g_Player.size.x, g_Player.size.y), D3DXVECTOR2(countblock[1].size.x, countblock[1].size.y)))
+	
+	//当たり判定が仕事しない
+	if (CollisionBB(g_Player.pos, countblock[0].pos, D3DXVECTOR2(g_Player.size.x, g_Player.size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
 	{
 
 		g_Player.move.x = 0.0f;

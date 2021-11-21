@@ -206,7 +206,7 @@ void SetBall(int mode,D3DXVECTOR2 pos, D3DXVECTOR2 power)
 			return;							// 1発セットしたので終了する
 }
 
-//ゲッター&セッター（CountBlockで使用）
+
 D3DXVECTOR2* GetBallPos()
 {
 	return &g_Ball.pos;

@@ -3,6 +3,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "player.h"
+#include "collision.h"
 
 
 
@@ -41,6 +42,9 @@ void UpdateMoveBlock(void)
 		moveblock[1].velocity.x *= -1;
 		MoveCount = 0;
 	}
+
+
+	
 }
 
 void DrawMoveBlock(void)

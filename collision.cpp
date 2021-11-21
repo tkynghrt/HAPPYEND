@@ -17,7 +17,7 @@
 //*****************************************************************************
 
 #define HIMELEFT	2
-#define BALLACCELE	(5.0f)
+#define BALLACCELE	(2.0f)
 
 //*****************************************************************************
 // \‘¢‘Ì’è‹`
@@ -76,7 +76,7 @@ void UpdateCollision(void)
 					//‹…‚Ì‰Á‘¬
 					if (player->power.x <= 200)
 					{
-						player->power += D3DXVECTOR2(2.0f, 0.0f);
+						player->power += D3DXVECTOR2(BALLACCELE, 0.0f);
 
 					}
 
