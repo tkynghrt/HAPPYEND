@@ -157,7 +157,41 @@ void UpdateCollision(void)
 			
 		//}
 
+			//プレイヤーと動くブロックの当たり判定
+		if (CollisionBB(player->pos, moveblock[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock[0].size.x, moveblock[0].size.y)))
+		{
+			//プレイヤーがブロックの上にいるとき
+			
+			if (player->pos.y + (player->size.y / 2) > moveblock[0].pos.y - (moveblock[0].size.y / 2))
+			{
+				player->pos.y = moveblock[0].pos.y - ((player->size.y / 2) + (moveblock[0].size.y / 2));
+				player->pos.x += moveblock[0].velocity.x;
 
+
+				//player->player_doingjump = false;
+				//moveblock[0].RidingPlayer = true;
+			}
+			//プレイヤーがブロックの下にぶつかったとき
+			if (player->pos.y - (player->size.y / 2) < moveblock[0].pos.y + (moveblock[0].size.y / 2))
+			{
+				player->move.y = 0.0f;
+
+				//player->player_doingjump = false;
+				//moveblock[0].RidingPlayer = true;
+			}
+
+			//プレイヤーの左に当たった場合
+			if (ball->pos.x + (ball->size.x / 2) > moveblock[0].pos.x - (moveblock[0].size.x / 2))
+			{
+				ball->move.x *= -1;
+			}
+
+			//プレイヤーの右に当たった場合
+			if (ball->pos.x - (ball->size.x / 2) > moveblock[0].pos.x + (moveblock[0].size.x / 2))
+			{
+				ball->move.x *= -1;
+			}
+		}
 
 
 	}
@@ -224,6 +258,74 @@ bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2)
 	}
 
 	return false;
+}
+
+
+
+F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size)
+{
+
+	D3DXVECTOR2 player_min, player_max;
+	D3DXVECTOR2 block_min, block_max;
+	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+	
+
+
+	player_min.x = player_pos.x - player_size.x / 2;
+	player_min.y = player_pos.y - player_size.y / 2;
+	player_max.x = player_pos.x + player_size.x / 2;
+	player_max.y = player_pos.y + player_size.y / 2;
+
+	block_min.x = block_pos.x - block_size.x / 2;
+	block_min.y = block_pos.y - block_size.y / 2;
+	block_max.x = block_pos.x + block_size.x / 2;
+	block_max.y = block_pos.y + block_size.y / 2;
+
+	D3DXVECTOR2 vertual_player_velocity = (player_pos - player_old_pos) - (block_pos - block_old_pos);
+	D3DXVECTOR2 vertual_player_old_pos = player_pos - vertual_player_velocity;
+
+	vertual_player_old_min.x = vertual_player_old_pos.x - player_size.x / 2;
+	vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
+	vertual_player_old_max.x = vertual_player_old_pos.x + player_size.x / 2;
+	vertual_player_old_max.y = vertual_player_old_pos.y + player_size.y / 2;
+	
+	
+	
+	//X軸の判定
+	if (player_min.x < block_max.x && player_max.x > block_min.x)
+	{
+		//Y軸の判定
+		if (player_min.y < block_max.y && player_max.y > block_min.y)
+		{
+			//プレイヤーがブロックの上から当たったとき
+			if (vertual_player_old_max.y < block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+			{
+				return up;
+			}
+			//プレイヤーがブロックの下から当たったとき
+			if (vertual_player_old_min.y > block_max.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+			{
+				return down;
+			}
+			//プレイヤーがブロックの左から当たったとき
+			if (vertual_player_old_max.x < block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			{
+				return left;
+			}
+			//プレイヤーがブロックの右から当たったとき
+			if (vertual_player_old_min.x > block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			{
+				return right;
+			}
+
+			float vertual_velocity_angle = atan2(vertual_player_velocity.y, vertual_player_velocity.x);
+
+
+			
+		}
+	}
+	return no_hit;
+	//return F_OLD_SURFACE();
 }
 
 

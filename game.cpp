@@ -76,9 +76,9 @@ void UpdateGame(void)
 	
 	UpdateCoin();
 	UpdatePlayer();
-	UpdateMoveBlock();
 	UpdateBall();
 	UpdateAttack();
+	UpdateMoveBlock();
 	UpdateCountBlock();
 	UpdateCollision();
 

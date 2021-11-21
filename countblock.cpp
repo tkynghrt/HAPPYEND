@@ -7,7 +7,7 @@
 
 COUNTBLOCK countblock[MAX_COUNTBLOCK];
 static PLAYER* player = GetPlayer();
-static BALL* Ball = GetBall();
+static BALL* ball = GetBall();
 
 
 void InitCountBlock(void)
@@ -36,9 +36,9 @@ void UpdateCountBlock(void)
 	if (countblock[0].Use)
 	{
 		//ブロックにボールが当たった時
-		if (CollisionBB(Ball->pos, countblock[0].pos, D3DXVECTOR2(Ball->size.x, Ball->size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
+		if (CollisionBB(ball->pos, countblock[0].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
 		{
-			Ball->move *= -1;
+			ball->move *= -1;
 			if (countblock[0].HitCount <= 0)
 			{
 				countblock[0].Use = false;

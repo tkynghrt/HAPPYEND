@@ -10,6 +10,7 @@
 
 static MOVEBLOCK moveblock[MAX_MOVEBLOCK];
 static PLAYER* player = GetPlayer();
+static BALL* ball = GetBall();
 int MoveCount = 0;
 
 void InitMoveBlock(void)
@@ -18,6 +19,7 @@ void InitMoveBlock(void)
 		moveblock[0].Texture = LoadTexture("data/TEXTURE/green.png");
 		moveblock[0].pos.x = 300.0f;
 		moveblock[0].pos.y = 400.0f;
+		moveblock[0].old_pos = moveblock[0].pos;
 		moveblock[0].size.x = 100.0f;
 		moveblock[0].size.y = 30.0f;
 		moveblock[0].velocity.x = 3.0f;
@@ -34,6 +36,8 @@ void UninitMoveBlock(void)
 
 void UpdateMoveBlock(void)
 {
+	moveblock[0].old_pos = moveblock[0].pos;
+
 	//ブロックの往復（時間で計ってる）
 	moveblock[0].pos.x += moveblock[0].velocity.x;
 	MoveCount++;
@@ -43,30 +47,39 @@ void UpdateMoveBlock(void)
 		MoveCount = 0;
 	}
 
-	//プレイヤーと動くブロックの当たり判定
-	if (CollisionBB(player->pos, moveblock[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock[0].size.x, moveblock[0].size.y)))
+
+
+	//ボールと動くブロックの当たり判定
+	if (CollisionBB(ball->pos, moveblock[0].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(moveblock[0].size.x, moveblock[0].size.y)))
 	{
-		//プレイヤーがブロックの上にいるとき
-		if (player->pos.y + (player->size.y / 2) > moveblock[0].pos.y - (moveblock[0].size.y / 2)) 
+		//ボールがブロックに当たった時
+		if (CollisionBB(ball->pos, moveblock[0].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(moveblock[0].size.x, moveblock[0].size.y)))
 		{
-			player->pos.y = moveblock[0].pos.y - ((player->size.y / 2) + (moveblock[0].size.y / 2));
-			player->pos.x += moveblock[0].velocity.x;
 
-			//player->player_doingjump = false;
-			//moveblock[0].RidingPlayer = true;
+			//ブロックの上に当たった場合
+			if (ball->pos.y + (ball->size.y / 2) > moveblock[0].pos.y - (moveblock[0].size.y / 2))
+			{
+				ball->move.y *= -1;
+			}
+
+			//ブロックの下に当たった場合
+			if (ball->pos.y + (ball->size.y / 2) > moveblock[0].pos.y - (moveblock[0].size.y / 2))
+			{
+				ball->move.y *= -1;
+			}
+
+			//ブロックの左に当たった場合
+			if (ball->pos.x + (ball->size.x / 2) > moveblock[0].pos.x - (moveblock[0].size.x / 2))
+			{
+				ball->move.x *= -1;
+			}
+
+			//ブロックの右に当たった場合
+			if (ball->pos.x - (ball->size.x / 2) > moveblock[0].pos.x + (moveblock[0].size.x / 2))
+			{
+				ball->move.x *= -1;
+			}
 		}
-		
-
-		
-
-
-
-
-		/*if (moveblock[i].velocity.y > 0.0f)
-		{
-			player->pos.y += moveblock[i].velocity.y;
-		}*/
-
 	}
 
 }

@@ -49,13 +49,14 @@ int cont = 0;
 HRESULT InitPlayer(void)
 {
 	//テクスチャ読み込み
-	Player.HimeTexture = LoadTexture("data/TEXTURE/hime.png");
+	Player.Hime_Texture = LoadTexture("data/TEXTURE/hime.png");
 
 	//Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
 	
 	//初期化
 	Player.pos.x = 200;
 	Player.pos.y = 440;
+	Player.old_pos = Player.pos;
 	Player.size.x = 60.0f;
 	Player.size.y = 60.0f;
 	Player.velocity.x = 0.0f;
@@ -86,6 +87,8 @@ void UninitPlayer(void)
 //=============================================================================
 void UpdatePlayer(void)
 {
+	Player.old_pos = Player.pos;
+
 	//重力
 	Player.gravity = 1.0f;
 	Player.move.x = 0.0f;
@@ -216,7 +219,7 @@ void DrawPlayer(void)
 {
 
 
-		DrawSprite(Player.HimeTexture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+		DrawSprite(Player.Hime_Texture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 
 	
 
