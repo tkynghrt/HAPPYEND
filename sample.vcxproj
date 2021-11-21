@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="coin.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="countblock.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -141,10 +142,12 @@
     <ClCompile Include="moveblock.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="backGround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attack.h" />
     <ClInclude Include="ball.h" />
+    <ClInclude Include="coin.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="countblock.h" />
     <ClInclude Include="fade.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="moveblock.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="background.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

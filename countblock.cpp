@@ -15,7 +15,7 @@ void InitCountBlock(void)
 	//回数で壊れるブロック
 	
 	countblock[0].pos.x = 800.0f;
-	countblock[0].pos.y = 480.0f;
+	countblock[0].pos.y = 500.0f;
 	countblock[0].Texture = LoadTexture("data/TEXTURE/block.png");
 	countblock[0].size.x = 60.0f;
 	countblock[0].size.y = 60.0f;
@@ -32,21 +32,42 @@ void UninitCountBlock(void)
 
 void UpdateCountBlock(void)
 {
-
-
-	if (countblock[1].Use)
+	//ボール使用中
+	if (countblock[0].Use)
 	{
-		//ボールが当たった時
+		//ブロックにボールが当たった時
 		if (CollisionBB(Ball->pos, countblock[0].pos, D3DXVECTOR2(Ball->size.x, Ball->size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
 		{
 			Ball->move *= -1;
-
 			if (countblock[0].HitCount <= 0)
 			{
 				countblock[0].Use = false;
 			}
-
 			countblock[0].HitCount--;
+		}
+
+		//ブロックにプレイヤーが当たっているとき
+		if (CollisionBB(player->pos, countblock[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
+		{
+			
+			//プレイヤーがブロックの上にいるとき
+			if (player->pos.y + (player->size.y / 2) > countblock[0].pos.y - (countblock[0].size.y / 2))
+			{
+				player->pos.y = countblock[0].pos.y - ((player->size.y / 2) + (countblock[0].size.y / 2));
+				//player->move.y = 0.0f;
+			}
+
+			//プレイヤーがブロックの左に当たっているとき
+			if (player->pos.x + (player->size.x / 2) > countblock[0].pos.x - (countblock[0].size.x / 2))
+			{
+				player->move.x = 0.0f;
+			}
+
+			//プレイヤーがブロックの右に当たっているとき
+			if (player->pos.x - (player->size.x / 2) > countblock[0].pos.x + (countblock[0].size.x / 2))
+			{
+				player->move.x = 0.0f;
+			}
 		}
 	}
 }

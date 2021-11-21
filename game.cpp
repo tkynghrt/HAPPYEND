@@ -17,6 +17,8 @@
 #include "collision.h"
 #include "moveblock.h"
 #include "countblock.h"
+#include "background.h"
+#include "coin.h"
 
 
 /*------------------------------------------------------------------------------
@@ -41,6 +43,8 @@
 ------------------------------------------------------------------------------*/
 void InitGame(void)
 {
+	InitBackGround();
+	InitCoin();
 	InitPlayer();
 	InitBall();
 	InitAttack();
@@ -53,11 +57,14 @@ void InitGame(void)
 ------------------------------------------------------------------------------*/
 void UninitGame()
 {
+	
 	UninitBall();
 	UninitPlayer();
 	UninitAttack();
 	UninitMoveBlock();
 	UninitCountBlock();
+	UninitCoin();
+	UninitBackGround();
 }
 
 /*------------------------------------------------------------------------------
@@ -65,8 +72,11 @@ void UninitGame()
 ------------------------------------------------------------------------------*/
 void UpdateGame(void)
 {
-	UpdateMoveBlock();
+	
+	
+	UpdateCoin();
 	UpdatePlayer();
+	UpdateMoveBlock();
 	UpdateBall();
 	UpdateAttack();
 	UpdateCountBlock();
@@ -86,6 +96,8 @@ void UpdateGame(void)
 ------------------------------------------------------------------------------*/
 void DrawGame(void)
 {
+	DrawBackGround();
+	DrawCoin();
 	DrawBall();
 	DrawAttack();
 	DrawPlayer();

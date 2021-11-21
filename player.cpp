@@ -20,20 +20,17 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-
-#define PLAYERJUMP	(18.0f)
+#define PLAYERJUMP	(20.0f)
 
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
 float frand(void);
 
-
-
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-static PLAYER g_Player;
+static PLAYER Player;
 bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECTOR2 size2);
 
 static MOVEBLOCK* moveblock = GetMoveBlock();
@@ -42,33 +39,36 @@ static COUNTBLOCK* countblock = GetCountBlock();
 //操作キャラの画像の種類
 int himeTEXTURE = 0;
 
-int V = 0;
+//あとで解析&書き換え
+int animation = 0;
 int cont = 0;
+
 //=============================================================================
 // 初期化処理
 //=============================================================================
 HRESULT InitPlayer(void)
 {
 	//テクスチャ読み込み
-	g_Player.HimeTexture = LoadTexture("data/TEXTURE/hime.png");
+	Player.HimeTexture = LoadTexture("data/TEXTURE/hime.png");
 
-	//g_Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
+	//Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
 	
 	//初期化
-	g_Player.pos.x = SCREEN_WIDTH / 2;
-	g_Player.pos.y = 440;
-	g_Player.size.x = 60.0f;
-	g_Player.size.y = 60.0f;
-	g_Player.velocity.x = 0.0f;
-	g_Player.velocity.y = 0.0f;
-	g_Player.use = true;
-	g_Player.hp = 5;
-	//g_Player.tex = 1;
-	//g_Player.texcont = 0;
-	g_Player.move = D3DXVECTOR2(0.0f, 0.0f);
-	g_Player.power = D3DXVECTOR2(2.0f, 0.0f);
-	g_Player.gravity = 1.0f;
-	g_Player.player_doingjump = false;
+	Player.pos.x = 200;
+	Player.pos.y = 440;
+	Player.size.x = 60.0f;
+	Player.size.y = 60.0f;
+	Player.velocity.x = 0.0f;
+	Player.velocity.y = 0.0f;
+	Player.animation = 0;
+	Player.use = true;
+	Player.hp = 5;
+	//Player.tex = 1;
+	//Player.texcont = 0;
+	Player.move = D3DXVECTOR2(0.0f, 0.0f);
+	Player.power = D3DXVECTOR2(2.0f, 0.0f);
+	Player.gravity = 1.0f;
+	Player.player_doingjump = false;
 	
 	return S_OK;
 }
@@ -87,14 +87,14 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 	//重力
-	g_Player.gravity = 1.0f;
-	g_Player.move.x = 0.0f;
+	Player.gravity = 1.0f;
+	Player.move.x = 0.0f;
 	
 
 	//ジャンプしてるかの判定
-	if (g_Player.pos.y >= 500)
+	if (Player.pos.y >= 500)
 	{
-		g_Player.player_doingjump = false;
+		Player.player_doingjump = false;
 
 	}
 	
@@ -104,115 +104,106 @@ void UpdatePlayer(void)
 	{
 		//U = 3;
 
-		if (g_Player.player_doingjump == false)
+		if (Player.player_doingjump == false)
 		{
-			g_Player.player_doingjump = true;
-			g_Player.move.y = -PLAYERJUMP;
+			Player.player_doingjump = true;
+			Player.move.y = -PLAYERJUMP;
 		}
 		
 	}
 	if (GetKeyboardPress(DIK_LEFT))
 	{
 		himeTEXTURE = 1;
-		g_Player.move.x = -5.0f;
+		Player.move.x = -5.0f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
 		himeTEXTURE = 2;
-		g_Player.move.x = +5.0f;
+		Player.move.x = +5.0f;
 	}
 	
 	cont++;
 	if (cont >= 10) {
 		cont = 0;
-		V++;
+		Player.animation++;
 		
-		if (V >= 3)
-			V = 0;
+		if (Player.animation >= 3)
+			Player.animation = 0;
 	}
 
-	//回数で壊れるブロックに当たっているとき
 	
-	//当たり判定が仕事しない
-	if (CollisionBB(g_Player.pos, countblock[0].pos, D3DXVECTOR2(g_Player.size.x, g_Player.size.y), D3DXVECTOR2(countblock[0].size.x, countblock[0].size.y)))
-	{
-
-		g_Player.move.x = 0.0f;
-
-	}
 	
 
 	//位置更新
-	g_Player.pos += g_Player.move;
-	g_Player.move.y += g_Player.gravity;
-	//g_Player.move.y = 0.0f;
+	Player.pos += Player.move;
+	Player.move.y += Player.gravity;
+	//Player.move.y = 0.0f;
 
 
 //画面端
-	if (g_Player.pos.y < 70) {
-		g_Player.pos.y = 70;
+	if (Player.pos.y < 70) {
+		Player.pos.y = 70;
 	}
-	if (g_Player.pos.x > 940) {
-			g_Player.pos.x = 940;
+	if (Player.pos.x > 940) {
+			Player.pos.x = 940;
 	}
-	if (g_Player.pos.x < 20) {
-		g_Player.pos.x = 20;
+	if (Player.pos.x < 20) {
+		Player.pos.x = 20;
 	}
-	if (g_Player.pos.y > 500) {
-		g_Player.pos.y = 500;
-		g_Player.move.y = 0.0f;
+	if (Player.pos.y > 500) {
+		Player.pos.y = 500;
+		Player.move.y = 0.0f;
 	}
 
 	// 攻撃
-	
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		
 		if (himeTEXTURE == 2)
 		{
-			//g_Player.power += g_Player.power;
+			//Player.power += Player.power;
 
-			//SetBullet(2, g_Player.pos, g_Player.power);
-			SetAttack(1, D3DXVECTOR2(g_Player.pos.x + 40, g_Player.pos.y));
+			//SetBullet(2, Player.pos, Player.power);
+			SetAttack(1, D3DXVECTOR2(Player.pos.x + 40, Player.pos.y));
 		}
 		else
 		{
-			//g_Player.power += g_Player.power;
+			//Player.power += Player.power;
 
-			//SetBullet(2, g_Player.pos, D3DXVECTOR2(g_Player.power.x * -1, g_Player.power.y));
-			SetAttack(1, D3DXVECTOR2(g_Player.pos.x -40, g_Player.pos.y));
+			//SetBullet(2, Player.pos, D3DXVECTOR2(Player.power.x * -1, Player.power.y));
+			SetAttack(1, D3DXVECTOR2(Player.pos.x -40, Player.pos.y));
 		}
 	}
 	if (GetKeyboardTrigger(DIK_X))
 	{
 		if (himeTEXTURE == 2)
 		{
-			//g_Player.power += g_Player.power;
+			//Player.power += Player.power;
 
-			//SetBullet(2, g_Player.pos, g_Player.power);
-			SetAttack(2, D3DXVECTOR2(g_Player.pos.x + 40, g_Player.pos.y));
+			//SetBullet(2, Player.pos, Player.power);
+			SetAttack(2, D3DXVECTOR2(Player.pos.x + 40, Player.pos.y));
 		}
 		else
 		{
-			//g_Player.power += g_Player.power;
+			//Player.power += Player.power;
 
-			//SetBullet(2, g_Player.pos, D3DXVECTOR2(g_Player.power.x * -1, g_Player.power.y));
-			SetAttack(2, D3DXVECTOR2(g_Player.pos.x - 40, g_Player.pos.y));
+			//SetBullet(2, Player.pos, D3DXVECTOR2(Player.power.x * -1, Player.power.y));
+			SetAttack(2, D3DXVECTOR2(Player.pos.x - 40, Player.pos.y));
 		}
 	}
 
 	
 	//被弾
-	/*if (g_Player.texcont > 0) {
-		g_Player.texcont--;
+	/*if (Player.texcont > 0) {
+		Player.texcont--;
 		if (cont % 5 == 1) {
-			if (g_Player.tex == 1)
+			if (Player.tex == 1)
 			{
-				g_Player.tex = 0;
+				Player.tex = 0;
 			}
 			else
 			{
-				g_Player.tex = 1;
+				Player.tex = 1;
 			}
 		}
 	}*/
@@ -224,16 +215,9 @@ void UpdatePlayer(void)
 void DrawPlayer(void)
 {
 
-	//if (g_Player.tex==1)
-	//{
 
-		DrawSprite(g_Player.HimeTexture, g_Player.pos.x, g_Player.pos.y, g_Player.size.x, g_Player.size.y, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+		DrawSprite(Player.HimeTexture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 
-	//}
-	//else
-	//{
-	//	DrawSprite(g_Player.texNo2, g_Player.pos.x, g_Player.pos.y, g_Player.w, g_Player.h, V * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
-	//}
 	
 
 		
@@ -244,7 +228,7 @@ void DrawPlayer(void)
 //=============================================================================
 PLAYER *GetPlayer(void)
 {
-	return &g_Player;
+	return &Player;
 }
 int GetPlayer_Direction(void)
 {

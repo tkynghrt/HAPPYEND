@@ -30,6 +30,7 @@ struct PLAYER
 	//int tex;
 
 	int                     hp;
+	int						animation;
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
 	float					gravity;

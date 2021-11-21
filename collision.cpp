@@ -2,7 +2,7 @@
 //
 // 当たり判定処理 [collision.cpp]
 // Author : 
-//156行に先生に聞きたいとこアリ
+//
 //=============================================================================
 #include "main.h"
 #include "collision.h"
@@ -15,14 +15,12 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-
 #define HIMELEFT	2
 #define BALLACCELE	(2.0f)
 
 //*****************************************************************************
 // 構造体定義
 //*****************************************************************************
-
 static MOVEBLOCK* moveblock = GetMoveBlock();
 static COUNTBLOCK* countblock = GetCountBlock();
 PLAYER* player = GetPlayer();
@@ -39,7 +37,6 @@ int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTO
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-
 int NoFlame = 0;	//当たり判定を〇フレーム消す
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
@@ -151,37 +148,14 @@ void UpdateCollision(void)
 
 		// 死亡したら状態遷移
 
-		//
+		
 		
 		//移動するブロックとプレイヤーの当たり判定
 		
-		for (int i = 0; i < MAX_MOVEBLOCK; i++)
-		{
-			if (CollisionBB(player->pos, moveblock[i].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock->size.x, moveblock->size.y)))
-			{
-
-				if (player->pos.y - player->size.y < moveblock[i].pos.y - (1.5f * moveblock[i].size.y))			
-				{
-					player->pos.y = moveblock[i].pos.y - (1.5f * moveblock[i].size.y);
-
-					player->player_doingjump = false;
-					moveblock[i].RidingPlayer = true;
-					player->pos.x += moveblock[i].velocity.x;
-
-				}
-				else
-				{
-					player->pos.y = moveblock[i].pos.y + (1.5f * moveblock[i].size.y);
-				}
-
-				
-				if (moveblock[i].velocity.y > 0.0f)
-				{
-					player->pos.y += moveblock[i].velocity.y;
-				}
-
-			}
-		}
+		//for (int i = 0; i < MAX_MOVEBLOCK; i++)
+		//{
+			
+		//}
 
 
 
