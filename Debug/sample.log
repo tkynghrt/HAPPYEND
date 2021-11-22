@@ -1,23 +1,5 @@
-﻿  Attack.cpp
-C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(120,51): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(120,24): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(127,51): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(127,24): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-  ball.cpp
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(143,32): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(146,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(150,19): warning C4305: '=': 'double' から 'float' へ切り詰めます。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(155,32): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(158,19): warning C4305: '=': 'double' から 'float' へ切り詰めます。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(162,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
-  coin.cpp
-  collision.cpp
-C:\Users\koba2\Desktop\HappyEnd\collision.cpp(321,33): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  countblock.cpp
-  game.cpp
-  moveblock.cpp
-  player.cpp
+﻿  player.cpp
 C:\Users\koba2\Desktop\HappyEnd\player.cpp(222,131): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-  result.cpp
+  move_block.cpp
   コードを生成中...
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

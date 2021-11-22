@@ -13,8 +13,8 @@
 #include "ball.h"
 #include "Attack.h"
 #include "xinput.h"
-#include "moveblock.h"
-#include "countblock.h"
+#include "move_block.h"
+#include "count_block.h"
 #include "collision.h"
 
 //*****************************************************************************
@@ -33,8 +33,8 @@ float frand(void);
 static PLAYER Player;
 bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECTOR2 size2);
 
-static MOVEBLOCK* moveblock = GetMoveBlock();
-static COUNTBLOCK* countblock = GetCountBlock();
+static MOVE_BLOCK* move_block = GetMoveBlock();
+static COUNT_BLOCK* count_block = GetCountBlock();
 
 //‘€ìƒLƒƒƒ‰‚Ì‰æ‘œ‚Ìí—Ş
 int himeTEXTURE = 0;

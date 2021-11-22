@@ -10,8 +10,8 @@
 #include "ball.h"
 #include "attack.h"
 #include "input.h"
-#include "countblock.h"
-#include "moveblock.h"
+#include "count_block.h"
+#include "move_block.h"
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -21,8 +21,8 @@
 //*****************************************************************************
 // 構造体定義
 //*****************************************************************************
-static MOVEBLOCK* moveblock = GetMoveBlock();
-static COUNTBLOCK* countblock = GetCountBlock();
+static MOVE_BLOCK* move_block = GetMoveBlock();
+static COUNT_BLOCK* count_block = GetCountBlock();
 PLAYER* player = GetPlayer();
 
 
@@ -158,21 +158,21 @@ void UpdateCollision(void)
 		//}
 
 			//プレイヤーと動くブロックの当たり判定
-		if (CollisionBB(player->pos, moveblock[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(moveblock[0].size.x, moveblock[0].size.y)))
+		if (CollisionBB(player->pos, move_block[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)))
 		{
 			//プレイヤーがブロックの上にいるとき
 			
-			if (player->pos.y + (player->size.y / 2) > moveblock[0].pos.y - (moveblock[0].size.y / 2))
+			if (player->pos.y + (player->size.y / 2) > move_block[0].pos.y - (move_block[0].size.y / 2))
 			{
-				player->pos.y = moveblock[0].pos.y - ((player->size.y / 2) + (moveblock[0].size.y / 2));
-				player->pos.x += moveblock[0].velocity.x;
+				player->pos.y = move_block[0].pos.y - ((player->size.y / 2) + (move_block[0].size.y / 2));
+				player->pos.x += move_block[0].velocity.x * 2;
 
 
 				//player->player_doingjump = false;
 				//moveblock[0].RidingPlayer = true;
 			}
 			//プレイヤーがブロックの下にぶつかったとき
-			if (player->pos.y - (player->size.y / 2) < moveblock[0].pos.y + (moveblock[0].size.y / 2))
+			if (player->pos.y - (player->size.y / 2) < move_block[0].pos.y + (move_block[0].size.y / 2))
 			{
 				player->move.y = 0.0f;
 
@@ -181,18 +181,17 @@ void UpdateCollision(void)
 			}
 
 			//プレイヤーの左に当たった場合
-			if (ball->pos.x + (ball->size.x / 2) > moveblock[0].pos.x - (moveblock[0].size.x / 2))
+			if (ball->pos.x + (ball->size.x / 2) > move_block[0].pos.x - (move_block[0].size.x / 2))
 			{
 				ball->move.x *= -1;
 			}
 
 			//プレイヤーの右に当たった場合
-			if (ball->pos.x - (ball->size.x / 2) > moveblock[0].pos.x + (moveblock[0].size.x / 2))
+			if (ball->pos.x - (ball->size.x / 2) > move_block[0].pos.x + (move_block[0].size.x / 2))
 			{
 				ball->move.x *= -1;
 			}
 		}
-
 
 	}
 }

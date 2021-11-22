@@ -124,11 +124,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="accele_block.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="collision.cpp" />
-    <ClCompile Include="countblock.cpp" />
+    <ClCompile Include="count_block.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -139,17 +140,18 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="moveblock.cpp" />
+    <ClCompile Include="move_block.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="backGround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="accele_block.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="collision.h" />
-    <ClInclude Include="countblock.h" />
+    <ClInclude Include="count_block.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
@@ -160,7 +162,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="sprite.h" />
-    <ClInclude Include="moveblock.h" />
+    <ClInclude Include="move_block.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="background.h" />
