@@ -16,6 +16,7 @@ void InitCountBlock(void)
 	
 	count_block[0].pos.x = 800.0f;
 	count_block[0].pos.y = 500.0f;
+	count_block[0].old_pos = count_block[0].pos;
 	count_block[0].Texture = LoadTexture("data/TEXTURE/block.png");
 	count_block[0].size.x = 60.0f;
 	count_block[0].size.y = 60.0f;
@@ -32,6 +33,7 @@ void UninitCountBlock(void)
 
 void UpdateCountBlock(void)
 {
+	count_block[0].old_pos = count_block[0].pos;
 	//ボール使用中
 	if (count_block[0].Use)
 	{
@@ -47,28 +49,49 @@ void UpdateCountBlock(void)
 		}
 
 		//ブロックにプレイヤーが当たっているとき
-		if (CollisionBB(player->pos, count_block[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)))
+		switch (CollisionKOBA(player->pos,count_block[0].pos,player->old_pos,count_block[0].old_pos,player->size,count_block[0].size))
 		{
-			
-			//プレイヤーがブロックの上にいるとき
-			if (player->pos.y + (player->size.y / 2) > count_block[0].pos.y - (count_block[0].size.y / 2))
-			{
-				player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
-				//player->move.y = 0.0f;
-			}
+		case F_OLD_SURFACE:: no_hit:
+			break;
 
-			//プレイヤーがブロックの左に当たっているとき
-			if (player->pos.x + (player->size.x / 2) > count_block[0].pos.x - (count_block[0].size.x / 2))
-			{
-				player->move.x = 0.0f;
-			}
+		case F_OLD_SURFACE::up:
+			player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
+			break;
 
-			//プレイヤーがブロックの右に当たっているとき
-			if (player->pos.x - (player->size.x / 2) > count_block[0].pos.x + (count_block[0].size.x / 2))
-			{
-				player->move.x = 0.0f;
-			}
+		case F_OLD_SURFACE::left:
+			player->move.x = 0.0f;
+			break;
+
+		case F_OLD_SURFACE::right:
+			player->move.x = 0.0f;
+			break;
+
+		case F_OLD_SURFACE::down:
+			break;
 		}
+
+		//if (CollisionBB(player->pos, count_block[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)))
+		//{
+		//	
+		//	//プレイヤーがブロックの上にいるとき
+		//	if (player->pos.y + (player->size.y / 2) > count_block[0].pos.y - (count_block[0].size.y / 2))
+		//	{
+		//		player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
+		//		//player->move.y = 0.0f;
+		//	}
+
+		//	//プレイヤーがブロックの左に当たっているとき
+		//	if (player->pos.x + (player->size.x / 2) > count_block[0].pos.x - (count_block[0].size.x / 2))
+		//	{
+		//		player->move.x = 0.0f;
+		//	}
+
+		//	//プレイヤーがブロックの右に当たっているとき
+		//	if (player->pos.x - (player->size.x / 2) > count_block[0].pos.x + (count_block[0].size.x / 2))
+		//	{
+		//		player->move.x = 0.0f;
+		//	}
+		//}
 	}
 }
 

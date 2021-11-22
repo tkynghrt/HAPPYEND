@@ -31,8 +31,11 @@ static PLAYER* player = GetPlayer();
 //*****************************************************************************
 bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECTOR2 size2);
 bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2);
+F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
+							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size);
 int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle);
 int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move);
+
 
 //*****************************************************************************
 // グローバル変数
@@ -266,8 +269,6 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	D3DXVECTOR2 player_min, player_max;
 	D3DXVECTOR2 block_min, block_max;
 	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
-	
-
 
 	player_min.x = player_pos.x - player_size.x / 2;
 	player_min.y = player_pos.y - player_size.y / 2;
@@ -279,6 +280,7 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	block_max.x = block_pos.x + block_size.x / 2;
 	block_max.y = block_pos.y + block_size.y / 2;
 
+	//プレイヤーの仮想加速度
 	D3DXVECTOR2 vertual_player_velocity = (player_pos - player_old_pos) - (block_pos - block_old_pos);
 	D3DXVECTOR2 vertual_player_old_pos = player_pos - vertual_player_velocity;
 
@@ -286,9 +288,7 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
 	vertual_player_old_max.x = vertual_player_old_pos.x + player_size.x / 2;
 	vertual_player_old_max.y = vertual_player_old_pos.y + player_size.y / 2;
-	
-	
-	
+
 	//X軸の判定
 	if (player_min.x < block_max.x && player_max.x > block_min.x)
 	{
@@ -298,31 +298,117 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 			//プレイヤーがブロックの上から当たったとき
 			if (vertual_player_old_max.y < block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
 			{
-				return up;
+				return F_OLD_SURFACE::up;
 			}
 			//プレイヤーがブロックの下から当たったとき
 			if (vertual_player_old_min.y > block_max.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
 			{
-				return down;
+				return F_OLD_SURFACE::down;
 			}
 			//プレイヤーがブロックの左から当たったとき
 			if (vertual_player_old_max.x < block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
 			{
-				return left;
+				return F_OLD_SURFACE::left;
 			}
 			//プレイヤーがブロックの右から当たったとき
 			if (vertual_player_old_min.x > block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
 			{
-				return right;
+				return F_OLD_SURFACE::right;
 			}
 
+			//プレイヤーの加速度の仮想角度
 			float vertual_velocity_angle = atan2(vertual_player_velocity.y, vertual_player_velocity.x);
+			float vertual_velocity_angle_pi = vertual_velocity_angle * 180 / PI;
 
+			//ここから自力だから怪しい
+			//ブロックとプレイヤーを結んだ角度？的な奴//ブロックの頂点からプレイヤーの頂点を結んだ直線
+			//右上
+			float RightUp_angle = atan2f((block_max.y - player_min.y), (block_max.x - player_min.x));
+			float RightUp_angle_pi = RightUp_angle * 180 / PI;
+			//右下
+			float RightDown_angle = atan2f((block_min.y - player_max.y), (block_max.x - player_min.x));
+			float RightDown_angle_pi = RightDown_angle * 180 / PI;
+			//左上
+			float LeftUp_angle = atan2f((block_max.y - player_min.y), (block_min.x - player_max.x));
+			float LeftUp_angle_pi = LeftUp_angle * 180 / PI;
+			//左下
+			float LeftDown_angle = atan2f((block_max.y - player_min.y), (block_min.x - player_max.x));
+			float LeftDown_angle_pi = LeftDown_angle * 180 / PI;
 
-			
+			//右上の判定
+			if (vertual_velocity_angle_pi > RightUp_angle_pi)
+			{
+				//右
+				if (vertual_player_old_min.x > block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::right;
+				}
+			}
+			else
+			{
+				//上
+				if (vertual_player_old_max.y < block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+				{
+					return F_OLD_SURFACE::up;
+				}
+			}
+
+			//右下の判定
+			if (vertual_velocity_angle_pi > RightDown_angle_pi)
+			{
+				//プレイヤーがブロックの下から当たったとき
+				if (vertual_player_old_min.y > block_max.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+				{
+					return F_OLD_SURFACE::down;
+				}
+			}
+			else
+			{
+				//右
+				if (vertual_player_old_min.x > block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::right;
+				}
+			}
+
+			//左上の判定
+			if (vertual_velocity_angle_pi > LeftUp_angle_pi)
+			{
+				//上
+				if (vertual_player_old_max.y < block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+				{
+					return F_OLD_SURFACE::up;
+				}
+			}
+			else
+			{
+				//左
+				if (vertual_player_old_max.x < block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::left;
+				}
+			}
+
+			//左下の判定
+			if (vertual_velocity_angle_pi > LeftDown_angle_pi)
+			{
+				//左
+				if (vertual_player_old_max.x < block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::left;
+				}
+			}
+			else
+			{
+				//下
+				if (vertual_player_old_min.y > block_max.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+				{
+					return F_OLD_SURFACE::down;
+				}
+			}
 		}
 	}
-	return no_hit;
+	return F_OLD_SURFACE::no_hit;
 	//return F_OLD_SURFACE();
 }
 

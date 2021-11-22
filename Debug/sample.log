@@ -1,4 +1,9 @@
 ﻿  accele_block.cpp
+  Attack.cpp
+C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(120,51): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(120,24): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(127,51): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\Attack.cpp(127,24): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
   ball.cpp
 C:\Users\koba2\Desktop\HappyEnd\ball.cpp(155,32): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\koba2\Desktop\HappyEnd\ball.cpp(158,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
@@ -8,11 +13,27 @@ C:\Users\koba2\Desktop\HappyEnd\ball.cpp(170,19): warning C4305: '=': 'double' �
 C:\Users\koba2\Desktop\HappyEnd\ball.cpp(174,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
   coin.cpp
   collision.cpp
-C:\Users\koba2\Desktop\HappyEnd\collision.cpp(319,33): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(320,33): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   count_block.cpp
+  fade.cpp
   game.cpp
-  move_block.cpp
+  input.cpp
+  main.cpp
   player.cpp
-C:\Users\koba2\Desktop\HappyEnd\player.cpp(252,131): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\player.cpp(232,131): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  score.cpp
+C:\Users\koba2\Desktop\HappyEnd\score.cpp(116,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\score.cpp(117,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  sound.cpp
+  sprite.cpp
+  move_block.cpp
+  Texture.cpp
+  title.cpp
+  コードを生成中...
+  コンパイル中...
+  backGround.cpp
   コードを生成中...
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe
