@@ -8,6 +8,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "player.h"
+#include "Attack.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -24,6 +25,9 @@
 //*****************************************************************************
 
 static BALL g_Ball;							// バレット構造体
+PLAYER* player = GetPlayer();		// プレイヤーのポインターを初期化
+//BALL* ball = GetBall();		// バレットのポインターを初期化
+ATTACK* attack = GetAttack();
 
 
 //=============================================================================
@@ -81,8 +85,16 @@ void UpdateBall(void)
 		break;
 				
 	}
+	if (g_Ball.move.x > BALL_SPEED_MAX)
+	{
+		g_Ball.move.x = BALL_SPEED_MAX;
+	}
+
 	//位置更新
 	g_Ball.pos += g_Ball.move;
+
+
+
 
 	// 画面端に行ったとき
 	if (g_Ball.pos.y < 70) {
@@ -215,4 +227,20 @@ D3DXVECTOR2* GetBallPos()
 D3DXVECTOR2* GetBallSize()
 {
 	return &g_Ball.size;
+}
+
+SPEED_LEVEL Speed_Level(D3DXVECTOR2 ball_move)
+{
+	if (g_Ball.move.x < 0 && g_Ball.move.x <= 8)
+		return level_1;
+	if (g_Ball.move.x < 8 && g_Ball.move.x <= 16)
+		return level_2;
+	if (g_Ball.move.x < 16 && g_Ball.move.x <= 26)
+		return level_3;
+	if (g_Ball.move.x < 26 && g_Ball.move.x <= 40)
+		return level_4;
+	if (g_Ball.move.x < 40 && g_Ball.move.x <= BALL_SPEED_MAX)
+		return level_5;
+
+	return SPEED_LEVEL();
 }

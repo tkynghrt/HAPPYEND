@@ -3,7 +3,7 @@
 #include "renderer.h"
 
 void InitAcceleBlock(void);
-void UninitAccelBlock(void);
+void UninitAcceleBlock(void);
 void UpdateAcceleBlock(void);
 void DrawAcceleBlock(void);
 

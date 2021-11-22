@@ -30,7 +30,8 @@ typedef enum {
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-
+#define HIMELEFT	2
+#define BALLACCELE	(2.0f)
 
 //*****************************************************************************
 // 構造体定義
@@ -45,4 +46,3 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2);
 F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, 
 							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size);
-

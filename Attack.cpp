@@ -33,7 +33,7 @@ HRESULT InitAttack(void)
 	int texNo = LoadTexture("data/TEXTURE/explosion.png");
 	int texNo2 = LoadTexture("data/TEXTURE/explosion02.png");
 
-	// バレット構造体の初期化
+	// 攻撃構造体の初期化
 
 	g_Attack.mode = 0;
 	g_Attack.w = 50.0f;

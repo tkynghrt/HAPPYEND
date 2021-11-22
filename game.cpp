@@ -15,10 +15,12 @@
 #include "ball.h"
 #include "Attack.h"
 #include "collision.h"
-#include "moveblock.h"
-#include "countblock.h"
+#include "move_block.h"
+#include "count_block.h"
+#include "accele_block.h"
 #include "background.h"
 #include "coin.h"
+#include "score.h"
 
 
 /*------------------------------------------------------------------------------
@@ -50,6 +52,8 @@ void InitGame(void)
 	InitAttack();
 	InitMoveBlock();
 	InitCountBlock();
+	InitAcceleBlock();
+	InitScore();
 }
 
 /*------------------------------------------------------------------------------
@@ -57,12 +61,13 @@ void InitGame(void)
 ------------------------------------------------------------------------------*/
 void UninitGame()
 {
-	
+	UninitScore();
 	UninitBall();
 	UninitPlayer();
 	UninitAttack();
 	UninitMoveBlock();
 	UninitCountBlock();
+	UninitAcceleBlock();
 	UninitCoin();
 	UninitBackGround();
 }
@@ -80,6 +85,8 @@ void UpdateGame(void)
 	UpdateAttack();
 	UpdateMoveBlock();
 	UpdateCountBlock();
+	UpdateAcceleBlock();
+	UpdateScore();
 	UpdateCollision();
 
 
@@ -101,8 +108,10 @@ void DrawGame(void)
 	DrawBall();
 	DrawAttack();
 	DrawPlayer();
+	DrawScore();
 	DrawMoveBlock();
 	DrawCountBlock();
+	DrawAcceleBlock();
 
 }
 

@@ -24,14 +24,7 @@ struct MOVE_BLOCK {
 	float		rot;
 };
 
-typedef enum {
-	level_1,
-	level_2,
-	level_3,
-	level_4,
-	level_5,
-	
-}SPEED_LEVEL;
+
 
 MOVE_BLOCK* GetMoveBlock(void);
 

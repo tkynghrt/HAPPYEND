@@ -19,12 +19,13 @@ void InitAcceleBlock(void)
 	accele_block[0].Use = true;
 }
 
-void UninitAccelBlock(void)
+void UninitAcceleBlock(void)
 {
 }
 
 void UpdateAcceleBlock(void)
 {
+	//switch()
 }
 
 void DrawAcceleBlock(void)

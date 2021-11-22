@@ -16,6 +16,8 @@
 #include "move_block.h"
 #include "count_block.h"
 #include "collision.h"
+#include "ball.h"
+#include "score.h"
 
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
@@ -35,13 +37,14 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 
 static MOVE_BLOCK* move_block = GetMoveBlock();
 static COUNT_BLOCK* count_block = GetCountBlock();
+static BALL* ball = GetBall();
 
 //‘€ìƒLƒƒƒ‰‚Ì‰æ‘œ‚ÌŽí—Þ
 int himeTEXTURE = 0;
 
 //‚ ‚Æ‚Å‰ðÍ&‘‚«Š·‚¦
 int animation = 0;
-int cont = 0;
+int animation_count = 0;
 
 //=============================================================================
 // ‰Šú‰»ˆ—
@@ -50,8 +53,6 @@ HRESULT InitPlayer(void)
 {
 	//ƒeƒNƒXƒ`ƒƒ“Ç‚Ýž‚Ý
 	Player.Hime_Texture = LoadTexture("data/TEXTURE/hime.png");
-
-	//Player.texNo2 = LoadTexture("data/TEXTURE/hime2.png");
 	
 	//‰Šú‰»
 	Player.pos.x = 200;
@@ -125,9 +126,9 @@ void UpdatePlayer(void)
 		Player.move.x = +5.0f;
 	}
 	
-	cont++;
-	if (cont >= 10) {
-		cont = 0;
+	animation_count++;
+	if (animation_count >= 10) {
+		animation_count = 0;
 		Player.animation++;
 		
 		if (Player.animation >= 3)
@@ -161,7 +162,7 @@ void UpdatePlayer(void)
 	// UŒ‚
 	if (GetKeyboardTrigger(DIK_Z))
 	{
-		
+		AddScore(2);
 		if (himeTEXTURE == 2)
 		{
 			//Player.power += Player.power;
@@ -177,6 +178,33 @@ void UpdatePlayer(void)
 			SetAttack(1, D3DXVECTOR2(Player.pos.x -40, Player.pos.y));
 		}
 	}
+	////////////////////////////////////////////////////////
+	// UŒ‚(ˆÐ—ÍŒ¸Š)
+	if (GetKeyboardTrigger(DIK_A))
+	{
+		if(ball->move.x > 0)
+		ball->move.x -= 2.0f;
+
+		if (ball->move.x < 0)
+			ball->move.x += 2.0f;
+
+		AddScore(-2);
+	}
+	// UŒ‚(ˆÐ—ÍŒ¸Š)
+	if (GetKeyboardTrigger(DIK_S))
+	{
+		if (ball->move.x > 0)
+			ball->move.x += 2.0f;
+
+		if (ball->move.x < 0)
+			ball->move.x -= 2.0f;
+
+		AddScore(2);
+	}
+
+	/////////////////////////////////////////////////////
+	
+
 	if (GetKeyboardTrigger(DIK_X))
 	{
 		if (himeTEXTURE == 2)
@@ -194,22 +222,6 @@ void UpdatePlayer(void)
 			SetAttack(2, D3DXVECTOR2(Player.pos.x - 40, Player.pos.y));
 		}
 	}
-
-	
-	//”í’e
-	/*if (Player.texcont > 0) {
-		Player.texcont--;
-		if (cont % 5 == 1) {
-			if (Player.tex == 1)
-			{
-				Player.tex = 0;
-			}
-			else
-			{
-				Player.tex = 1;
-			}
-		}
-	}*/
 }
 
 //=============================================================================
@@ -217,13 +229,8 @@ void UpdatePlayer(void)
 //=============================================================================
 void DrawPlayer(void)
 {
-
-
 		DrawSprite(Player.Hime_Texture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
 
-	
-
-		
 }
 
 //=============================================================================

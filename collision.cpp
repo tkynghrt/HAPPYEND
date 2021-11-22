@@ -23,7 +23,7 @@
 //*****************************************************************************
 static MOVE_BLOCK* move_block = GetMoveBlock();
 static COUNT_BLOCK* count_block = GetCountBlock();
-PLAYER* player = GetPlayer();
+static PLAYER* player = GetPlayer();
 
 
 //*****************************************************************************
@@ -40,7 +40,8 @@ int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTO
 int NoFlame = 0;	//当たり判定を〇フレーム消す
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
-
+//////////////////////////////////////////////////////
+int speed_number;
 //=============================================================================
 // 当たり判定処理
 //=============================================================================
@@ -51,8 +52,6 @@ void UpdateCollision(void)
 	BALL *ball = GetBall();		// バレットのポインターを初期化
 	ATTACK *attack = GetAttack();
 	
-
-
 	if (NoFlame > 0)//当たり判定が消えていればカウントを進め消えて居なければ実行
 	{
 		NoFlame--;
@@ -263,7 +262,7 @@ bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2)
 
 F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size)
 {
-
+	
 	D3DXVECTOR2 player_min, player_max;
 	D3DXVECTOR2 block_min, block_max;
 	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
@@ -331,7 +330,6 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 //------------------------------------------------------------ 
 // 円と線分の Collision 判定 
 //------------------------------------------------------------ 
-
 
 int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move) // 最初に１回だけ呼ばれる 
 {
