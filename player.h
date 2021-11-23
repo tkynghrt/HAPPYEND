@@ -22,7 +22,6 @@ struct PLAYER
 	D3DXVECTOR2				size;					// 幅と高さ
 	D3DXVECTOR2				pos;					// ポリゴンの座標
 	D3DXVECTOR2				old_pos;				// 1フレーム前のポリゴンの座標
-	D3DXVECTOR2				velocity;				// ブロックに乗ってるときの加速
 	float					rot;					// ポリゴンの回転量
 	int						Hime_Texture;			// テクスチャの種類
 	int						texNo2;
@@ -35,7 +34,7 @@ struct PLAYER
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
 	float					gravity;
-	bool					player_doingjump;
+	bool					fly;
 };
 
 

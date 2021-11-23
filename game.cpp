@@ -21,6 +21,7 @@
 #include "background.h"
 #include "coin.h"
 #include "score.h"
+#include "ground.h"
 
 
 /*------------------------------------------------------------------------------
@@ -46,6 +47,8 @@
 void InitGame(void)
 {
 	InitBackGround();
+	InitGround();
+	//’Ç‰Á‚Í‚±‚±‚©‚ç
 	InitCoin();
 	InitPlayer();
 	InitBall();
@@ -69,6 +72,7 @@ void UninitGame()
 	UninitCountBlock();
 	UninitAcceleBlock();
 	UninitCoin();
+	UninitGround();
 	UninitBackGround();
 }
 
@@ -87,6 +91,7 @@ void UpdateGame(void)
 	UpdateCountBlock();
 	UpdateAcceleBlock();
 	UpdateScore();
+	UpdateGround();
 	UpdateCollision();
 
 
@@ -104,6 +109,7 @@ void UpdateGame(void)
 void DrawGame(void)
 {
 	DrawBackGround();
+	DrawGround();
 	DrawCoin();
 	DrawBall();
 	DrawAttack();
@@ -114,4 +120,3 @@ void DrawGame(void)
 	DrawAcceleBlock();
 
 }
-

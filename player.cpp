@@ -23,7 +23,7 @@
 // マクロ定義
 //*****************************************************************************
 #define PLAYERJUMP	(20.0f)
-
+#define GRAVITY		(1.0f)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -38,6 +38,7 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 static MOVE_BLOCK* move_block = GetMoveBlock();
 static COUNT_BLOCK* count_block = GetCountBlock();
 static BALL* ball = GetBall();
+
 
 //操作キャラの画像の種類
 int himeTEXTURE = 0;
@@ -60,8 +61,6 @@ HRESULT InitPlayer(void)
 	Player.old_pos = Player.pos;
 	Player.size.x = 60.0f;
 	Player.size.y = 60.0f;
-	Player.velocity.x = 0.0f;
-	Player.velocity.y = 0.0f;
 	Player.animation = 0;
 	Player.use = true;
 	Player.hp = 5;
@@ -69,8 +68,8 @@ HRESULT InitPlayer(void)
 	//Player.texcont = 0;
 	Player.move = D3DXVECTOR2(0.0f, 0.0f);
 	Player.power = D3DXVECTOR2(2.0f, 0.0f);
-	Player.gravity = 1.0f;
-	Player.player_doingjump = false;
+	Player.gravity = GRAVITY;
+	Player.fly = false;
 	
 	return S_OK;
 }
@@ -91,16 +90,17 @@ void UpdatePlayer(void)
 	Player.old_pos = Player.pos;
 
 	//重力
-	Player.gravity = 1.0f;
+	if (!Player.fly) {
+		Player.move.y = 0.0f;
+	}
+	Player.gravity = GRAVITY;
 	Player.move.x = 0.0f;
+
+
 	
 
-	//ジャンプしてるかの判定
-	if (Player.pos.y >= 500)
-	{
-		Player.player_doingjump = false;
-
-	}
+	
+	
 	
 
 	//ジャンプ
@@ -108,10 +108,14 @@ void UpdatePlayer(void)
 	{
 		//U = 3;
 
-		if (Player.player_doingjump == false)
+		if (!Player.fly)
 		{
-			Player.player_doingjump = true;
+			Player.fly = true;
 			Player.move.y = -PLAYERJUMP;
+		}
+		else
+		{
+			int a = 0;
 		}
 		
 	}
@@ -139,8 +143,9 @@ void UpdatePlayer(void)
 	
 
 	//位置更新
-	Player.pos += Player.move;
 	Player.move.y += Player.gravity;
+	Player.pos += Player.move;
+
 	//Player.move.y = 0.0f;
 
 
@@ -165,16 +170,10 @@ void UpdatePlayer(void)
 		AddScore(2);
 		if (himeTEXTURE == 2)
 		{
-			//Player.power += Player.power;
-
-			//SetBullet(2, Player.pos, Player.power);
 			SetAttack(1, D3DXVECTOR2(Player.pos.x + 40, Player.pos.y));
 		}
 		else
 		{
-			//Player.power += Player.power;
-
-			//SetBullet(2, Player.pos, D3DXVECTOR2(Player.power.x * -1, Player.power.y));
 			SetAttack(1, D3DXVECTOR2(Player.pos.x -40, Player.pos.y));
 		}
 	}

@@ -132,6 +132,7 @@
     <ClCompile Include="count_block.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="ground.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="background.h" />
+    <ClInclude Include="ground.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

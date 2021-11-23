@@ -4,9 +4,11 @@
 #include "texture.h"
 #include "sprite.h"
 #include "player.h"
+#include "ground.h"
 
 COUNT_BLOCK count_block[MAX_COUNT_BLOCK];
 static PLAYER* player = GetPlayer();
+static GROUND* ground = GetGround();
 static BALL* ball = GetBall();
 
 
@@ -14,12 +16,13 @@ void InitCountBlock(void)
 {
 	//回数で壊れるブロック
 	
-	count_block[0].pos.x = 800.0f;
-	count_block[0].pos.y = 500.0f;
+	
 	count_block[0].old_pos = count_block[0].pos;
 	count_block[0].Texture = LoadTexture("data/TEXTURE/block.png");
 	count_block[0].size.x = 60.0f;
 	count_block[0].size.y = 60.0f;
+	count_block[0].pos.x = 800.0f;
+	count_block[0].pos.y = SCREEN_HEIGHT - ground->size.y - (count_block[0].size.y / 2);
 	count_block[0].rot = 0.0f;
 	count_block[0].HitCount = 10;
 	count_block[0].Use = true;
@@ -48,27 +51,7 @@ void UpdateCountBlock(void)
 			count_block[0].HitCount--;
 		}
 
-		//ブロックにプレイヤーが当たっているとき
-		switch (CollisionKOBA(player->pos,count_block[0].pos,player->old_pos,count_block[0].old_pos,player->size,count_block[0].size))
-		{
-		case F_OLD_SURFACE:: no_hit:
-			break;
-
-		case F_OLD_SURFACE::up:
-			player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
-			break;
-
-		case F_OLD_SURFACE::left:
-			player->move.x = 0.0f;
-			break;
-
-		case F_OLD_SURFACE::right:
-			player->move.x = 0.0f;
-			break;
-
-		case F_OLD_SURFACE::down:
-			break;
-		}
+		
 
 		//if (CollisionBB(player->pos, count_block[0].pos, D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)))
 		//{

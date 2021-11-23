@@ -18,7 +18,7 @@ void InitMoveBlock(void)
 		//à⁄ìÆÉuÉçÉbÉNÇªÇÃ1
 		move_block[0].Texture = LoadTexture("data/TEXTURE/green.png");
 		move_block[0].pos.x = 300.0f;
-		move_block[0].pos.y = 400.0f;
+		move_block[0].pos.y = 350.0f;
 		move_block[0].old_pos = move_block[0].pos;
 		move_block[0].size.x = 100.0f;
 		move_block[0].size.y = 30.0f;
