@@ -21,6 +21,7 @@
 #include "background.h"
 #include "coin.h"
 #include "score.h"
+#include "All_Gimmick_Pos.h"
 #include "ground.h"
 
 
@@ -48,6 +49,7 @@ void InitGame(void)
 {
 	InitBackGround();
 	InitGround();
+	InitAllGimmickPos();
 	//’Ç‰Á‚Í‚±‚±‚©‚ç
 	InitCoin();
 	InitPlayer();

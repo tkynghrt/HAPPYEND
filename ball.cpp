@@ -46,6 +46,7 @@ HRESULT InitBall(void)
 		Ball.mode   = 1;
 		Ball.size = D3DXVECTOR2(40.0f, 40.0f);
 		Ball.pos   = D3DXVECTOR2(300, 300.0f);
+		Ball.old_pos  = Ball.pos;
 		Ball.rot   = 0.0f;
 		Ball.BallTexture = BallTexture;
 		Ball.ShadowTexture = ShadowTexture;
@@ -66,6 +67,7 @@ void UninitBall(void)
 //=============================================================================
 void UpdateBall(void)
 {
+	Ball.old_pos = Ball.pos;
 	// ‰ñ“]‚³‚¹‚é
 	//g_Ball.rot += 0.5f;
 	

@@ -7,8 +7,7 @@ void UninitCoin(void);
 void UpdateCoin(void);
 void DrawCoin(void);
 
-//ÉRÉCÉìëçêî
-#define MAX_COIN	10
+
 
 
 void setCoin(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity);

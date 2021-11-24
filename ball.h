@@ -21,6 +21,7 @@ struct BALL
 	int						mode;					// ボールの状態
 	D3DXVECTOR2				size;					// 幅と高さ
 	D3DXVECTOR2				pos;					// バレットの座標
+	D3DXVECTOR2				old_pos;					// バレットの座標
 	float					rot;					// バレットの回転量
 	D3DXVECTOR2				move;					// バレットの移動量
 	int						BallTexture;

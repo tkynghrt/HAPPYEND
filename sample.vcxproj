@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="accele_block.cpp" />
+    <ClCompile Include="All_Gimmick_Pos.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="coin.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accele_block.h" />
+    <ClInclude Include="All_Gimmick_Pos.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="coin.h" />
