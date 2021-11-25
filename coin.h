@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-void InitCoin(void);
+HRESULT InitCoin(void);
 void UninitCoin(void);
 void UpdateCoin(void);
 void DrawCoin(void);

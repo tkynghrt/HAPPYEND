@@ -6,10 +6,6 @@
 #include "player.h"
 #include "collision.h"
 
-
-
-
-
 static MOVE_BLOCK move_block[MAX_MOVE_BLOCK];
 static PLAYER* player = GetPlayer();
 static GIMMICK_POS* All_Gimmick_Pos = GetGimmick_Pos();
@@ -40,21 +36,23 @@ void UninitMoveBlock(void)
 
 void UpdateMoveBlock(void)
 {
-	move_block[0].old_pos = move_block[0].pos;
-
-	//ブロックの往復（時間で計ってる）
-	move_block[0].pos.x += move_block[0].velocity.x;
-	MoveCount++;
-	if (MoveCount >= 90)
+	for (int i = 0; i < MAX_ACCELE_BLOCK; i++)
 	{
-		move_block[0].velocity.x *= -1;
-		MoveCount = 0;
+		move_block[i].old_pos = move_block[i].pos;
+
+		//ブロックの往復（時間で計ってる）
+		move_block[i].pos.x += move_block[i].velocity.x;
+		MoveCount++;
+		if (MoveCount >= 90)
+		{
+			move_block[i].velocity.x *= -1;
+			MoveCount = 0;
+		}
 	}
 
 
-
 	
-		//ボールがブロックに当たった時
+		
 		if (CollisionBB(ball->pos, move_block[0].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)))
 		{
 

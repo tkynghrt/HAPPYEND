@@ -18,7 +18,7 @@ HRESULT InitAllGimmickPos(void)
 	Gimick_Pos[0].count_block_pos = D3DXVECTOR2(800.0f, GROUND);
 
 	//スピードレベルで壊れるブロックの座標
-	Gimick_Pos[0].accele_block_pos = D3DXVECTOR2(100.0f, 400.0f);
+	Gimick_Pos[0].accele_block_pos = D3DXVECTOR2(100.0f, GROUND);
 
 	//コインの座標
 	Gimick_Pos[0].coin = D3DXVECTOR2(500.0f, GROUND);

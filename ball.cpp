@@ -14,7 +14,11 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-
+#define	level_1		0
+#define	level_2		1
+#define	level_3		2
+#define	level_4		3
+#define	level_5		4
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -43,14 +47,17 @@ HRESULT InitBall(void)
 
 	// ボール構造体の初期化
 	
-		Ball.mode   = 1;
-		Ball.size = D3DXVECTOR2(40.0f, 40.0f);
-		Ball.pos   = D3DXVECTOR2(300, 300.0f);
-		Ball.old_pos  = Ball.pos;
-		Ball.rot   = 0.0f;
-		Ball.BallTexture = BallTexture;
-		Ball.ShadowTexture = ShadowTexture;
-		Ball.move = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
+	Ball.mode   = 1;
+	Ball.size = D3DXVECTOR2(40.0f, 40.0f);
+	Ball.pos   = D3DXVECTOR2(300, 300.0f);
+	Ball.old_pos  = Ball.pos;
+	Ball.rot   = 0.0f;
+	Ball.BallTexture = BallTexture;
+	Ball.ShadowTexture = ShadowTexture;
+	Ball.move = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
+	Ball.Speed_Level = level_1;
+
+
 	return S_OK;
 }
 
@@ -89,6 +96,19 @@ void UpdateBall(void)
 		break;
 				
 	}
+
+	//ボールのスピードレベル
+	if (Ball.move.x > 0 && Ball.move.x <= 8)
+		Ball.Speed_Level = level_1;
+	if (Ball.move.x > 8 && Ball.move.x <= 16)
+		Ball.Speed_Level = level_2;
+	if (Ball.move.x > 16 && Ball.move.x <= 26)
+		Ball.Speed_Level = level_3;
+	if (Ball.move.x > 26 && Ball.move.x <= 40)
+		Ball.Speed_Level = level_4;
+	if (Ball.move.x > 40 && Ball.move.x <= BALL_SPEED_MAX)
+		Ball.Speed_Level = level_5;
+
 	if (Ball.move.x > BALL_SPEED_MAX)
 	{
 		Ball.move.x = BALL_SPEED_MAX;
@@ -231,20 +251,4 @@ D3DXVECTOR2* GetBallPos()
 D3DXVECTOR2* GetBallSize()
 {
 	return &Ball.size;
-}
-
-SPEED_LEVEL Speed_Level(D3DXVECTOR2 ball_move)
-{
-	if (Ball.move.x < 0 && Ball.move.x <= 8)
-		return level_1;
-	if (Ball.move.x < 8 && Ball.move.x <= 16)
-		return level_2;
-	if (Ball.move.x < 16 && Ball.move.x <= 26)
-		return level_3;
-	if (Ball.move.x < 26 && Ball.move.x <= 40)
-		return level_4;
-	if (Ball.move.x < 40 && Ball.move.x <= BALL_SPEED_MAX)
-		return level_5;
-
-	return SPEED_LEVEL();
 }

@@ -1,3 +1,5 @@
-﻿  All_Gimmick_Pos.cpp
-C:\Users\koba2\Desktop\HappyEnd\All_Gimmick_Pos.cpp(35): warning C4715: 'GetGimmick_Pos': 値を返さないコントロール パスがあります。
+﻿  coin.cpp
+  move_block.cpp
+  コードを生成中...
+C:\Users\koba2\Desktop\HappyEnd\coin.cpp(62): warning C4715: 'GetCoin': 値を返さないコントロール パスがあります。
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

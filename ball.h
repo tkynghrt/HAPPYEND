@@ -26,17 +26,10 @@ struct BALL
 	D3DXVECTOR2				move;					// バレットの移動量
 	int						BallTexture;
 	int						ShadowTexture;
+	int						Speed_Level;
 };
 
-//ボールのスピードレベル
-typedef enum {
-	level_1,
-	level_2,
-	level_3,
-	level_4,
-	level_5,
 
-}SPEED_LEVEL;
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -51,8 +44,6 @@ void SetBall(int mode,D3DXVECTOR2 pos, D3DXVECTOR2 power);
 
 D3DXVECTOR2* GetBallPos();
 D3DXVECTOR2* GetBallSize();
-
-SPEED_LEVEL Speed_Level(D3DXVECTOR2 ball_move);
 
 
 

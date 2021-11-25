@@ -13,7 +13,7 @@ static GIMMICK_POS* All_Gimmick_Pos = GetGimmick_Pos();
 
 COIN coin[MAX_COIN];
 
-void InitCoin(void)
+HRESULT InitCoin(void)
 {
 
 	for (int i = 0; i < MAX_COIN; i++)
@@ -26,6 +26,7 @@ void InitCoin(void)
 		coin[i].point = 10;
 		coin[i].Use = true;
 	}
+	return S_OK;
 }
 void UninitCoin(void)
 {
@@ -33,25 +34,29 @@ void UninitCoin(void)
 }
 void UpdateCoin(void)
 {
-	if (coin[0].Use)
-	{
-		//ƒ{[ƒ‹‚ª“–‚½‚Á‚½Žž
-		if (CollisionBB(Ball->pos, coin[0].pos, D3DXVECTOR2(Ball->size.x, Ball->size.y), D3DXVECTOR2(coin[0].size.x, coin[0].size.y)))
-		{
-				coin[0].Use = false;	
-		}
-	}
+	
 }
 void DrawCoin(void)
 {
 	D3DXCOLOR coinCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	if (coin[0].Use)
+	for (int i = 0; i < MAX_COIN; i++)
 	{
-		//for (int i = 0; i < MAX_COIN; i++)
-		//{
-		DrawSpriteColorRotate(coin[0].Texture, coin[0].pos.x, coin[0].pos.y,
-			coin[0].size.x, coin[0].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
-			coinCol, coin[1].rot);
-		//}
+		if (coin[i].Use)
+		{
+			for (int i = 0; i < MAX_COIN; i++)
+			{
+				DrawSpriteColorRotate(coin[i].Texture, coin[i].pos.x, coin[i].pos.y,
+					coin[0].size.x, coin[i].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+					coinCol, coin[i].rot);
+			}
+		}
+	}
+}
+
+COIN* GetCoin(void)
+{
+	for (int i = 0; i < MAX_COIN; i++)
+	{
+		return &coin[i];
 	}
 }
