@@ -6,7 +6,8 @@
 //=============================================================================
 #include "main.h"
 #include "collision.h"
-#include "All_Gimmick_Pos.h"
+#include "fade.h"
+#include "All_Gimmick.h"
 #include "player.h"
 #include "ball.h"
 #include "attack.h"
@@ -14,6 +15,8 @@
 #include "count_block.h"
 #include "move_block.h"
 #include "accele_block.h"
+#include "Target_Count.h"
+#include "Target_Normal.h"
 #include "coin.h"
 
 //*****************************************************************************
@@ -30,6 +33,8 @@ static COUNT_BLOCK* count_block = GetCountBlock();
 static ACCELE_BLOCK* accele_block = GetAcceleBlock();
 static COIN* coin = GetCoin();
 static PLAYER* player = GetPlayer();
+static TARGET_NORMAL* TargetNormal = GetTarget_Normal();
+static TARGET_COUNT* TargetCount = GetTarget_Count();
 
 
 //*****************************************************************************
@@ -49,8 +54,11 @@ int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTO
 int NoFlame = 0;	//当たり判定を〇フレーム消す
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
-//////////////////////////////////////////////////////
-int speed_number;
+
+
+
+
+
 //=============================================================================
 // 当たり判定処理
 //=============================================================================
@@ -154,94 +162,135 @@ void UpdateCollision(void)
 			}
 		}
 	}
+
+
+	//玉とターゲットとの当たり判定
+	if (TargetNormal->use == true)
+	{
+		if (CollisionBB(ball->pos, TargetNormal->pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetNormal->size.x, TargetNormal->size.y)))
+		{
+			TargetNormal->use = false;
+			ball->move.x *= -1;
+			ball->move.y *= -1;
+			TargetNormal->use = true;
+		}
+	}
+
+	if (TargetCount->use == true)
+	{
+		if (CollisionBB(ball->pos, TargetCount->pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetCount->size.x, TargetCount->size.y)))
+		{
+			ball->move.x *= -1;
+			ball->move.y *= -1;
+			if (TargetCount->Count >= 1)
+			{
+				TargetCount->Count--;
+			}
+			else
+			{
+				TargetCount->use = false;
+				SceneTransition(SCENE::SCENE_RESULT);
+			}
+
+		}
+	}
+
 		
 
 	//動くブロック編 
 	//プレイヤーと動くブロックの当たり判定
 	for (int i = 0; i < MAX_MOVE_BLOCK; i++)
 	{
-		if (move_block[0].Use)
+		if (move_block[i].Use)
 		{
-			if (CollisionKOBA(player->pos, move_block[0].pos, player->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA(player->pos, move_block[i].pos, player->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
-				player->pos.y = move_block[0].pos.y - ((player->size.y / 2) + (move_block[0].size.y / 2));
-				player->pos.x += move_block[0].velocity.x;
+				player->pos.y = move_block[i].pos.y - ((player->size.y / 2) + (move_block[i].size.y / 2));
+				player->pos.x += move_block[i].velocity.x;
 				player_fly = false;
 			}
-			else if (CollisionKOBA(player->pos, move_block[0].pos, player->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::left)
+			else if (CollisionKOBA(player->pos, move_block[i].pos, player->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y)) == F_OLD_SURFACE::left)
 			{
-				player->pos.x = move_block[0].pos.x - ((player->size.x / 2) + (move_block[0].size.x / 2));
+				player->pos.x = move_block[i].pos.x - ((player->size.x / 2) + (move_block[i].size.x / 2));
 			}
-			else if (CollisionKOBA(player->pos, move_block[0].pos, player->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::right)
+			else if (CollisionKOBA(player->pos, move_block[i].pos, player->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y)) == F_OLD_SURFACE::right)
 			{
-				player->pos.x = move_block[0].pos.x + ((player->size.x / 2) + (move_block[0].size.x / 2));
+				player->pos.x = move_block[i].pos.x + ((player->size.x / 2) + (move_block[i].size.x / 2));
 			}
-			else if (CollisionKOBA(player->pos, move_block[0].pos, player->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::down)
+			else if (CollisionKOBA(player->pos, move_block[i].pos, player->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
-				player->pos.y = move_block[0].pos.y + ((player->size.y / 2) + (move_block[0].size.y / 2));
+				player->pos.y = move_block[i].pos.y + ((player->size.y / 2) + (move_block[i].size.y / 2));
 				player->move.y = 0.0f;
 			}
 		}
 	}
+	//バグ起きてます
 	//ボールと動くブロックの当たり判定
 	for (int i = 0; i < MAX_MOVE_BLOCK; i++)
 	{
-		if (count_block[0].Use)
+		if (move_block[i].Use)
 		{
-			if (CollisionKOBA(ball->pos, move_block[0].pos, ball->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::up)
 			{
 				ball->move.y *= -1;
 			}
-			else if (CollisionKOBA(ball->pos, move_block[0].pos, ball->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::left)
+			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::left)
 			{
+				
 				ball->move.x *= -1;
 			}
-			else if (CollisionKOBA(ball->pos, move_block[0].pos, ball->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::right)
+			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::right)
 			{
+				
 				ball->move.x *= -1;
 			}
-			else if (CollisionKOBA(ball->pos, move_block[0].pos, ball->old_pos, move_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[0].size.x, move_block[0].size.y)) == F_OLD_SURFACE::down)
+			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::down)
 			{
+				ball->pos.y = move_block[i].pos.y + ((ball->size.y / 2) + (move_block[i].size.y / 2));
+				
 				ball->move.y *= -1;
 			}
 		}
 	}
+
+
+
 
 
 	//回数で壊れるブロック編
 	//プレイヤーと回数で壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_COUNT_BLOCK; i++)
 	{
-		if (count_block[0].Use)
+		if (count_block[i].Use)
 		{
-			if (CollisionKOBA(player->pos, count_block[0].pos, player->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA(player->pos, count_block[i].pos, player->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
-          				player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
-				player_fly = false;
+          				player->pos.y = count_block[i].pos.y - ((player->size.y / 2) + (count_block[i].size.y / 2));
+						player_fly = false;
 			}
-			else if (CollisionKOBA(player->pos, count_block[0].pos, player->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::left)
+			else if (CollisionKOBA(player->pos, count_block[i].pos, player->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::left)
 			{
- 				player->pos.x = count_block[0].pos.x - ((player->size.x / 2) + (count_block[0].size.x / 2));
+ 				player->pos.x = count_block[i].pos.x - ((player->size.x / 2) + (count_block[i].size.x / 2));
 			}
-			else if (CollisionKOBA(player->pos, count_block[0].pos, player->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::right)
+			else if (CollisionKOBA(player->pos, count_block[i].pos, player->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::right)
 			{
-				player->pos.x = count_block[0].pos.x + ((player->size.x / 2) + (count_block[0].size.x / 2));
+				player->pos.x = count_block[i].pos.x + ((player->size.x / 2) + (count_block[i].size.x / 2));
 			}
-			else if (CollisionKOBA(player->pos, count_block[0].pos, player->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::down)
+			else if (CollisionKOBA(player->pos, count_block[i].pos, player->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
-				player->pos.y = count_block[0].pos.y - ((player->size.y / 2) + (count_block[0].size.y / 2));
+				player->pos.y = count_block[i].pos.y - ((player->size.y / 2) + (count_block[i].size.y / 2));
 				player->move.y = 0.0f;
 			}
 		}
@@ -249,47 +298,47 @@ void UpdateCollision(void)
 	//ボールと回数で壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_COUNT_BLOCK; i++)
 	{
-		if (count_block[0].Use)
+		if (count_block[i].Use)
 		{
-			if (CollisionKOBA(ball->pos, count_block[0].pos, ball->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
 				ball->move.y *= -1;
-				if (count_block[0].HitCount <= 0)
+				if (count_block[i].HitCount <= 0)
 				{
-					count_block[0].Use = false;
+					count_block[i].Use = false;
 				}
-				count_block[0].HitCount--;
+				count_block[i].HitCount--;
 			}
-			else if (CollisionKOBA(ball->pos, count_block[0].pos, ball->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::left)
+			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::left)
 			{
 				ball->move.x *= -1;
-				if (count_block[0].HitCount <= 0)
+				if (count_block[i].HitCount <= 0)
 				{
-					count_block[0].Use = false;
+					count_block[i].Use = false;
 				}
-				count_block[0].HitCount--;
+				count_block[i].HitCount--;
 			}
-			else if (CollisionKOBA(ball->pos, count_block[0].pos, ball->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::right)
+			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::right)
 			{
 				ball->move.x *= -1;
-				if (count_block[0].HitCount <= 0)
+				if (count_block[i].HitCount <= 0)
 				{
-					count_block[0].Use = false;
+					count_block[i].Use = false;
 				}
-				count_block[0].HitCount--;
+				count_block[i].HitCount--;
 			}
-			else if (CollisionKOBA(ball->pos, count_block[0].pos, ball->old_pos, count_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[0].size.x, count_block[0].size.y)) == F_OLD_SURFACE::down)
+			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
 				ball->move.y *= -1;
-				if (count_block[0].HitCount <= 0)
+				if (count_block[i].HitCount <= 0)
 				{
-					count_block[0].Use = false;
+					count_block[i].Use = false;
 				}
-				count_block[0].HitCount--;
+				count_block[i].HitCount--;
 			}
 		}
 	}
@@ -299,28 +348,28 @@ void UpdateCollision(void)
 	//プレイヤーとスピードレベルで壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_ACCELE_BLOCK; i++)
 	{
-		if (accele_block[0].Use)
+		if (accele_block[i].Use)
 		{
-			if (CollisionKOBA(player->pos, accele_block[0].pos, player->old_pos, accele_block[0].pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA(player->pos, accele_block[i].pos, player->old_pos, accele_block[i].pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
-				player->pos.y = accele_block[0].pos.y - ((player->size.y / 2) + (accele_block[0].size.y / 2));
+				player->pos.y = accele_block[i].pos.y - ((player->size.y / 2) + (accele_block[i].size.y / 2));
 				player_fly = false;
 			}
-			else if ((CollisionKOBA(player->pos, accele_block[0].pos, player->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::left))
+			else if ((CollisionKOBA(player->pos, accele_block[i].pos, player->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::left))
 			{
-				player->pos.x = accele_block[0].pos.x - ((player->size.x / 2) + (accele_block[0].size.x / 2));
+				player->pos.x = accele_block[i].pos.x - ((player->size.x / 2) + (accele_block[i].size.x / 2));
 			}
-			else if ((CollisionKOBA(player->pos, accele_block[0].pos, player->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::right))
+			else if ((CollisionKOBA(player->pos, accele_block[i].pos, player->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::right))
 			{
-				player->pos.x = accele_block[0].pos.x + ((player->size.x / 2) + (accele_block[0].size.x / 2));
+				player->pos.x = accele_block[i].pos.x + ((player->size.x / 2) + (accele_block[i].size.x / 2));
 			}
-			else if ((CollisionKOBA(player->pos, accele_block[0].pos, player->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::down))
+			else if ((CollisionKOBA(player->pos, accele_block[i].pos, player->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::down))
 			{
-				player->pos.y = accele_block[0].pos.y - ((player->size.y / 2) + (accele_block[0].size.y / 2));
+				player->pos.y = accele_block[i].pos.y - ((player->size.y / 2) + (accele_block[i].size.y / 2));
 				player->move.y = 0.0f;
 			}
 		}
@@ -328,42 +377,42 @@ void UpdateCollision(void)
 	//ボールとスピードレベルで壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_ACCELE_BLOCK; i++)
 	{
-		if (accele_block[0].Use)
+		if (accele_block[i].Use)
 		{
-			if (CollisionKOBA(ball->pos, accele_block[0].pos, ball->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::up)
+			if (CollisionKOBA(ball->pos, accele_block[i].pos, ball->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
 				ball->move.y *= -1;
-				if (accele_block[0].level == ball->Speed_Level)
+				if (accele_block[i].level == ball->Speed_Level)
 				{
-					accele_block[0].Use = false;
+					accele_block[i].Use = false;
 				}
 			}
-			else if (CollisionKOBA(ball->pos, accele_block[0].pos, ball->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::left)
+			else if (CollisionKOBA(ball->pos, accele_block[i].pos, ball->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::left)
 			{
 				ball->move.x *= -1;
-				if (accele_block[0].level == ball->Speed_Level)
+				if (accele_block[i].level == ball->Speed_Level)
 				{
-					accele_block[0].Use = false;
+					accele_block[i].Use = false;
 				}
 			}
-			else if (CollisionKOBA(ball->pos, accele_block[0].pos, ball->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::right)
+			else if (CollisionKOBA(ball->pos, accele_block[i].pos, ball->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::right)
 			{
 				ball->move.x *= -1;
-				if (accele_block[0].level == ball->Speed_Level)
+				if (accele_block[i].level == ball->Speed_Level)
 				{
-					accele_block[0].Use = false;
+					accele_block[i].Use = false;
 				}
 			}
-			else if (CollisionKOBA(ball->pos, accele_block[0].pos, ball->old_pos, accele_block[0].old_pos,
-				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[0].size.x, accele_block[0].size.y)) == F_OLD_SURFACE::down)
+			else if (CollisionKOBA(ball->pos, accele_block[i].pos, ball->old_pos, accele_block[i].old_pos,
+				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(accele_block[i].size.x, accele_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
 				ball->move.y *= -1;
-				if (accele_block[0].level == ball->Speed_Level)
+				if (accele_block[i].level == ball->Speed_Level)
 				{
-					accele_block[0].Use = false;
+					accele_block[i].Use = false;
 				}
 			}
 		}
@@ -382,6 +431,7 @@ void UpdateCollision(void)
 			}
 		}
 	}
+
 
 	//床の当たり判定
 	switch (CollisionKOBA(player->pos, ground->pos, player->old_pos, ground->pos,
@@ -480,12 +530,14 @@ bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2)
 // サイズは半径
 // 戻り値：当たっている面を返す
 //=============================================================================
-F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size)
+F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
+							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size)
 {
 	
 	D3DXVECTOR2 player_min, player_max;
 	D3DXVECTOR2 block_min, block_max;
 	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+
 
 	player_min.x = player_pos.x - player_size.x / 2;
 	player_min.y = player_pos.y - player_size.y / 2;
@@ -505,6 +557,9 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
 	vertual_player_old_max.x = vertual_player_old_pos.x + player_size.x / 2;
 	vertual_player_old_max.y = vertual_player_old_pos.y + player_size.y / 2;
+
+	
+
 
 	//X軸の判定
 	if (player_min.x < block_max.x && player_max.x > block_min.x)
@@ -535,6 +590,7 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 
 			//プレイヤーの加速度の仮想角度
 			float vertual_velocity_angle = atan2f(vertual_player_velocity.y, vertual_player_velocity.x);
+			
 
 			//プレイヤーの頂点からブロックの頂点を結んだ直線の角度
 			//プレイヤーから左下
@@ -610,6 +666,185 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	return F_OLD_SURFACE::no_hit;
 	//return F_OLD_SURFACE();
 }
+
+//=============================================================================
+// BBによる1フレームの位置を参照した当たり判定処理を行うかどうかの処理
+// サイズは半径
+// 戻り値：当たっているか、いないかを返す
+//=============================================================================
+F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 block_velocity)
+{
+
+
+	D3DXVECTOR2 player_min, player_max;
+	D3DXVECTOR2 block_min, block_max;
+	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+
+
+	player_min.x = player_pos.x - player_size.x / 2;
+	player_min.y = player_pos.y - player_size.y / 2;
+	player_max.x = player_pos.x + player_size.x / 2;
+	player_max.y = player_pos.y + player_size.y / 2;
+
+	block_min.x = block_pos.x - block_size.x / 2;
+	block_min.y = block_pos.y - block_size.y / 2;
+	block_max.x = block_pos.x + block_size.x / 2;
+	block_max.y = block_pos.y + block_size.y / 2;
+
+	//プレイヤーの仮想加速度
+	D3DXVECTOR2 vertual_player_velocity = (player_pos - player_old_pos) - (block_pos - block_old_pos);
+	D3DXVECTOR2 vertual_player_old_pos = player_pos - vertual_player_velocity;
+
+	vertual_player_old_min.x = vertual_player_old_pos.x - player_size.x / 2;
+	vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
+	vertual_player_old_max.x = vertual_player_old_pos.x + player_size.x / 2;
+	vertual_player_old_max.y = vertual_player_old_pos.y + player_size.y / 2;
+
+	//ブロックの加速度と仮想加速度の内積と長さ
+	float InnerProduct = (vertual_player_velocity.x * block_velocity.x) + (vertual_player_velocity.y * block_velocity.y);
+	float vertual_player_velocity_length = sqrtf((vertual_player_velocity.x * vertual_player_velocity.x) + (vertual_player_velocity.y * vertual_player_velocity.y));
+	float block_velocity_length = sqrtf((block_velocity.x * block_velocity.x) + (block_velocity.y * block_velocity.y));
+	//ブロックの加速度と仮想加速度の内積の角度
+	float InnerProduct_angle = InnerProduct / (vertual_player_velocity_length * block_velocity_length);
+
+
+
+
+	//X軸の判定
+	if (player_min.x < block_max.x && player_max.x > block_min.x)
+	{
+		//Y軸の判定
+		if (player_min.y < block_max.y && player_max.y > block_min.y)
+		{
+			//プレイヤーがブロックの上から当たったとき
+			if (vertual_player_old_max.y <= block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+			{
+				
+					return F_OLD_SURFACE::up;
+			}
+			//プレイヤーがブロックの下から当たったとき
+			if (vertual_player_old_min.y >= block_max.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
+			{
+				return F_OLD_SURFACE::down;
+			}
+			//プレイヤーがブロックの左から当たったとき
+			if (vertual_player_old_max.x <= block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			{
+				return F_OLD_SURFACE::left;
+			}
+			//プレイヤーがブロックの右から当たったとき
+			if (vertual_player_old_min.x >= block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			{
+				return F_OLD_SURFACE::right;
+			}
+
+			//プレイヤーの加速度の仮想角度
+			float vertual_velocity_angle = atan2f(vertual_player_velocity.y, vertual_player_velocity.x);
+
+
+			//プレイヤーの頂点からブロックの頂点を結んだ直線の角度
+			//プレイヤーから左下
+			float LeftDown_angle = atan2f((player_max.y - block_min.y), (player_min.x - block_max.x));
+			//プレイヤーから左上
+			float LeftUp_angle = atan2f((player_min.y - block_max.y), (player_min.x - block_max.x));
+			//プレイヤーから右下
+			float RightDown_angle = atan2f((player_max.y - block_min.y), (player_max.x - block_min.x));
+			//プレイヤーから右上
+			float RightUp_angle = atan2f((player_min.y - block_max.y), (player_max.x - block_min.x));
+
+			//ブロックから右上の判定
+			if (vertual_velocity_angle >= PI / 2 && vertual_velocity_angle <= PI)
+			{
+				if (InnerProduct_angle >= PI / 2)
+				{
+					if (vertual_velocity_angle > LeftDown_angle)
+					{
+						//上
+						return F_OLD_SURFACE::up;
+					}
+					else
+					{
+						//右
+						return F_OLD_SURFACE::right;
+					}
+				}
+				else
+				{
+					return F_OLD_SURFACE::no_hit;
+				}
+			}
+
+			//ブロックから右下の判定
+			if (vertual_velocity_angle >= -PI && vertual_velocity_angle <= -PI / 2)
+			{
+				if (InnerProduct_angle <= -PI / 2)
+				{
+					if (vertual_velocity_angle > LeftUp_angle)
+					{
+						//右
+						return F_OLD_SURFACE::right;
+					}
+					else
+					{
+						//下
+						return F_OLD_SURFACE::down;
+					}
+				}
+				else
+				{
+					return F_OLD_SURFACE::no_hit;
+				}
+			}
+
+			//ブロックから左上の判定
+			if (vertual_velocity_angle >= 0 && vertual_velocity_angle <= PI / 2)
+			{
+				if (InnerProduct_angle <= PI / 2)
+				{
+					if (vertual_velocity_angle > RightDown_angle)
+					{
+						//左
+						return F_OLD_SURFACE::left;
+					}
+					else
+					{
+						//上
+						return F_OLD_SURFACE::up;
+					}
+				}
+				else
+				{
+					return F_OLD_SURFACE::no_hit;
+				}
+			}
+
+			//ブロックから左下の判定
+			if (vertual_velocity_angle >= -PI / 2 && vertual_velocity_angle <= 0)
+			{
+				if (InnerProduct_angle >= -PI / 2)
+				{
+					if (vertual_velocity_angle > RightUp_angle)
+					{
+						//下
+						return F_OLD_SURFACE::down;
+					}
+					else
+					{
+						//左
+						return F_OLD_SURFACE::left;
+					}
+				}
+				else
+				{
+					return F_OLD_SURFACE::no_hit;
+				}
+			}
+		}
+	}
+	return F_OLD_SURFACE::no_hit;
+	//return F_OLD_SURFACE();
+	}
+
 
 
 //------------------------------------------------------------ 

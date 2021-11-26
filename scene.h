@@ -1,7 +1,7 @@
 #pragma once
 
 // 登録シーン一覧
-enum SCENE
+enum class SCENE
 {
 	SCENE_NONE,		//シーン処理なし
 	SCENE_TITLE,	//タイトル

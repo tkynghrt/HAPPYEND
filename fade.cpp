@@ -24,7 +24,7 @@
 //*****************************************************************************
 static int						g_TextureNo;				// テクスチャ番号
 
-FADE_STATE						g_FadeState = FADE_NONE;	// フェードの状態
+FADE_STATE						g_FadeState = FADE_STATE::FADE_NONE;	// フェードの状態
 SCENE							g_SceneNext;				// 次のシーン
 D3DXCOLOR						g_Color;					// フェードのカラー
 
@@ -38,8 +38,8 @@ HRESULT InitFade(void)
 	g_TextureNo = LoadTexture("data/TEXTURE/fade_white.png");
 
 	//初期化
-	g_FadeState  = FADE_NONE;
-	g_SceneNext = SCENE_NONE;
+	g_FadeState  = FADE_STATE::FADE_NONE;
+	g_SceneNext = SCENE::SCENE_NONE;
 	g_Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 
 	return S_OK;
@@ -59,9 +59,9 @@ void UninitFade(void)
 void UpdateFade(void)
 {
 	// フェード処理中
-	if (g_FadeState != FADE_NONE)
+	if (g_FadeState != FADE_STATE::FADE_NONE)
 	{
-		if (g_FadeState == FADE_OUT)
+		if (g_FadeState == FADE_STATE::FADE_OUT)
 		{// フェードアウト処理
 			g_Color.a += FADE_RATE;		// α値を加算して画面を消していく
 
@@ -69,20 +69,20 @@ void UpdateFade(void)
 			{
 				// フェードイン処理に切り替え
 				g_Color.a = 1.0f;
-				g_FadeState = FADE_IN;
+				g_FadeState = FADE_STATE::FADE_IN;
 
 				// モードを設定
 				SetScene(g_SceneNext);
 			}
 		}
-		else if (g_FadeState == FADE_IN)
+		else if (g_FadeState == FADE_STATE::FADE_IN)
 		{// フェードイン処理
 			g_Color.a -= FADE_RATE;		// α値を減算して画面を浮き上がらせる
 			if (g_Color.a <= 0.0f)
 			{
 				// フェード処理終了
 				g_Color.a = 0.0f;
-				g_FadeState = FADE_NONE;
+				g_FadeState = FADE_STATE::FADE_NONE;
 			}
 
 		}
@@ -95,7 +95,7 @@ void UpdateFade(void)
 void DrawFade(void)
 {
 	// フェード処理をしていないのなら描画しない
-	if (g_FadeState == FADE_NONE)
+	if (g_FadeState == FADE_STATE::FADE_NONE)
 		return;	
 
 	// １枚のポリゴンの頂点とテクスチャ座標を設定
@@ -108,7 +108,7 @@ void DrawFade(void)
 void SceneTransition(SCENE nextScene)
 {
 	g_SceneNext = nextScene;
-	g_FadeState = FADE_OUT;
+	g_FadeState = FADE_STATE::FADE_OUT;
 }
 
 /*------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ void SceneTransition(SCENE nextScene)
 void SceneFadeIn(SCENE nextScene)
 {
 	g_Color.a = 1.0f;
-	g_FadeState = FADE_IN;
+	g_FadeState = FADE_STATE::FADE_IN;
 	SetScene(nextScene);
 }
 

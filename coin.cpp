@@ -1,6 +1,6 @@
 #include "coin.h"
 #include "collision.h"
-#include "All_Gimmick_Pos.h"
+#include "All_Gimmick.h"
 #include "ball.h"
 #include "texture.h"
 #include "sprite.h"
@@ -8,7 +8,7 @@
 
 
 static BALL* Ball = GetBall();
-static GIMMICK_POS* All_Gimmick_Pos = GetGimmick_Pos();
+static GIMMICK_POS* All_Coin__Pos = GetCoin_();
 
 
 COIN coin[MAX_COIN];
@@ -18,10 +18,11 @@ HRESULT InitCoin(void)
 
 	for (int i = 0; i < MAX_COIN; i++)
 	{
+		//coin[i].Texture = LoadTexture("data/TEXTURE/ScoreUp.png");
 		coin[i].Texture = LoadTexture("data/TEXTURE/coin.png");
 		coin[i].size.x = 60.0f;
 		coin[i].size.y = 60.0f;
-		coin[i].pos = All_Gimmick_Pos[i].coin;
+		coin[i].pos = All_Coin__Pos[i].coin;
 		coin[i].rot = 0.0f;
 		coin[i].point = 10;
 		coin[i].Use = true;

@@ -17,6 +17,7 @@ struct MOVE_BLOCK {
 	D3DXVECTOR2 old_pos{};
 	D3DXVECTOR2 size{};
 	D3DXVECTOR2 velocity{};
+	int MoveCount{};
 	bool		Use{};
 	float		rot{};
 };

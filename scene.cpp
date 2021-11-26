@@ -29,7 +29,7 @@
 /*------------------------------------------------------------------------------
    グローバル変数の定義
 ------------------------------------------------------------------------------*/
-static SCENE g_SceneIndex = SCENE_NONE;
+static SCENE g_SceneIndex = SCENE::SCENE_NONE;
 static SCENE g_SceneNextIndex = g_SceneIndex;
 
 
@@ -42,18 +42,18 @@ void InitScene(SCENE index)
 
 	switch (g_SceneIndex)
 	{
-	case SCENE_NONE:
+	case SCENE::SCENE_NONE:
 		break;
 
-	case SCENE_TITLE:
+	case SCENE::SCENE_TITLE:
 		InitTitle();
 		break;
 
-	case SCENE_GAME:
+	case SCENE::SCENE_GAME:
 		InitGame();
 		break;
 
-	case SCENE_RESULT:
+	case SCENE::SCENE_RESULT:
 		InitResult();
 		break;
 	}
@@ -66,18 +66,18 @@ void UninitScene(void)
 {
 	switch (g_SceneIndex)
 	{
-	case SCENE_NONE:
+	case SCENE::SCENE_NONE:
 		break;
 
-	case SCENE_TITLE:
+	case SCENE::SCENE_TITLE:
 		UninitTitle();
 		break;
 
-	case SCENE_GAME:
+	case SCENE::SCENE_GAME:
 		UninitGame();
 		break;
 
-	case SCENE_RESULT:
+	case SCENE::SCENE_RESULT:
 		UninitResult();
 		break;
 	}
@@ -90,18 +90,18 @@ void UpdateScene(void)
 {
 	switch( g_SceneIndex ) 
 	{
-	case SCENE_NONE:
+	case SCENE::SCENE_NONE:
 		break;
 
-	case SCENE_TITLE:
+	case SCENE::SCENE_TITLE:
 		UpdateTitle();
 		break;
 
-	case SCENE_GAME:
+	case SCENE::SCENE_GAME:
 		UpdateGame();
 		break;
 
-	case SCENE_RESULT:
+	case SCENE::SCENE_RESULT:
 		UpdateResult();
 		break;
 	}
@@ -116,18 +116,18 @@ void DrawScene(void)
 {
 	switch( g_SceneIndex )
 	{
-	case SCENE_NONE:
+	case SCENE::SCENE_NONE:
 		break;
 
-	case SCENE_TITLE:
+	case SCENE::SCENE_TITLE:
 		DrawTitle();
 		break;
 
-	case SCENE_GAME:
+	case SCENE::SCENE_GAME:
 		DrawGame();
 		break;
 
-	case SCENE_RESULT:
+	case SCENE::SCENE_RESULT:
 		DrawResult();
 		break;
 	}

@@ -9,6 +9,7 @@ void DrawAcceleBlock(void);
 
 
 
+
 //回数で壊れるブロックの構造体
 struct ACCELE_BLOCK {
 	int Texture{};

@@ -125,7 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="accele_block.cpp" />
-    <ClCompile Include="All_Gimmick_Pos.cpp" />
+    <ClCompile Include="All_Gimmick.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="coin.cpp" />
@@ -144,13 +144,15 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="move_block.cpp" />
+    <ClCompile Include="Target_Count.cpp" />
+    <ClCompile Include="Target_Normal.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="backGround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accele_block.h" />
-    <ClInclude Include="All_Gimmick_Pos.h" />
+    <ClInclude Include="All_Gimmick.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="coin.h" />
@@ -168,6 +170,8 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="move_block.h" />
+    <ClInclude Include="Target_Count.h" />
+    <ClInclude Include="Target_Normal.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="background.h" />

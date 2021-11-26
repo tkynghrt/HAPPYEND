@@ -1,6 +1,6 @@
 #include "count_block.h"
 #include "collision.h"
-#include "All_Gimmick_Pos.h"
+#include "All_Gimmick.h"
 #include "ball.h"
 #include "texture.h"
 #include "sprite.h"
@@ -9,22 +9,26 @@
 COUNT_BLOCK count_block[MAX_COUNT_BLOCK];
 static PLAYER* player = GetPlayer();
 static BALL* ball = GetBall();
-static GIMMICK_POS* All_Gimmick_Pos = GetGimmick_Pos();
+static GIMMICK_POS* All_Count_Block_Pos = GetCount_Block();
 
 HRESULT InitCountBlock(void)
 {
+	int CountBlockTexture1 = LoadTexture("data/TEXTURE/Count_Block1.png");
+	int CountBlockTexture2 = LoadTexture("data/TEXTURE/Count_Block2.png");
+	int CountBlockTexture3 = LoadTexture("data/TEXTURE/Count_Block3.png");
+	
 	//âÒêîÇ≈âÛÇÍÇÈÉuÉçÉbÉN
 	
 	for (int i = 0; i < MAX_COUNT_BLOCK; i++)
 	{
 		count_block[i].Use = true;
-		count_block[i].Texture = LoadTexture("data/TEXTURE/block.png");
+		count_block[i].Texture = CountBlockTexture3;
 		count_block[i].size.x = 60.0f;
 		count_block[i].size.y = 60.0f;
-		count_block[i].pos = All_Gimmick_Pos[i].count_block_pos;
+		count_block[i].pos = All_Count_Block_Pos[i].count_block_pos;
 		count_block[i].old_pos = count_block[i].pos;
 		count_block[i].rot = 0.0f;
-		count_block[i].HitCount = 10;
+		count_block[i].HitCount = All_Count_Block_Pos[i].count_block_hit_count;
 	}
 	return S_OK;
 }

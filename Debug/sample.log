@@ -1,5 +1,7 @@
-﻿  coin.cpp
-  move_block.cpp
+﻿  collision.cpp
+  fade.cpp
+  game.cpp
+  main.cpp
+  title.cpp
   コードを生成中...
-C:\Users\koba2\Desktop\HappyEnd\coin.cpp(62): warning C4715: 'GetCoin': 値を返さないコントロール パスがあります。
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

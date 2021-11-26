@@ -51,9 +51,9 @@ void UninitTitle(void)
 //=============================================================================
 void UpdateTitle(void)
 {
-	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_NONE)
+	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_STATE::FADE_NONE)
 	{
-		SceneTransition(SCENE_GAME);
+		SceneTransition(SCENE::SCENE_GAME);
 	}
 }
 

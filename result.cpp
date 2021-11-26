@@ -47,9 +47,9 @@ void UninitResult(void)
 void UpdateResult(void)
 {
 	
-	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_NONE)
+	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_STATE::FADE_NONE)
 	{
-		SceneTransition(SCENE_TITLE);
+		SceneTransition(SCENE::SCENE_TITLE);
 	}
 }
 

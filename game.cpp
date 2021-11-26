@@ -21,9 +21,10 @@
 #include "background.h"
 #include "coin.h"
 #include "score.h"
-#include "All_Gimmick_Pos.h"
+#include "All_Gimmick.h"
 #include "ground.h"
-
+#include "Target_Count.h"
+#include "Target_Normal.h"
 
 /*------------------------------------------------------------------------------
    定数定義
@@ -58,6 +59,7 @@ void InitGame(void)
 	InitMoveBlock();
 	InitCountBlock();
 	InitAcceleBlock();
+	InitTarget_Normal();
 	InitScore();
 }
 
@@ -73,6 +75,7 @@ void UninitGame()
 	UninitMoveBlock();
 	UninitCountBlock();
 	UninitAcceleBlock();
+	UninitTarget_Normal();
 	UninitCoin();
 	UninitGround();
 	UninitBackGround();
@@ -92,16 +95,17 @@ void UpdateGame(void)
 	UpdateMoveBlock();
 	UpdateCountBlock();
 	UpdateAcceleBlock();
+	UpdateTarget_Normal();
 	UpdateScore();
 	UpdateGround();
 	UpdateCollision();
 
 
 	//スペースキーが押されていて、フェード処理中ではないとき
-	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_NONE) {
+	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_STATE::FADE_NONE) {
 
 		//RESULTへ移行する
-		SceneTransition(SCENE_RESULT);
+		SceneTransition(SCENE::SCENE_RESULT);
 	}
 }
 
@@ -120,5 +124,6 @@ void DrawGame(void)
 	DrawMoveBlock();
 	DrawCountBlock();
 	DrawAcceleBlock();
+	DrawTarget_Normal();
 
 }
