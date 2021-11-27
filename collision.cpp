@@ -665,6 +665,7 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 	}
 	return F_OLD_SURFACE::no_hit;
 	//return F_OLD_SURFACE();
+
 }
 
 //=============================================================================

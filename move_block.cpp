@@ -21,10 +21,10 @@ HRESULT InitMoveBlock(void)
 		move_block[i].old_pos = move_block[i].pos;
 		move_block[i].size.x = 60.0f;
 		move_block[i].size.y = 60.0f;
-		move_block[i].velocity.x = 3.0f;
-		move_block[i].velocity.y = 0.0f;
+		move_block[i].velocity.x = 0.3f;
+		move_block[i].velocity.y = 0.3f;
 		move_block[i].MoveCount = 0;
-		move_block[i].rot = 0.0f;
+		move_block[i].rot = -PI / 2;
 		move_block[i].Use = true;
 	}
 	return S_OK;
@@ -44,7 +44,7 @@ void UpdateMoveBlock(void)
 		//ブロックの往復（時間で計ってる）
 		move_block[i].pos.x += move_block[i].velocity.x;
 		move_block[i].MoveCount++;
-		if (move_block[i].MoveCount >= 90)
+		if (move_block[i].MoveCount >= 900)
 		{
 			move_block[i].velocity.x *= -1;
 			move_block[i].MoveCount = 0;

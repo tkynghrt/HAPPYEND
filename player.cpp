@@ -22,8 +22,8 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define PLAYERJUMP	(20.0f)
-#define GRAVITY		(1.0f)
+#define PLAYERJUMP	(4.5f)
+#define GRAVITY		(0.045f)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -113,25 +113,21 @@ void UpdatePlayer(void)
 			Player.fly = true;
 			Player.move.y = -PLAYERJUMP;
 		}
-		else
-		{
-			int a = 0;
-		}
 		
 	}
 	if (GetKeyboardPress(DIK_LEFT))
 	{
 		himeTEXTURE = 1;
-		Player.move.x = -5.0f;
+		Player.move.x = -0.6f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
 		himeTEXTURE = 2;
-		Player.move.x = +5.0f;
+		Player.move.x = +0.6f;
 	}
 	
 	animation_count++;
-	if (animation_count >= 10) {
+	if (animation_count >= 100) {
 		animation_count = 0;
 		Player.animation++;
 		
@@ -182,10 +178,10 @@ void UpdatePlayer(void)
 	if (GetKeyboardTrigger(DIK_A))
 	{
 		if(ball->move.x > 0)
-		ball->move.x -= 2.0f;
+		ball->move.x -= 0.2f;
 
 		if (ball->move.x < 0)
-			ball->move.x += 2.0f;
+			ball->move.x += 0.2f;
 
 		AddScore(-2);
 	}
@@ -193,10 +189,10 @@ void UpdatePlayer(void)
 	if (GetKeyboardTrigger(DIK_S))
 	{
 		if (ball->move.x > 0)
-			ball->move.x += 2.0f;
+			ball->move.x += 0.2f;
 
 		if (ball->move.x < 0)
-			ball->move.x -= 2.0f;
+			ball->move.x -= 0.2f;
 
 		AddScore(2);
 	}
