@@ -20,6 +20,11 @@
 #define	level_4		3
 #define	level_5		4
 
+
+#define BALL_VELOCITY	(0.5f)
+#define BALL_DIAGONAL_VELOCITY	(sqrtf(BALL_VELOCITY / 2)) 
+
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -55,6 +60,7 @@ HRESULT InitBall(void)
 	Ball.BallTexture = BallTexture;
 	Ball.ShadowTexture = ShadowTexture;
 	Ball.move = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
+	Ball.move_angle = 0.0f;
 	Ball.Speed_Level = level_1;
 
 
@@ -83,7 +89,7 @@ void UpdateBall(void)
 	case 0:
 		break;
 	case 1:
-		Ball.move.y += 0.5f;
+		Ball.move.y += BALL_VELOCITY;
 
 		break;
 	case 2:
@@ -91,7 +97,7 @@ void UpdateBall(void)
 		{}
 		else
 		{
-			Ball.move.y += 0.5f;
+			Ball.move.y += BALL_VELOCITY;
 		}
 		break;
 				

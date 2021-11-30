@@ -22,8 +22,8 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define PLAYERJUMP	(4.5f)
-#define GRAVITY		(0.045f)
+#define PLAYERJUMP	(20.0f)
+#define GRAVITY		(1.0f)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -118,12 +118,12 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_LEFT))
 	{
 		himeTEXTURE = 1;
-		Player.move.x = -0.6f;
+		Player.move.x = -6.0f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT))
 	{
 		himeTEXTURE = 2;
-		Player.move.x = +0.6f;
+		Player.move.x = +6.0f;
 	}
 	
 	animation_count++;
@@ -160,6 +160,9 @@ void UpdatePlayer(void)
 		Player.move.y = 0.0f;
 	}
 
+
+
+
 	// 攻撃
 	if (GetKeyboardTrigger(DIK_Z))
 	{
@@ -173,31 +176,7 @@ void UpdatePlayer(void)
 			SetAttack(1, D3DXVECTOR2(Player.pos.x -40, Player.pos.y));
 		}
 	}
-	////////////////////////////////////////////////////////
-	// 攻撃(威力減衰)
-	if (GetKeyboardTrigger(DIK_A))
-	{
-		if(ball->move.x > 0)
-		ball->move.x -= 0.2f;
-
-		if (ball->move.x < 0)
-			ball->move.x += 0.2f;
-
-		AddScore(-2);
-	}
-	// 攻撃(威力減衰)
-	if (GetKeyboardTrigger(DIK_S))
-	{
-		if (ball->move.x > 0)
-			ball->move.x += 0.2f;
-
-		if (ball->move.x < 0)
-			ball->move.x -= 0.2f;
-
-		AddScore(2);
-	}
-
-	/////////////////////////////////////////////////////
+	
 	
 
 	if (GetKeyboardTrigger(DIK_X))

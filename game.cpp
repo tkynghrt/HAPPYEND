@@ -60,6 +60,7 @@ void InitGame(void)
 	InitCountBlock();
 	InitAcceleBlock();
 	InitTarget_Normal();
+	InitTarget_Count();
 	InitScore();
 }
 
@@ -76,6 +77,7 @@ void UninitGame()
 	UninitCountBlock();
 	UninitAcceleBlock();
 	UninitTarget_Normal();
+	UninitTarget_Count();
 	UninitCoin();
 	UninitGround();
 	UninitBackGround();
@@ -96,6 +98,7 @@ void UpdateGame(void)
 	UpdateCountBlock();
 	UpdateAcceleBlock();
 	UpdateTarget_Normal();
+	UpdateTarget_Count();
 	UpdateScore();
 	UpdateGround();
 	UpdateCollision();
@@ -125,5 +128,6 @@ void DrawGame(void)
 	DrawCountBlock();
 	DrawAcceleBlock();
 	DrawTarget_Normal();
+	DrawTarget_Count();
 
 }

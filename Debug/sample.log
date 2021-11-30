@@ -1,3 +1,4 @@
-﻿  move_block.cpp
-C:\Users\koba2\Desktop\HappyEnd\move_block.cpp(91): warning C4715: 'GetMoveBlock': 値を返さないコントロール パスがあります。
+﻿  collision.cpp
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(252,30): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(259,30): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

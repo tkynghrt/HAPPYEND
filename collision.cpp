@@ -25,6 +25,7 @@
 #define HIMELEFT	2
 #define BALLACCELE	(2.0f)
 
+
 //*****************************************************************************
 // \‘¢‘Ì’è‹`
 //*****************************************************************************
@@ -62,7 +63,6 @@ F_RECT_CIRCLE rcRectCircle; // ‹éŒ`{‰~‚a
 //=============================================================================
 // “–‚½‚è”»’èˆ—
 //=============================================================================
-
 void UpdateCollision(void)
 {
 	bool player_fly = true;			//ƒvƒŒƒCƒ„[‚ª‹ó’†‚É‚¢‚é‚©
@@ -142,8 +142,9 @@ void UpdateCollision(void)
 
 		if (ball->mode >= 1)
 		{
-			if (attack->mode == 2)
+			if (attack->mode == 2)     
 			{
+				//int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move) // Å‰‚É‚P‰ñ‚¾‚¯ŒÄ‚Î‚ê‚é 
 				InitShapes(attack->pos, attack->h - 35, ball->pos, ball->size.y - 20, D3DXVECTOR2(-ball->move.x, -ball->move.y));//-35-20”»’è‚ğ¬‚³‚ß‚É‚·‚é
 
 				if (CheckHit(&crCircle, &rcRectCircle))
@@ -164,37 +165,43 @@ void UpdateCollision(void)
 	}
 
 
-	//‹Ê‚Æƒ^[ƒQƒbƒg‚Æ‚Ì“–‚½‚è”»’è
-	if (TargetNormal->use == true)
+	//ƒ^[ƒQƒbƒg•Ò
+	//•’Ê‚Ìƒ^[ƒQƒbƒg‚Æƒ{[ƒ‹‚Ì“–‚½‚è”»’è
+	for (int i = 0; i < TARGET_MAX; i++)
 	{
-		if (CollisionBB(ball->pos, TargetNormal->pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetNormal->size.x, TargetNormal->size.y)))
+		if (TargetNormal[i].use == true)
 		{
-			TargetNormal->use = false;
-			ball->move.x *= -1;
-			ball->move.y *= -1;
-			TargetNormal->use = true;
+			if (CollisionBB(ball->pos, TargetNormal[i].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetNormal[i].size.x, TargetNormal[i].size.y)))
+			{
+				TargetNormal[i].use = false;
+				ball->move.x *= -1;
+				ball->move.y *= -1;
+				TargetNormal[i].use = true;
+			}
 		}
 	}
-
-	if (TargetCount->use == true)
+	//‰ñ”‚Å‰ó‚ê‚éƒ^[ƒQƒbƒg‚Æƒ{[ƒ‹‚Ì“–‚½‚è”»’è
+	for (int i = 0; i < TARGET_MAX; i++)
 	{
-		if (CollisionBB(ball->pos, TargetCount->pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetCount->size.x, TargetCount->size.y)))
+		if (TargetCount[i].use == true)
 		{
-			ball->move.x *= -1;
-			ball->move.y *= -1;
-			if (TargetCount->Count >= 1)
+			if (CollisionBB(ball->pos, TargetCount[i].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(TargetCount[i].size.x, TargetCount[i].size.y)))
 			{
-				TargetCount->Count--;
-			}
-			else
-			{
-				TargetCount->use = false;
-				SceneTransition(SCENE::SCENE_RESULT);
-			}
+				ball->move.x *= -1;
+				ball->move.y *= -1;
+				if (TargetCount[i].Count >= 1)
+				{
+					TargetCount[i].Count--;
+				}
+				else
+				{
+					TargetCount[i].use = false;
+					SceneTransition(SCENE::SCENE_RESULT);
+				}
 
+			}
 		}
 	}
-
 		
 
 	//“®‚­ƒuƒƒbƒN•Ò 
@@ -242,13 +249,15 @@ void UpdateCollision(void)
 			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::left)
 			{
-				
+				if (ball->move.x == 0.0f);
+				ball->move.x -= move_block[i].velocity.x;
 				ball->move.x *= -1;
 			}
 			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(move_block[i].size.x, move_block[i].size.y), move_block[i].velocity) == F_OLD_SURFACE::right)
 			{
-				
+				if (ball->move.x == 0.0f);
+				ball->move.x += move_block[i].velocity.x;
 				ball->move.x *= -1;
 			}
 			else if (CollisionKOBA2(ball->pos, move_block[i].pos, ball->old_pos, move_block[i].old_pos,
@@ -260,9 +269,6 @@ void UpdateCollision(void)
 			}
 		}
 	}
-
-
-
 
 
 	//‰ñ”‚Å‰ó‚ê‚éƒuƒƒbƒN•Ò
@@ -461,6 +467,7 @@ void UpdateCollision(void)
 	player->fly = player_fly;
 }
 
+
 //=============================================================================
 // BB‚É‚æ‚é“–‚½‚è”»’èˆ—
 // ‰ñ“]‚Íl—¶‚µ‚È‚¢
@@ -494,6 +501,7 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 
 	return false;
 }
+
 
 //=============================================================================
 // BC‚É‚æ‚é“–‚½‚è”»’èˆ—
@@ -533,7 +541,7 @@ bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2)
 F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
 							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size)
 {
-	
+
 	D3DXVECTOR2 player_min, player_max;
 	D3DXVECTOR2 block_min, block_max;
 	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
@@ -668,19 +676,17 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 
 }
 
-//=============================================================================
-// BB‚É‚æ‚é1ƒtƒŒ[ƒ€‚ÌˆÊ’u‚ğQÆ‚µ‚½“–‚½‚è”»’èˆ—‚ğs‚¤‚©‚Ç‚¤‚©‚Ìˆ—
-// ƒTƒCƒY‚Í”¼Œa
-// –ß‚è’lF“–‚½‚Á‚Ä‚¢‚é‚©A‚¢‚È‚¢‚©‚ğ•Ô‚·
-//=============================================================================
-F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 block_velocity)
-{
 
+//=============================================================================
+// ˆÚ“®‚·‚éƒuƒƒbƒNê—p‚ÌCollisionKOBA
+//=============================================================================
+F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, 
+							 D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 block_velocity)
+{
 
 	D3DXVECTOR2 player_min, player_max;
 	D3DXVECTOR2 block_min, block_max;
 	D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
-
 
 	player_min.x = player_pos.x - player_size.x / 2;
 	player_min.y = player_pos.y - player_size.y / 2;
@@ -695,6 +701,9 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 	//ƒvƒŒƒCƒ„[‚Ì‰¼‘z‰Á‘¬“x
 	D3DXVECTOR2 vertual_player_velocity = (player_pos - player_old_pos) - (block_pos - block_old_pos);
 	D3DXVECTOR2 vertual_player_old_pos = player_pos - vertual_player_velocity;
+
+	//ƒuƒƒbƒN‚ÌˆÚ“®—Ê
+	D3DXVECTOR2 block_move =(block_pos - block_old_pos);
 
 	vertual_player_old_min.x = vertual_player_old_pos.x - player_size.x / 2;
 	vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
@@ -720,7 +729,6 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 			//ƒvƒŒƒCƒ„[‚ªƒuƒƒbƒN‚Ìã‚©‚ç“–‚½‚Á‚½‚Æ‚«
 			if (vertual_player_old_max.y <= block_min.y && vertual_player_old_max.x > block_min.x && vertual_player_old_min.x < block_max.x)
 			{
-				
 					return F_OLD_SURFACE::up;
 			}
 			//ƒvƒŒƒCƒ„[‚ªƒuƒƒbƒN‚Ì‰º‚©‚ç“–‚½‚Á‚½‚Æ‚«
@@ -729,14 +737,44 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 				return F_OLD_SURFACE::down;
 			}
 			//ƒvƒŒƒCƒ„[‚ªƒuƒƒbƒN‚Ì¶‚©‚ç“–‚½‚Á‚½‚Æ‚«
-			if (vertual_player_old_max.x <= block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			if (block_move < 0)
 			{
-				return F_OLD_SURFACE::left;
+				if ((-PI / 2 >= InnerProduct_angle && -PI < InnerProduct_angle) || (PI / 2 <= InnerProduct_angle && PI > InnerProduct_angle))
+				{
+					if (vertual_player_old_max.x <= block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+					{
+						return F_OLD_SURFACE::left;
+					}
+				}
+				else
+				{
+					return F_OLD_SURFACE::no_hit;
+				}
+			}
+			else
+			{
+				if (vertual_player_old_max.x <= block_min.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::left;
+				}
 			}
 			//ƒvƒŒƒCƒ„[‚ªƒuƒƒbƒN‚Ì‰E‚©‚ç“–‚½‚Á‚½‚Æ‚«
-			if (vertual_player_old_min.x >= block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+			if (block_velocity > 0)
 			{
-				return F_OLD_SURFACE::right;
+				if ((-PI / 2 <= InnerProduct_angle && 0 > InnerProduct_angle) || (PI / 2 >= InnerProduct && 0 < InnerProduct_angle))
+				{
+					if (vertual_player_old_min.x >= block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+					{
+						return F_OLD_SURFACE::right;
+					}
+				}
+			}
+			else
+			{
+				if (vertual_player_old_min.x >= block_max.x && vertual_player_old_max.y > block_min.y && vertual_player_old_min.y < block_max.y)
+				{
+					return F_OLD_SURFACE::right;
+				}
 			}
 
 			//ƒvƒŒƒCƒ„[‚Ì‰Á‘¬“x‚Ì‰¼‘zŠp“x
@@ -756,7 +794,27 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 			//ƒuƒƒbƒN‚©‚ç‰Eã‚Ì”»’è
 			if (vertual_velocity_angle >= PI / 2 && vertual_velocity_angle <= PI)
 			{
-				if (InnerProduct_angle >= PI / 2)
+				if (block_velocity > 0)
+				{
+					if (PI / 2 <= InnerProduct_angle && PI > InnerProduct_angle)
+					{
+						if (vertual_velocity_angle > LeftDown_angle)
+						{
+							//ã
+							return F_OLD_SURFACE::up;
+						}
+						else
+						{
+							//‰E
+							return F_OLD_SURFACE::right;
+						}
+					}
+					else
+					{
+						return F_OLD_SURFACE::no_hit;
+					}
+				}
+				else
 				{
 					if (vertual_velocity_angle > LeftDown_angle)
 					{
@@ -769,16 +827,32 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 						return F_OLD_SURFACE::right;
 					}
 				}
-				else
-				{
-					return F_OLD_SURFACE::no_hit;
-				}
 			}
 
 			//ƒuƒƒbƒN‚©‚ç‰E‰º‚Ì”»’è
 			if (vertual_velocity_angle >= -PI && vertual_velocity_angle <= -PI / 2)
 			{
-				if (InnerProduct_angle <= -PI / 2)
+				if (block_velocity > 0)
+				{
+					if (-PI / 2 >= InnerProduct_angle && -PI < InnerProduct_angle)
+					{
+						if (vertual_velocity_angle > LeftUp_angle)
+						{
+							//‰E
+							return F_OLD_SURFACE::right;
+						}
+						else
+						{
+							//‰º
+							return F_OLD_SURFACE::down;
+						}
+					}
+					else
+					{
+						return F_OLD_SURFACE::no_hit;
+					}
+				}
+				else
 				{
 					if (vertual_velocity_angle > LeftUp_angle)
 					{
@@ -791,16 +865,33 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 						return F_OLD_SURFACE::down;
 					}
 				}
-				else
-				{
-					return F_OLD_SURFACE::no_hit;
-				}
 			}
 
 			//ƒuƒƒbƒN‚©‚ç¶ã‚Ì”»’è
 			if (vertual_velocity_angle >= 0 && vertual_velocity_angle <= PI / 2)
 			{
-				if (InnerProduct_angle <= PI / 2)
+				//ƒuƒƒbƒN‚Ì‰Á‘¬“x‚ªƒ}ƒCƒiƒX‚Ì
+				if (block_velocity.x < 0)
+				{
+					if (PI / 2 >= InnerProduct_angle && 0 < InnerProduct_angle)
+					{
+						if (vertual_velocity_angle > RightDown_angle)
+						{
+							//¶
+							return F_OLD_SURFACE::left;
+						}
+						else
+						{
+							//ã
+							return F_OLD_SURFACE::up;
+						}
+					}
+					else
+					{
+						return F_OLD_SURFACE::no_hit;
+					}
+				}
+				else
 				{
 					if (vertual_velocity_angle > RightDown_angle)
 					{
@@ -813,32 +904,47 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 						return F_OLD_SURFACE::up;
 					}
 				}
-				else
-				{
-					return F_OLD_SURFACE::no_hit;
-				}
 			}
 
 			//ƒuƒƒbƒN‚©‚ç¶‰º‚Ì”»’è
 			if (vertual_velocity_angle >= -PI / 2 && vertual_velocity_angle <= 0)
 			{
-				if (InnerProduct_angle >= -PI / 2)
+				//ƒuƒƒbƒN‚Ì‰Á‘¬“x‚ªƒ}ƒCƒiƒX‚Ì
+				if (block_velocity < 0)
 				{
-					if (vertual_velocity_angle > RightUp_angle)
+					if (-PI / 2 >= InnerProduct_angle && 0 < InnerProduct_angle)
 					{
-						//‰º
-						return F_OLD_SURFACE::down;
+						if (vertual_velocity_angle > RightUp_angle)
+						{
+							//‰º
+							return F_OLD_SURFACE::down;
+						}
+						else
+						{
+							//¶
+							return F_OLD_SURFACE::left;
+						}
 					}
 					else
 					{
-						//¶
-						return F_OLD_SURFACE::left;
+						return F_OLD_SURFACE::no_hit;
 					}
 				}
 				else
-				{
-					return F_OLD_SURFACE::no_hit;
-				}
+					if (-PI / 2 >= InnerProduct_angle && 0 < InnerProduct_angle)
+					{
+						if (vertual_velocity_angle > RightUp_angle)
+						{
+							//‰º
+							return F_OLD_SURFACE::down;
+						}
+						else
+						{
+							//¶
+							return F_OLD_SURFACE::left;
+						}
+					}
+
 			}
 		}
 	}
@@ -847,23 +953,30 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 	}
 
 
-
 //------------------------------------------------------------ 
 // ‰~‚Æü•ª‚Ì Collision ”»’è 
 //------------------------------------------------------------ 
 
 int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move) // Å‰‚É‚P‰ñ‚¾‚¯ŒÄ‚Î‚ê‚é 
 {
-	crCircle.x = pos1.x; crCircle.y = pos1.y;
+	crCircle.x = pos1.x;
+	crCircle.y = pos1.y;
+
 	crCircle.r = r1;
-	rcRectCircle.x = pos2.x; rcRectCircle.y = pos2.y;
-	rcRectCircle.vx = move.x; rcRectCircle.vy = move.y;
+
+	rcRectCircle.x = pos2.x; 
+	rcRectCircle.y = pos2.y;
+
+	rcRectCircle.vx = move.x;
+	rcRectCircle.vy = move.y;
 	rcRectCircle.r = r2;
+
 	return 0;
 }
 
 int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle) // Collision ƒ`ƒFƒbƒN 
 {
+
 	int nResult = false;
 	float dx, dy; // ˆÊ’u‚Ì·•ª 
 	float t;
@@ -877,11 +990,13 @@ int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle) // Collision ƒ`ƒ
 	if (t > 1.0f) t = 1.0f; // t ‚ÌãŒÀ 
 	mx = prcRectCircle->vx * t + prcRectCircle->x; // Å¬ˆÊ’u‚ğ—^‚¦‚éÀ•W 
 	my = prcRectCircle->vy * t + prcRectCircle->y;
-	fDistSqr = (mx - pcrCircle->x) * (mx - pcrCircle->x) +
-		(my - pcrCircle->y) * (my - pcrCircle->y); // ‹——£‚Ì‚Qæ 
+
+	fDistSqr = (mx - pcrCircle->x) * (mx - pcrCircle->x) + (my - pcrCircle->y) * (my - pcrCircle->y); // ‹——£‚Ì‚Qæ 
 	ar = pcrCircle->r + prcRectCircle->r;
+
 	if (fDistSqr < ar * ar) { // ‚Qæ‚Ì‚Ü‚Ü”äŠr 
 		nResult = true;
 	}
 	return nResult;
+
 }

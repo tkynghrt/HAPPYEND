@@ -13,10 +13,10 @@
 #define	NUM_KEY_MAX			(256)
 
 // game pad用設定値
-//#define DEADZONE		2500			// 各軸の25%を無効ゾーンとする
-#define DEADZONE			8200	// 各軸の25%を無効ゾーンとする
-#define RANGE_MAX		1000			// 有効範囲の最大値
-#define RANGE_MIN		-1000			// 有効範囲の最小値
+//#define DEADZONE			2500			// 各軸の25%を無効ゾーンとする
+#define DEADZONE			8200			// 各軸の25%を無効ゾーンとする
+#define RANGE_MAX			1000			// 有効範囲の最大値
+#define RANGE_MIN			-1000			// 有効範囲の最小値
 #define MAX_CONTROLLERS     4
 
 
