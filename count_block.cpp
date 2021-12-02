@@ -76,5 +76,6 @@ void setCountBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity)
 
 COUNT_BLOCK* GetCountBlock(void)
 {
-	return &count_block[0];
+	
+	return count_block;
 }

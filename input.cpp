@@ -657,5 +657,3 @@ BOOL IsButtonTriggered(int padNo, DWORD button)
 {
 	return (button & g_Controllers[padNo].trigger.Gamepad.wButtons);
 }
-
-

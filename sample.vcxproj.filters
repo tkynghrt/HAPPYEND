@@ -57,10 +57,7 @@
     <ClCompile Include="sound.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Attack.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="move_block.cpp">
+    <ClCompile Include="move_block_x.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="count_block.cpp">
@@ -134,10 +131,7 @@
     <ClInclude Include="sound.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Attack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="move_block.h">
+    <ClInclude Include="move_block_x.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="count_block.h">

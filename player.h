@@ -7,7 +7,8 @@
 
 ==============================================================================*/
 #pragma once
-
+#define DIRECTION_LEFT		1
+#define DIRECTION_RIGHT		0
 
 #include "main.h"
 #include "renderer.h"
@@ -24,7 +25,6 @@ struct PLAYER
 	D3DXVECTOR2				old_pos;				// 1フレーム前のポリゴンの座標
 	float					rot;					// ポリゴンの回転量
 	int						Hime_Texture;			// テクスチャの種類
-	int						texNo2;
 
 	//int texcont;
 	//int tex;

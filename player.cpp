@@ -11,13 +11,14 @@
 #include "texture.h"
 #include "sprite.h"
 #include "ball.h"
-#include "Attack.h"
 #include "xinput.h"
-#include "move_block.h"
+#include "move_block_x.h"
 #include "count_block.h"
 #include "collision.h"
 #include "ball.h"
 #include "score.h"
+
+
 
 //*****************************************************************************
 // マクロ定義
@@ -35,17 +36,17 @@ float frand(void);
 static PLAYER Player;
 bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECTOR2 size2);
 
-static MOVE_BLOCK* move_block = GetMoveBlock();
+static MOVE_BLOCK_X* move_block_x = GetMoveBlock_X();
 static COUNT_BLOCK* count_block = GetCountBlock();
 static BALL* ball = GetBall();
 
 
 //操作キャラの画像の種類
 int himeTEXTURE = 0;
-
-//あとで解析&書き換え
 int animation = 0;
 int animation_count = 0;
+
+
 
 //=============================================================================
 // 初期化処理
@@ -71,6 +72,7 @@ HRESULT InitPlayer(void)
 	Player.gravity = GRAVITY;
 	Player.fly = false;
 	
+	
 	return S_OK;
 }
 
@@ -89,22 +91,18 @@ void UpdatePlayer(void)
 {
 	Player.old_pos = Player.pos;
 
+
 	//重力
 	if (!Player.fly) {
 		Player.move.y = 0.0f;
 	}
 	Player.gravity = GRAVITY;
 	Player.move.x = 0.0f;
-
-
-	
-
-	
 	
 	
 
 	//ジャンプ
-	if (GetKeyboardTrigger(DIK_SPACE))
+	if (GetKeyboardTrigger(DIK_SPACE) || GetThumbLeftY(0) > 16384)
 	{
 		//U = 3;
 
@@ -115,12 +113,12 @@ void UpdatePlayer(void)
 		}
 		
 	}
-	if (GetKeyboardPress(DIK_LEFT))
+	if (GetKeyboardPress(DIK_LEFT) || GetThumbLeftX(0) < -16384)
 	{
 		himeTEXTURE = 1;
 		Player.move.x = -6.0f;
 	}
-	if (GetKeyboardPress(DIK_RIGHT))
+	if (GetKeyboardPress(DIK_RIGHT) || GetThumbLeftX(0) > 16384)
 	{
 		himeTEXTURE = 2;
 		Player.move.x = +6.0f;
@@ -161,41 +159,15 @@ void UpdatePlayer(void)
 	}
 
 
-
-
 	// 攻撃
-	if (GetKeyboardTrigger(DIK_Z))
+
+	/*if (GetThumbRightX(0) || GetThumbRightY(0))
 	{
-		AddScore(2);
-		if (himeTEXTURE == 2)
-		{
-			SetAttack(1, D3DXVECTOR2(Player.pos.x + 40, Player.pos.y));
-		}
-		else
-		{
-			SetAttack(1, D3DXVECTOR2(Player.pos.x -40, Player.pos.y));
-		}
-	}
+			ball->move.x += (ball->speed * cosf(reflect));
+			ball->move.y += (ball->speed * sinf(reflect));
+	}*/
+
 	
-	
-
-	if (GetKeyboardTrigger(DIK_X))
-	{
-		if (himeTEXTURE == 2)
-		{
-			//Player.power += Player.power;
-
-			//SetBullet(2, Player.pos, Player.power);
-			SetAttack(2, D3DXVECTOR2(Player.pos.x + 40, Player.pos.y));
-		}
-		else
-		{
-			//Player.power += Player.power;
-
-			//SetBullet(2, Player.pos, D3DXVECTOR2(Player.power.x * -1, Player.power.y));
-			SetAttack(2, D3DXVECTOR2(Player.pos.x - 40, Player.pos.y));
-		}
-	}
 }
 
 //=============================================================================

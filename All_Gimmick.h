@@ -11,8 +11,10 @@ HRESULT InitAllGimmickPos(void);
 #define MAX_GIMMICK	100
 
 // 移動するブロック関連
-//表示する総数
-#define MAX_MOVE_BLOCK	5
+//表示する総数(x軸)
+#define MAX_MOVE_BLOCK_X	5
+//表示する総数(y軸)
+#define MAX_MOVE_BLOCK_Y	1
 
 //回数で壊れるブロック関連
 //表示する総数
@@ -41,8 +43,10 @@ HRESULT InitAllGimmickPos(void);
 
 //回数で壊れるブロックの構造体
 struct GIMMICK_POS {
-	//移動するブロック
-	D3DXVECTOR2 move_block_pos;
+	//移動するブロック(x軸)
+	D3DXVECTOR2 move_block_pos_x;
+	//移動するブロック(y軸)
+	D3DXVECTOR2 move_block_pos_y;
 
 	//回数で壊れるブロック
 	D3DXVECTOR2 count_block_pos;
@@ -62,8 +66,10 @@ struct GIMMICK_POS {
 	D3DXVECTOR2 coin;	
 };
 
-//移動するブロック
-GIMMICK_POS* GetMove_Block(void);
+//移動するブロック(x軸)
+GIMMICK_POS* GetMove_Block_X(void);
+//移動するブロック(y軸)
+GIMMICK_POS* GetMove_Block_X(void);
 
 //回数で壊れるブロック
 GIMMICK_POS* GetCount_Block(void);

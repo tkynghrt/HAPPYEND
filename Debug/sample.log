@@ -1,4 +1,4 @@
-﻿  collision.cpp
-C:\Users\koba2\Desktop\HappyEnd\collision.cpp(252,30): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
-C:\Users\koba2\Desktop\HappyEnd\collision.cpp(259,30): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
+﻿  ball.cpp
+C:\Users\koba2\Desktop\HappyEnd\ball.cpp(78,52): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\ball.cpp(78,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe
