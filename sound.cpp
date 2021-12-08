@@ -42,7 +42,7 @@ bool InitSound(HWND hWnd)
 	HRESULT hr;
 
 	// COMライブラリの初期化
-	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	(void)CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	// XAudio2オブジェクトの作成
 	hr = XAudio2Create(&g_pXAudio2, 0);
@@ -264,6 +264,11 @@ void PlaySound(int index, int loopCount)
 	g_apSourceVoice[index]->Start(0);
 }
 
+void ReplaySound(int index)
+{
+	// 再生
+	g_apSourceVoice[index]->Start(0);
+}
 /*------------------------------------------------------------------------------
    音声の停止
 ------------------------------------------------------------------------------*/
@@ -281,6 +286,11 @@ void StopSound(int index)
 		// オーディオバッファの削除
 		g_apSourceVoice[index]->FlushSourceBuffers();
 	}
+}
+
+void PauseSound(int index)
+{
+	g_apSourceVoice[index]->Stop(0);
 }
 
 /*------------------------------------------------------------------------------

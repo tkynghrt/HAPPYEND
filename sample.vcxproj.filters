@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ギミック">
+      <UniqueIdentifier>{b89b23c4-7c09-4d6c-89f8-463662193202}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,19 +60,7 @@
     <ClCompile Include="sound.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="move_block_x.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="count_block.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="backGround.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="coin.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="accele_block.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
@@ -81,11 +72,23 @@
     <ClCompile Include="All_Gimmick.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="accele_block.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="coin.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="move_block_x.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
     <ClCompile Include="Target_Count.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ギミック</Filter>
     </ClCompile>
     <ClCompile Include="Target_Normal.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="count_block.cpp">
+      <Filter>ギミック</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,19 +134,7 @@
     <ClInclude Include="sound.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="move_block_x.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="count_block.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="background.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="coin.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="accele_block.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="score.h">
@@ -155,11 +146,23 @@
     <ClInclude Include="All_Gimmick.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Target_Count.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="coin.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="count_block.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="move_block_x.h">
+      <Filter>ギミック</Filter>
     </ClInclude>
     <ClInclude Include="Target_Normal.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="Target_Count.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="accele_block.h">
+      <Filter>ギミック</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

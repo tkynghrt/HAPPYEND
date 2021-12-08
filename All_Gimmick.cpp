@@ -7,11 +7,11 @@
 //移動(Y軸)するブロックのサイズ
 #define MOVE_BLOCK_Y		(60.0f)
 //回数で壊れるブロックのサイズ
-#define COUNT_BLOCK		(60.0f)
+#define COUNT_BLOCK			(60.0f)
 //スピードレベルで壊れるブロックのサイズ
 #define ACCELE_BLOCK		(60.0f)
 //コインのサイズ
-#define COIN		(60.0f)
+#define COIN				(60.0f)
 
 //地面の座標
 #define GROUND (SCREEN_HEIGHT - ground->size.y - (60 / 2))

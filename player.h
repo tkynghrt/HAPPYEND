@@ -8,7 +8,7 @@
 ==============================================================================*/
 #pragma once
 #define DIRECTION_LEFT		1
-#define DIRECTION_RIGHT		0
+#define DIRECTION_RIGHT		2
 
 #include "main.h"
 #include "renderer.h"
@@ -25,11 +25,9 @@ struct PLAYER
 	D3DXVECTOR2				old_pos;				// 1フレーム前のポリゴンの座標
 	float					rot;					// ポリゴンの回転量
 	int						Hime_Texture;			// テクスチャの種類
+	int						direction;
 
-	//int texcont;
-	//int tex;
 
-	int                     hp;
 	int						animation;
 	D3DXVECTOR2				move;
 	D3DXVECTOR2				power;
@@ -47,4 +45,3 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 
 PLAYER *GetPlayer(void);
-int GetPlayer_Direction(void);

@@ -15,4 +15,3 @@ void UpdateScore();
 void DrawScore();
 
 void AddScore(int Score);
-void SetScore(int Score);

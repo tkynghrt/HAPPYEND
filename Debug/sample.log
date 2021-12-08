@@ -1,4 +1,12 @@
-﻿  ball.cpp
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(78,52): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\koba2\Desktop\HappyEnd\ball.cpp(78,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+﻿  collision.cpp
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(85,53): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(85,35): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(117,54): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(117,36): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(140,54): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(140,36): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(163,54): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(163,36): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(186,54): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\collision.cpp(186,36): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Debug\sample.exe

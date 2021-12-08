@@ -42,7 +42,6 @@ static BALL* ball = GetBall();
 
 
 //‘€ìƒLƒƒƒ‰‚Ì‰æ‘œ‚ÌŽí—Þ
-int himeTEXTURE = 0;
 int animation = 0;
 int animation_count = 0;
 
@@ -64,9 +63,7 @@ HRESULT InitPlayer(void)
 	Player.size.y = 60.0f;
 	Player.animation = 0;
 	Player.use = true;
-	Player.hp = 5;
-	//Player.tex = 1;
-	//Player.texcont = 0;
+	Player.direction = 0;
 	Player.move = D3DXVECTOR2(0.0f, 0.0f);
 	Player.power = D3DXVECTOR2(2.0f, 0.0f);
 	Player.gravity = GRAVITY;
@@ -99,10 +96,9 @@ void UpdatePlayer(void)
 	Player.gravity = GRAVITY;
 	Player.move.x = 0.0f;
 	
-	
 
-	//ƒWƒƒƒ“ƒv
-	if (GetKeyboardTrigger(DIK_SPACE) || GetThumbLeftY(0) > 16384)
+	
+	if (GetKeyboardTrigger(DIK_SPACE) || IsButtonTriggered(0, XINPUT_GAMEPAD_A))
 	{
 		//U = 3;
 
@@ -111,19 +107,20 @@ void UpdatePlayer(void)
 			Player.fly = true;
 			Player.move.y = -PLAYERJUMP;
 		}
-		
+
 	}
 	if (GetKeyboardPress(DIK_LEFT) || GetThumbLeftX(0) < -16384)
 	{
-		himeTEXTURE = 1;
+		Player.direction = DIRECTION_LEFT;
 		Player.move.x = -6.0f;
 	}
 	if (GetKeyboardPress(DIK_RIGHT) || GetThumbLeftX(0) > 16384)
 	{
-		himeTEXTURE = 2;
+		Player.direction = DIRECTION_RIGHT;
 		Player.move.x = +6.0f;
 	}
-	
+
+
 	animation_count++;
 	if (animation_count >= 100) {
 		animation_count = 0;
@@ -175,7 +172,7 @@ void UpdatePlayer(void)
 //=============================================================================
 void DrawPlayer(void)
 {
-		DrawSprite(Player.Hime_Texture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, himeTEXTURE * 0.081, 0.33f, 0.081f);
+		DrawSprite(Player.Hime_Texture, Player.pos.x, Player.pos.y, Player.size.x, Player.size.y, Player.animation * 0.33f, Player.direction * 0.081, 0.33f, 0.081f);
 
 }
 
@@ -186,9 +183,6 @@ PLAYER *GetPlayer(void)
 {
 	return &Player;
 }
-int GetPlayer_Direction(void)
-{
-	return himeTEXTURE;
-}
+
 
 

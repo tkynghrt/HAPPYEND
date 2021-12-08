@@ -33,14 +33,14 @@
 
 static BALL Ball;							// バレット構造体
 PLAYER* player = GetPlayer();		// プレイヤーのポインターを初期化
-int Player_Direction = GetPlayer_Direction();
 //BALL* ball = GetBall();		// バレットのポインターを初期化
 static GROUND* ground = GetGround();
 
 F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
 							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size);
 
-float reflect;				//跳ね返る角度
+
+float	reflect;				//跳ね返る角度
 
 //=============================================================================
 // 初期化処理
@@ -51,13 +51,18 @@ HRESULT InitBall(void)
 
 	Ball.BallTexture = LoadTexture("data/TEXTURE/tako.png");
 	Ball.size = D3DXVECTOR2(40.0f, 40.0f);
-	Ball.pos   = D3DXVECTOR2(player->pos.x, player->pos.y + 20.0f);
+	//Ball.pos   = D3DXVECTOR2(player->pos.x + 60.0f, player->pos.y + 20.0f);
+	Ball.pos   = player->pos;
 	Ball.old_pos  = Ball.pos;
 	Ball.rot   = 0.0f;
 	Ball.speed = 0.0f;
 	Ball.velocity = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
+	Ball.Use = false;
 	Ball.Speed_Level = level_1;
+	Ball.Judgment = 20;
+	Ball.judgment_time = 0;
 
+	
 	return S_OK;
 }
 
@@ -74,50 +79,84 @@ void UninitBall(void)
 //=============================================================================
 void UpdateBall(void)
 {
+
 	Ball.old_pos = Ball.pos;
-	reflect = atan2f(GetThumbRightY(0), GetThumbRightX(0));
+	if (Ball.speed == 0.0f)
+		Ball.pos = player->pos;
+
+	Ball.Judgment++;
+	Ball.judgment_time--;
+	//ボール打ち返し編
 	
-	switch (CollisionKOBA(Ball.pos, player->pos, Ball.old_pos, player->old_pos, Ball.size, D3DXVECTOR2(player->size.x + 20.0f, player->size.y)))
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X))
 	{
-	case F_OLD_SURFACE::right:
-		
-		if (Player_Direction == DIRECTION_RIGHT)
-		{
-			if (GetThumbRightX(0) || GetThumbRightY(0))
-			{
-				Ball.speed += BALL_SPEED;
-
-				if (reflect != 0.0f  /*&& 向き変えるよフラグ*/ )
-				{
-
-					Ball.velocity.x = Ball.speed * cosf(reflect);
-					Ball.velocity.y = Ball.speed * sinf(reflect);
-					reflect = 0.0f;
-				}
-			}
-		}
-		break;
-
-	case  F_OLD_SURFACE::left:
-		
-		if (Player_Direction == DIRECTION_LEFT)
-		{
-			if (GetThumbLeftX(0) || GetThumbLeftY(0))
-			{
-				Ball.speed += BALL_SPEED;
-
-				if (reflect != 0.0f  /*&& 向き変えるよフラグ*/)
-				{
-
-					Ball.velocity.x = Ball.speed * cosf(reflect);
-					Ball.velocity.y = Ball.speed * sinf(reflect);
-					reflect = 0.0f;
-				}
-			}
-		}
-		break;
+		Ball.judgment_time = 5;
 	}
 
+
+
+	////ボールが動いているときの打ち返し判定
+	///*if (judgment_time > 0)
+	//{*/
+	//	if (Ball.Judgment > 20 && Ball.Use)
+	//	{
+	//		switch (CollisionKOBA3(Ball.pos, player->pos, Ball.old_pos, Ball.velocity, Ball.size, player->size))
+	//		{
+	//		case PLAYER_BALL_RANGE::right:
+
+	//			if (player->direction == DIRECTION_RIGHT)
+	//			{
+	//				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+	//				{
+	//					Ball.speed += BALL_SPEED;
+	//					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+	//					Ball.velocity.x = Ball.speed * cosf(reflect);
+	//					Ball.velocity.y -= Ball.speed * sinf(reflect);
+	//					reflect = 0.0f;
+	//				}
+	//				else
+	//				{
+	//					Ball.speed += BALL_SPEED;
+	//					Ball.velocity.x = Ball.speed;
+	//				}
+	//				Ball.Judgment = 0;
+	//				
+	//			}
+	//			break;
+
+	//		case  PLAYER_BALL_RANGE::left:
+
+	//			if (player->direction == DIRECTION_LEFT)
+	//			{
+	//				if (GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0/*&& 向き変えるよフラグ*/)
+	//				{
+	//					Ball.speed += BALL_SPEED;
+	//					Ball.velocity.x = 0.0f;
+	//					Ball.velocity.y = 0.0f;
+	//					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+	//					Ball.velocity.x = Ball.speed * cosf(reflect);
+	//					Ball.velocity.y -= Ball.speed * sinf(reflect);
+	//					reflect = 0.0f;
+	//				}
+	//				else
+	//				{
+	//					Ball.speed += BALL_SPEED;
+	//					Ball.velocity.x = 0.0f;
+	//					Ball.velocity.y = 0.0f;
+	//					Ball.velocity.x = Ball.speed;
+	//				}
+	//				Ball.Judgment = 0;
+
+	//			}
+	//			break;
+	//		}
+	//	}
+	////}
+	
+	
+
+	
+	
 
 
 
@@ -166,11 +205,12 @@ void UpdateBall(void)
 void DrawBall(void)
 {
 	D3DXCOLOR BallCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	DrawSpriteColorRotate(Ball.BallTexture, Ball.pos.x, Ball.pos.y,
-		Ball.size.x, Ball.size.y, 0.0f, 0.0f, 1.0f, 1.0f,
-		BallCol, Ball.rot);
-
+	if (Ball.Use)
+	{
+		DrawSpriteColorRotate(Ball.BallTexture, Ball.pos.x, Ball.pos.y,
+			Ball.size.x, Ball.size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+			BallCol, Ball.rot);
+	}
 }
 
 

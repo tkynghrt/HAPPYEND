@@ -26,6 +26,9 @@ struct BALL
 	float					speed;
 	int						BallTexture;
 	int						Speed_Level;
+	bool					Use;
+	int						Judgment;
+	int						judgment_time;
 };
 
 

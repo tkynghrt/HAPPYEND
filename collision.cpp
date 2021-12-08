@@ -44,8 +44,12 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2);
 F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
 							D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size);
-int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle);
-int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move);
+
+D3DXVECTOR2 CollisionKOBA3(D3DXVECTOR2 player_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 player_old_pos,
+	D3DXVECTOR2 ball_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity);
+
+///*int*/PLAYER_BALL_RANGE CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle);
+//int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move);
 
 
 //*****************************************************************************
@@ -55,13 +59,154 @@ int NoFlame = 0;	//当たり判定を〇フレーム消す
 F_CIRCLE crCircle; // 円形Ａ 
 F_RECT_CIRCLE rcRectCircle; // 矩形＋円Ｂ 
 
+//CollisionKOBA3で返ってくるやつ
+static D3DXVECTOR2 koba3_pos = {};
+//跳ね返る角度
+static float	reflect;				
+
+
 //=============================================================================
 // 当たり判定処理
 //=============================================================================
 void UpdateCollision(void)
 {
 	bool player_fly = true;			//プレイヤーが空中にいるか
-	
+	ball->Judgment++;
+
+	//ボールとプレイヤーの判定
+	//ボールを発射させる
+	if (ball->judgment_time > 0)
+	{
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) && !ball->Use)
+		{
+			ball->speed += BALL_SPEED;
+			if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+			{
+				reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+				ball->velocity.x = ball->speed * cosf(reflect);
+				ball->velocity.y -= ball->speed * sinf(reflect);
+				reflect = 0.0f;
+
+				ball->Judgment = 0;
+				ball->Use = true;
+			}
+			else
+			{
+				ball->velocity.x = BALL_SPEED;
+				ball->Judgment = 0;
+				ball->Use = true;
+			}
+			ball->Judgment = 0;
+		}
+	}
+	//ボールが動いてる時の当たり判定
+	//ボールの現在と次の座標を結んだ線分と、プレイヤーの当たり判定の線分の交点
+	CollisionKOBA3(player->pos, ball->pos, player->old_pos, ball->old_pos, player->size, ball->size, ball->velocity);
+	if (ball->judgment_time > 0)
+	{
+		if (ball->Judgment > 20 && ball->Use)
+		{
+			switch (CollisionKOBA(koba3_pos, player->pos, ball->old_pos, player->old_pos, ball->size, player->size))
+			{
+			case F_OLD_SURFACE::up:
+
+				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed * cosf(reflect);
+					ball->velocity.y -= ball->speed * sinf(reflect);
+					reflect = 0.0f;
+				}
+				else
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed;
+					
+				}
+				ball->Judgment = 0;
+
+				break;
+			case F_OLD_SURFACE::down:
+
+				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed * cosf(reflect);
+					ball->velocity.y -= ball->speed * sinf(reflect);
+					reflect = 0.0f;
+				}
+				else
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed;
+					
+				}
+				ball->Judgment = 0;
+
+				break;
+			case F_OLD_SURFACE::left:
+
+				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed * cosf(reflect);
+					ball->velocity.y -= ball->speed * sinf(reflect);
+					reflect = 0.0f;
+				}
+				else
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed;
+					
+				}
+				ball->Judgment = 0;
+
+				break;
+			case F_OLD_SURFACE::right:
+
+				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed * cosf(reflect);
+					ball->velocity.y -= ball->speed * sinf(reflect);
+					reflect = 0.0f;
+				}
+				else
+				{
+					ball->speed += BALL_SPEED;
+					ball->pos = koba3_pos;
+					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
+					ball->velocity.x = ball->speed;
+					
+				}
+				ball->Judgment = 0;
+
+				break;
+			}
+		}
+	}
+
+
+
+
 
 
 	//ターゲット編
@@ -401,7 +546,6 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 	return false;
 }
 
-
 //=============================================================================
 // BCによる当たり判定処理
 // サイズは半径
@@ -431,9 +575,8 @@ bool CollisionBC(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2)
 	return false;
 }
 
-
 //=============================================================================
-// BBによる1フレームの位置を参照した当たり判定処理
+// 1フレーム前の位置を参照した当たり判定処理
 // サイズは半径
 // 戻り値：当たっている面を返す
 //=============================================================================
@@ -577,7 +720,7 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 
 
 //=============================================================================
-// 移動するブロック専用のCollisionKOBA
+// 移動するブロック専用のCollisionKOBA2
 //=============================================================================
 F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos, 
 							 D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 block_velocity)
@@ -849,53 +992,291 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 	}
 	return F_OLD_SURFACE::no_hit;
 	//return F_OLD_SURFACE();
-	}
-
-
-//------------------------------------------------------------ 
-// 円と線分の Collision 判定 
-//------------------------------------------------------------ 
-
-int InitShapes(D3DXVECTOR2 pos1, float r1, D3DXVECTOR2 pos2, float r2, D3DXVECTOR2 move) // 最初に１回だけ呼ばれる 
-{
-	crCircle.x = pos1.x;
-	crCircle.y = pos1.y;
-
-	crCircle.r = r1;
-
-	rcRectCircle.x = pos2.x; 
-	rcRectCircle.y = pos2.y;
-
-	rcRectCircle.vx = move.x;
-	rcRectCircle.vy = move.y;
-	rcRectCircle.r = r2;
-
-	return 0;
 }
 
-int CheckHit(F_CIRCLE* pcrCircle, F_RECT_CIRCLE* prcRectCircle) // Collision チェック 
-{
 
-	int nResult = false;
-	float dx, dy; // 位置の差分 
-	float t;
-	float mx, my; // 最小の距離を与える座標 
-	float ar; // 2 半径を足したもの 
-	float fDistSqr;
-	dx = pcrCircle->x - prcRectCircle->x; // ⊿ｘ 
-	dy = pcrCircle->y - prcRectCircle->y; // ⊿ｙ 
-	t = (prcRectCircle->vx * dx + prcRectCircle->vy * dy) / (prcRectCircle->vx * prcRectCircle->vx + prcRectCircle->vy * prcRectCircle->vy);
-	if (t < 0.0f) t = 0.0f; // t の下限 
-	if (t > 1.0f) t = 1.0f; // t の上限 
-	mx = prcRectCircle->vx * t + prcRectCircle->x; // 最小位置を与える座標 
-	my = prcRectCircle->vy * t + prcRectCircle->y;
+//=============================================================================
+// ボールを跳ね返すとき専用のCollisionKOBA3
+//=============================================================================
+	D3DXVECTOR2 CollisionKOBA3(D3DXVECTOR2 player_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 player_old_pos,
+		D3DXVECTOR2 ball_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
+	{
+		D3DXVECTOR2 player_min, player_max;
+		D3DXVECTOR2 ball_min, ball_max;
+		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+		D3DXVECTOR2 ball_next_pos;
 
-	fDistSqr = (mx - pcrCircle->x) * (mx - pcrCircle->x) + (my - pcrCircle->y) * (my - pcrCircle->y); // 距離の２乗 
-	ar = pcrCircle->r + prcRectCircle->r;
+		player_min.x = player_pos.x - player_size.x / 2;
+		player_min.y = player_pos.y - player_size.y / 2;
+		player_max.x = player_pos.x + player_size.x / 2;
+		player_max.y = player_pos.y + player_size.y / 2;
 
-	if (fDistSqr < ar * ar) { // ２乗のまま比較 
-		nResult = true;
+		ball_min.x = ball_pos.x - ball_size.x / 2;
+		ball_min.y = ball_pos.y - ball_size.y / 2;
+		ball_max.x = ball_pos.x + ball_size.x / 2;
+		ball_max.y = ball_pos.y + ball_size.y / 2;
+
+		//ボールの次の座標
+		ball_next_pos = ball_pos + ball_velocity;
+
+		//プレイヤーの仮想加速度
+		D3DXVECTOR2 vertual_player_velocity = (player_pos - player_old_pos) - (ball_pos - ball_old_pos);
+		D3DXVECTOR2 vertual_player_old_pos = player_pos - vertual_player_velocity;
+
+		vertual_player_old_min.x = vertual_player_old_pos.x - player_size.x / 2;
+		vertual_player_old_min.y = vertual_player_old_pos.y - player_size.y / 2;
+		vertual_player_old_max.x = vertual_player_old_pos.x + player_size.x / 2;
+		vertual_player_old_max.y = vertual_player_old_pos.y + player_size.y / 2;
+
+
+		//X軸の判定
+		if (player_min.x < ball_max.x && player_max.x > ball_min.x)
+		{
+			//Y軸の判定
+			if (player_min.y < ball_max.y && player_max.y > ball_min.y)
+			{
+				//プレイヤーがブロックの上から当たったとき
+				if (vertual_player_old_max.y <= ball_min.y && vertual_player_old_max.x > ball_min.x && vertual_player_old_min.x < ball_max.x)
+				{
+					float Bunbo = (player_max.x - player_min.x)
+								* (ball_pos.y - ball_next_pos.y)
+								- (player_min.y - player_min.y)
+								* (ball_pos.x - ball_next_pos.x);
+
+					D3DXVECTOR2 vectorUP = ball_next_pos - player_min;
+
+					float dS = ((player_min.y - player_min.y) * vectorUP.x
+						- (player_max.x - player_min.x) * vectorUP.y) / Bunbo;
+
+					koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+					return (koba3_pos);
+				}
+				//プレイヤーがブロックの下から当たったとき
+				if (vertual_player_old_min.y >= ball_max.y && vertual_player_old_max.x > ball_min.x && vertual_player_old_min.x < ball_max.x)
+				{
+					float Bunbo = (player_max.x - player_min.x)
+								* (ball_pos.y - ball_next_pos.y)
+								- (player_max.y - player_max.y)
+								* (ball_pos.x - ball_next_pos.x);
+
+					D3DXVECTOR2 vectorDOWN = ball_next_pos - player_min;
+
+					float dS = ((player_max.y - player_max.y) * vectorDOWN.x
+						- (player_max.x - player_min.x) * vectorDOWN.y) / Bunbo;
+
+					koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+					return (koba3_pos);
+				}
+				//プレイヤーがブロックの左から当たったとき
+				if (vertual_player_old_max.x <= ball_min.x && vertual_player_old_max.y > ball_min.y && vertual_player_old_min.y < ball_max.y)
+				{
+					float Bunbo = (player_max.x - player_max.x)
+								* (ball_pos.y - ball_next_pos.y)
+								- (player_max.y - player_min.y)
+								* (ball_pos.x - ball_next_pos.x);
+
+					D3DXVECTOR2 vectorLEFT = ball_next_pos - player_min;
+
+					float dS = ((player_max.y - player_min.y) * vectorLEFT.x
+						- (player_max.x - player_max.x) * vectorLEFT.y) / Bunbo;
+
+					koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+					return (koba3_pos);
+				}
+				//プレイヤーがブロックの右から当たったとき
+				if (vertual_player_old_min.x >= ball_max.x && vertual_player_old_max.y > ball_min.y && vertual_player_old_min.y < ball_max.y)
+				{
+					float Bunbo = (player_min.x - player_min.x)
+								* (ball_pos.y - ball_next_pos.y)
+								- (player_max.y - player_min.y)
+								* (ball_pos.x - ball_next_pos.x);
+
+					D3DXVECTOR2 vectorRIGHT = ball_next_pos - player_min;
+
+					float dS = ((player_max.y - player_min.y) * vectorRIGHT.x
+						- (player_min.x - player_min.x) * vectorRIGHT.y) / Bunbo;
+
+					koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+					return (koba3_pos);
+				}
+
+				//プレイヤーの加速度の仮想角度
+				float vertual_velocity_angle = atan2f(vertual_player_velocity.y, vertual_player_velocity.x);
+
+
+				//プレイヤーの頂点からブロックの頂点を結んだ直線の角度
+				//プレイヤーから左下
+				float LeftDown_angle = atan2f((player_max.y - ball_min.y), (player_min.x - ball_max.x));
+				//プレイヤーから左上
+				float LeftUp_angle = atan2f((player_min.y - ball_max.y), (player_min.x - ball_max.x));
+				//プレイヤーから右下
+				float RightDown_angle = atan2f((player_max.y - ball_min.y), (player_max.x - ball_min.x));
+				//プレイヤーから右上
+				float RightUp_angle = atan2f((player_min.y - ball_max.y), (player_max.x - ball_min.x));
+
+				//ブロックから右上の判定
+				if (vertual_velocity_angle >= PI / 2 && vertual_velocity_angle <= PI)
+				{
+					if (vertual_velocity_angle > LeftDown_angle)
+					{
+						//上
+						float Bunbo = (player_max.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorUP = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorUP.x
+							- (player_max.x - player_min.x) * vectorUP.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+					else
+					{
+						//右
+						float Bunbo = (player_min.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorRIGHT = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorRIGHT.x
+							- (player_min.x - player_min.x) * vectorRIGHT.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+				}
+
+				//ブロックから右下の判定
+				if (vertual_velocity_angle >= -PI && vertual_velocity_angle <= -PI / 2)
+				{
+					if (vertual_velocity_angle > LeftUp_angle)
+					{
+						//右
+						float Bunbo = (player_min.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorRIGHT = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorRIGHT.x
+							- (player_min.x - player_min.x) * vectorRIGHT.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+					else
+					{
+						//下
+						float Bunbo = (player_max.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_max.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorDOWN = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_max.y) * vectorDOWN.x
+							- (player_max.x - player_min.x) * vectorDOWN.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+				}
+
+				//ブロックから左上の判定
+				if (vertual_velocity_angle >= 0 && vertual_velocity_angle <= PI / 2)
+				{
+					if (vertual_velocity_angle > RightDown_angle)
+					{
+						//左
+						float Bunbo = (player_max.x - player_max.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorLEFT = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorLEFT.x
+							- (player_max.x - player_max.x) * vectorLEFT.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+					else
+					{
+						//上
+						float Bunbo = (player_max.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorUP = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorUP.x
+							- (player_max.x - player_min.x) * vectorUP.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+						
+						return (koba3_pos);
+					}
+				}
+
+				//ブロックから左下の判定
+				if (vertual_velocity_angle >= -PI / 2 && vertual_velocity_angle <= 0)
+				{
+					if (vertual_velocity_angle > RightUp_angle)
+					{
+						//下
+						float Bunbo = (player_max.x - player_min.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_max.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorDOWN = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_max.y) * vectorDOWN.x
+							- (player_max.x - player_min.x) * vectorDOWN.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+					else
+					{
+						//左
+						float Bunbo = (player_max.x - player_max.x)
+							* (ball_pos.y - ball_next_pos.y)
+							- (player_max.y - player_min.y)
+							* (ball_pos.x - ball_next_pos.x);
+
+						D3DXVECTOR2 vectorLEFT = ball_next_pos - player_min;
+
+						float dS = ((player_max.y - player_min.y) * vectorLEFT.x
+							- (player_max.x - player_max.x) * vectorLEFT.y) / Bunbo;
+
+						koba3_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+						return (koba3_pos);
+					}
+				}
+			}
+		}
+
+		return (koba3_pos);
+
 	}
-	return nResult;
 
-}

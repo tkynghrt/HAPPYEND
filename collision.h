@@ -16,8 +16,8 @@ struct F_CIRCLE {
 };
 struct F_RECT_CIRCLE {
 	float x, y; // 始点位置 
-	float vx, vy; // ベクトル 
-	float r; // 当たりサイズ 
+	D3DXVECTOR2 vector;// ベクトル
+	float hit_size; // 当たりサイズ 
 };
 //こばの当たり判定
 enum class F_OLD_SURFACE{
@@ -27,7 +27,6 @@ enum class F_OLD_SURFACE{
 	left,
 	down
 };
-
 
 
 //*****************************************************************************
@@ -53,4 +52,6 @@ F_OLD_SURFACE CollisionKOBA(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXV
 F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
 	D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 block_velocity);
 
+D3DXVECTOR2 CollisionKOBA3(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
+	D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 ball_velocity);
 
