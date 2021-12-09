@@ -2,10 +2,8 @@
 
 #include "All_Gimmick.h"
 
-//移動(x軸)するブロックのサイズ
-#define MOVE_BLOCK_X		(60.0f)
-//移動(Y軸)するブロックのサイズ
-#define MOVE_BLOCK_Y		(60.0f)
+//移動するブロックのサイズ
+#define MOVE_BLOCK		(60.0f)
 //回数で壊れるブロックのサイズ
 #define COUNT_BLOCK			(60.0f)
 //スピードレベルで壊れるブロックのサイズ
@@ -13,24 +11,20 @@
 //コインのサイズ
 #define COIN				(60.0f)
 
-//地面の座標
-#define GROUND (SCREEN_HEIGHT - ground->size.y - (60 / 2))
+
 
 GIMMICK_POS Gimick_Pos[MAX_GIMMICK];
 
 HRESULT InitAllGimmickPos(void)
 {
-	//移動するブロック(x軸)
+	//移動するブロック
+	// 
 	//座標
-	Gimick_Pos[0].move_block_pos_x = D3DXVECTOR2(300.0f, 350.0f);
-	Gimick_Pos[1].move_block_pos_x = D3DXVECTOR2(300.0f + MOVE_BLOCK_Y, 350.0f);
-	Gimick_Pos[2].move_block_pos_x = D3DXVECTOR2(300.0f +(MOVE_BLOCK_Y * 2), 350.0f);
-	Gimick_Pos[3].move_block_pos_x = D3DXVECTOR2(300.0f +(MOVE_BLOCK_Y * 3), 350.0f);
-	Gimick_Pos[4].move_block_pos_x = D3DXVECTOR2(300.0f +(MOVE_BLOCK_Y * 4), 350.0f);
-
-	//移動するブロック(y軸)
-	//座標
-	Gimick_Pos[0].move_block_pos_y = D3DXVECTOR2(300.0f, 350.0f);
+	Gimick_Pos[0].move_block_pos = D3DXVECTOR2(300.0f, 350.0f);
+	Gimick_Pos[1].move_block_pos = D3DXVECTOR2(300.0f + MOVE_BLOCK, 350.0f);
+	Gimick_Pos[2].move_block_pos = D3DXVECTOR2(300.0f +(MOVE_BLOCK * 2), 350.0f);
+	Gimick_Pos[3].move_block_pos = D3DXVECTOR2(300.0f +(MOVE_BLOCK * 3), 350.0f);
+	Gimick_Pos[4].move_block_pos = D3DXVECTOR2(300.0f +(MOVE_BLOCK * 4), 350.0f);
 
 	//回数で壊れるブロック
 	//座標
@@ -57,9 +51,9 @@ HRESULT InitAllGimmickPos(void)
 return S_OK;
 }
 //移動するブロック
-GIMMICK_POS* GetMove_Block_X(void)
+GIMMICK_POS* GetMove_Block(void)
 {
-	for (int i = 0; i < MAX_MOVE_BLOCK_X; i++)
+	for (int i = 0; i < MAX_MOVE_BLOCK; i++)
 	{
 		return &Gimick_Pos[i];
 	}

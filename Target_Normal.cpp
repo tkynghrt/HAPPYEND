@@ -55,8 +55,12 @@ void UninitTarget_Normal(void)
 //=============================================================================
 void UpdateTarget_Normal(void)
 {
+	
+
 	for (int i = 0; i < TARGET_MAX; i++)
 	{
+		Normal[i].old_pos = Normal[i].pos;
+
 		if (Normal[i].use == false)
 		{
 			if (Normal[i].normal_target_count >= 1)

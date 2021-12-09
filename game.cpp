@@ -14,7 +14,7 @@
 #include "player.h"
 #include "ball.h"
 #include "collision.h"
-#include "move_block_x.h"
+#include "move_block.h"
 #include "count_block.h"
 #include "accele_block.h"
 #include "background.h"
@@ -54,12 +54,12 @@ void InitGame(void)
 	InitCoin();
 	InitPlayer();
 	InitBall();
-	/*InitMoveBlock_X();
+	InitMoveBlock();
 	InitCountBlock();
 	InitAcceleBlock();
 	InitTarget_Normal();
 	InitTarget_Count();
-	InitScore();*/
+	InitScore();
 }
 
 /*------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ void UninitGame()
 	UninitScore();
 	UninitBall();
 	UninitPlayer();
-	UninitMoveBlock_X();
+	UninitMoveBlock();
 	UninitCountBlock();
 	UninitAcceleBlock();
 	UninitTarget_Normal();
@@ -90,12 +90,12 @@ void UpdateGame(void)
 	UpdateCoin();
 	UpdatePlayer();
 	UpdateBall();
-	/*UpdateMoveBlock_X();
+	UpdateMoveBlock();
 	UpdateCountBlock();
 	UpdateAcceleBlock();
 	UpdateTarget_Normal();
 	UpdateTarget_Count();
-	UpdateScore();*/
+	UpdateScore();
 	UpdateGround();
 	UpdateCollision();
 
@@ -115,14 +115,14 @@ void DrawGame(void)
 {
 	DrawBackGround();
 	DrawGround();
-	//DrawCoin();
+	DrawCoin();
 	DrawBall();
 	DrawPlayer();
-	/*DrawScore();
-	DrawMoveBlock_X();
+	DrawScore();
+	DrawMoveBlock();
 	DrawCountBlock();
 	DrawAcceleBlock();
 	DrawTarget_Normal();
-	DrawTarget_Count();*/
+	DrawTarget_Count();
 
 }

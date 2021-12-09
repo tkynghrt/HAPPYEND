@@ -15,6 +15,7 @@
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
 //*****************************************************************************
+
 #define	level_1		0
 #define	level_2		1
 #define	level_3		2
@@ -185,8 +186,8 @@ void UpdateBall(void)
 		Ball.pos.y = 20;
 		Ball.velocity.y *= -1;
 	}
-	if (Ball.pos.x > 940) {
-		Ball.pos.x = 940;
+	if (Ball.pos.x > SCREEN_WIDTH - 20) {
+		Ball.pos.x = SCREEN_WIDTH - 20;
 		Ball.velocity.x *= -1;
 	}
 	if (Ball.pos.x < 20) {

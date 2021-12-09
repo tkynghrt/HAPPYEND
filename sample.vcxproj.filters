@@ -78,7 +78,7 @@
     <ClCompile Include="coin.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
-    <ClCompile Include="move_block_x.cpp">
+    <ClCompile Include="move_block.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
     <ClCompile Include="Target_Count.cpp">
@@ -152,7 +152,7 @@
     <ClInclude Include="count_block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
-    <ClInclude Include="move_block_x.h">
+    <ClInclude Include="move_block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
     <ClInclude Include="Target_Normal.h">

@@ -142,7 +142,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="move_block_x.cpp" />
+    <ClCompile Include="move_block.cpp" />
     <ClCompile Include="Target_Count.cpp" />
     <ClCompile Include="Target_Normal.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="sprite.h" />
-    <ClInclude Include="move_block_x.h" />
+    <ClInclude Include="move_block.h" />
     <ClInclude Include="Target_Count.h" />
     <ClInclude Include="Target_Normal.h" />
     <ClInclude Include="Texture.h" />
