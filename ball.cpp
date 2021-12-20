@@ -55,7 +55,7 @@ HRESULT InitBall(void)
 	//Ball.pos   = D3DXVECTOR2(player->pos.x + 60.0f, player->pos.y + 20.0f);
 	Ball.pos   = player->pos;
 	Ball.old_pos  = Ball.pos;
-	Ball.rot   = 0.0f;
+	Ball.rot   = -PI;
 	Ball.speed = 0.0f;
 	Ball.velocity = D3DXVECTOR2(0.0f, 0.0f);	// 移動量を初期化
 	Ball.Use = false;
@@ -95,74 +95,15 @@ void UpdateBall(void)
 	}
 
 
-
-	////ボールが動いているときの打ち返し判定
-	///*if (judgment_time > 0)
-	//{*/
-	//	if (Ball.Judgment > 20 && Ball.Use)
-	//	{
-	//		switch (CollisionKOBA3(Ball.pos, player->pos, Ball.old_pos, Ball.velocity, Ball.size, player->size))
-	//		{
-	//		case PLAYER_BALL_RANGE::right:
-
-	//			if (player->direction == DIRECTION_RIGHT)
-	//			{
-	//				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
-	//				{
-	//					Ball.speed += BALL_SPEED;
-	//					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
-	//					Ball.velocity.x = Ball.speed * cosf(reflect);
-	//					Ball.velocity.y -= Ball.speed * sinf(reflect);
-	//					reflect = 0.0f;
-	//				}
-	//				else
-	//				{
-	//					Ball.speed += BALL_SPEED;
-	//					Ball.velocity.x = Ball.speed;
-	//				}
-	//				Ball.Judgment = 0;
-	//				
-	//			}
-	//			break;
-
-	//		case  PLAYER_BALL_RANGE::left:
-
-	//			if (player->direction == DIRECTION_LEFT)
-	//			{
-	//				if (GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0/*&& 向き変えるよフラグ*/)
-	//				{
-	//					Ball.speed += BALL_SPEED;
-	//					Ball.velocity.x = 0.0f;
-	//					Ball.velocity.y = 0.0f;
-	//					reflect = atan2f(GetThumbLeftY(0), GetThumbLeftX(0));
-	//					Ball.velocity.x = Ball.speed * cosf(reflect);
-	//					Ball.velocity.y -= Ball.speed * sinf(reflect);
-	//					reflect = 0.0f;
-	//				}
-	//				else
-	//				{
-	//					Ball.speed += BALL_SPEED;
-	//					Ball.velocity.x = 0.0f;
-	//					Ball.velocity.y = 0.0f;
-	//					Ball.velocity.x = Ball.speed;
-	//				}
-	//				Ball.Judgment = 0;
-
-	//			}
-	//			break;
-	//		}
-	//	}
-	////}
-	
-	
-
-	
-	
-
-
-
 	//位置更新
 	Ball.pos += Ball.velocity;
+
+	Ball.rot++;
+	if (Ball.rot > PI)
+	{
+		Ball.rot = -PI;
+	}
+
 
 	//ボールのスピードレベル
 	if (Ball.velocity.x > 0 && Ball.velocity.x <= 8)
@@ -194,7 +135,8 @@ void UpdateBall(void)
 		Ball.pos.x = 20;
 		Ball.velocity.x *= -1;
 	}
-	if (Ball.pos.y > SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2)) {
+	if (Ball.pos.y > SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2)) 
+	{
 		Ball.pos.y = SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2);
 		Ball.velocity.y *= -1;
 	}
@@ -214,7 +156,6 @@ void DrawBall(void)
 	}
 }
 
-
 //=============================================================================
 // バレット構造体の先頭アドレスを取得
 //=============================================================================
@@ -222,5 +163,3 @@ BALL* GetBall(void)
 {
 	return &Ball;
 }
-
-

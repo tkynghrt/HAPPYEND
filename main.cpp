@@ -1,8 +1,8 @@
 /*==============================================================================
 
    テクスチャの描画 [main.cpp]
-                                                         Author : 
-                                                         Date   : 
+														 Author :
+														 Date   :
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
@@ -61,7 +61,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	DWORD dwFPSLastTime;
 	DWORD dwCurrentTime;
 	DWORD dwFrameCount;
-	
+
 	WNDCLASSEX	wcex = {
 		sizeof(WNDCLASSEX),
 		CS_CLASSDC,
@@ -71,32 +71,32 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hInstance,
 		NULL,
 		LoadCursor(NULL, IDC_ARROW),
-		(HBRUSH)(COLOR_WINDOW+1),
+		(HBRUSH)(COLOR_WINDOW + 1),
 		NULL,
 		CLASS_NAME,
 		NULL
 	};
 	HWND		hWnd;
 	MSG			msg;
-	
+
 	// ウィンドウクラスの登録
 	RegisterClassEx(&wcex);
 
 	// ウィンドウの作成
 	hWnd = CreateWindow(CLASS_NAME,
-						WINDOW_CAPTION,
-						WS_OVERLAPPEDWINDOW,
-						CW_USEDEFAULT,																		// ウィンドウの左座標
-						CW_USEDEFAULT,																		// ウィンドウの上座標
-						SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME)*2,									// ウィンドウ横幅
-						SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME)*2+GetSystemMetrics(SM_CYCAPTION),	// ウィンドウ縦幅
-						NULL,
-						NULL,
-						hInstance,
-						NULL);
+		WINDOW_CAPTION,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,																		// ウィンドウの左座標
+		CW_USEDEFAULT,																		// ウィンドウの上座標
+		SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,									// ウィンドウ横幅
+		SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),	// ウィンドウ縦幅
+		NULL,
+		NULL,
+		hInstance,
+		NULL);
 
 	// DirectXの初期化(ウィンドウを作成してから行う)
-	if(FAILED(Init(hInstance, hWnd, true)))
+	if (FAILED(Init(hInstance, hWnd, true)))
 	{
 		return -1;
 	}
@@ -105,17 +105,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	timeBeginPeriod(1);	// 分解能を設定
 	dwExecLastTime = dwFPSLastTime = timeGetTime();	// システム時刻をミリ秒単位で取得
 	dwCurrentTime = dwFrameCount = 0;
-	
+
 	// ウインドウの表示(Init()の後に呼ばないと駄目)
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
-	
+
 	// メッセージループ
-	while(1)
+	while (1)
 	{
-		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if(msg.message == WM_QUIT)
+			if (msg.message == WM_QUIT)
 			{// PostQuitMessage()が呼ばれたらループ終了
 				break;
 			}
@@ -157,7 +157,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			}
 		}
 	}
-	
+
 	timeEndPeriod(1);				// 分解能を戻す
 
 	// 終了処理
@@ -174,14 +174,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch( message )
+	switch (message)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
 	case WM_KEYDOWN:
-		switch(wParam)
+		switch (wParam)
 		{
 		case VK_ESCAPE:					// [ESC]キーが押された
 			DestroyWindow(hWnd);		// ウィンドウを破棄するよう指示する

@@ -20,10 +20,10 @@
 #include "background.h"
 #include "coin.h"
 #include "score.h"
-#include "All_Gimmick.h"
 #include "ground.h"
 #include "Target_Count.h"
 #include "Target_Normal.h"
+#include "map.h"
 
 /*------------------------------------------------------------------------------
    íËêîíËã`
@@ -49,7 +49,6 @@ void InitGame(void)
 {
 	InitBackGround();
 	InitGround();
-	InitAllGimmickPos();
 	//í«â¡ÇÕÇ±Ç±Ç©ÇÁ
 	InitCoin();
 	InitPlayer();
@@ -60,6 +59,8 @@ void InitGame(void)
 	InitTarget_Normal();
 	InitTarget_Count();
 	InitScore();
+	SetMap(1);
+	InitMap();
 }
 
 /*------------------------------------------------------------------------------

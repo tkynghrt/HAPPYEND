@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-
+#define TARGET_MAX 100
 
 // 普通のターゲット構造体
 struct TARGET_NORMAL

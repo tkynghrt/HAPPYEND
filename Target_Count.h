@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-
+#define MAX_TARGET_COUNT 100
 
 
 //回数で壊れるターゲットの構造体

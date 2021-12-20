@@ -2,15 +2,15 @@
 #include "main.h"
 #include "renderer.h"
 
-HRESULT InitCoin(void);
+#define MAX_COIN 300
+
+
+void InitCoin(void);
 void UninitCoin(void);
 void UpdateCoin(void);
 void DrawCoin(void);
 
-
-
-
-void setCoin(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 velocity);
+void SetCoin(D3DXVECTOR2 pos);
 
 //回数で壊れるブロックの構造体
 struct COIN {

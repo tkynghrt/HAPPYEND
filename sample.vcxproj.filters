@@ -1,81 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="難しそうなことが書かれてる奴">
+      <UniqueIdentifier>{17fad6ae-4fc3-4e37-8cbd-993e7b5fe806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="プレイヤー">
+      <UniqueIdentifier>{6e86c255-de98-44fa-baef-9de1b47874f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="UI、背景等">
+      <UniqueIdentifier>{6fbed787-178b-4371-8721-afd0f9b54ea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="よく書くやつ">
+      <UniqueIdentifier>{1eb2dd1c-a570-4c21-8ccd-49966617e035}</UniqueIdentifier>
     </Filter>
     <Filter Include="ギミック">
-      <UniqueIdentifier>{b89b23c4-7c09-4d6c-89f8-463662193202}</UniqueIdentifier>
+      <UniqueIdentifier>{e0fc28ec-0996-4abb-914d-40602a572de8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ball.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="collision.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClCompile>
     <ClCompile Include="sound.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>難しそうなことが書かれてる奴</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>難しそうなことが書かれてる奴</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>難しそうなことが書かれてる奴</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>難しそうなことが書かれてる奴</Filter>
+    </ClCompile>
+    <ClCompile Include="ball.cpp">
+      <Filter>プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>UI、背景等</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>UI、背景等</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClCompile>
     <ClCompile Include="backGround.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>UI、背景等</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>UI、背景等</Filter>
     </ClCompile>
-    <ClCompile Include="ground.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="fade.cpp">
+      <Filter>UI、背景等</Filter>
     </ClCompile>
-    <ClCompile Include="All_Gimmick.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="map.cpp">
+      <Filter>よく書くやつ</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>よく書くやつ</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>よく書くやつ</Filter>
     </ClCompile>
     <ClCompile Include="accele_block.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
     <ClCompile Include="coin.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="count_block.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="ground.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
     <ClCompile Include="move_block.cpp">
@@ -87,81 +90,78 @@
     <ClCompile Include="Target_Normal.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
-    <ClCompile Include="count_block.cpp">
-      <Filter>ギミック</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="sound.h">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="sprite.h">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ball.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="collision.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="main.h">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>プレイヤー</Filter>
     </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="ball.h">
+      <Filter>プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
     <ClInclude Include="background.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>UI、背景等</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>UI、背景等</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>UI、背景等</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>難しそうなことが書かれてる奴</Filter>
     </ClInclude>
     <ClInclude Include="score.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>UI、背景等</Filter>
     </ClInclude>
-    <ClInclude Include="ground.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="fade.h">
+      <Filter>UI、背景等</Filter>
     </ClInclude>
-    <ClInclude Include="All_Gimmick.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="collision.h">
+      <Filter>よく書くやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>よく書くやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>よく書くやつ</Filter>
+    </ClInclude>
+    <ClInclude Include="accele_block.h">
+      <Filter>ギミック</Filter>
     </ClInclude>
     <ClInclude Include="coin.h">
-      <Filter>ギミック</Filter>
-    </ClInclude>
-    <ClInclude Include="count_block.h">
-      <Filter>ギミック</Filter>
-    </ClInclude>
-    <ClInclude Include="move_block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
     <ClInclude Include="Target_Normal.h">
       <Filter>ギミック</Filter>
     </ClInclude>
-    <ClInclude Include="Target_Count.h">
+    <ClInclude Include="move_block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
-    <ClInclude Include="accele_block.h">
+    <ClInclude Include="ground.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="count_block.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="Target_Count.h">
       <Filter>ギミック</Filter>
     </ClInclude>
   </ItemGroup>

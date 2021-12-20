@@ -1,4 +1,3 @@
-#include "All_Gimmick.h"
 #include "Target_Count.h"
 #include "Target_Normal.h"
 #include "texture.h"
@@ -15,8 +14,7 @@
 //*****************************************************************************
 // ƒOƒ[ƒoƒ‹•Ï”
 //*****************************************************************************
-static GIMMICK_POS* All_Count_Target = GetMove_Block();
-TARGET_COUNT Count[MAX_TARGET_COUNT];
+TARGET_COUNT Count[MAX_TARGET_COUNT] = {};
 
 //=============================================================================
 // ‰Šú‰»ˆ—
@@ -27,12 +25,8 @@ void InitTarget_Count(void)
 	for (int i = 0; i < MAX_TARGET_COUNT; i++)
 	{
 		Count[i].Tex = LoadTexture("data/TEXTURE/Target.png");
-		Count[i].size.x = 70.0f;
-		Count[i].size.y = 70.0f;
-		Count[i].pos = All_Count_Target[i].count_target_pos;
+		Count[i].size = D3DXVECTOR2(60.0f, 60.0f);
 		Count[i].old_pos = Count[0].pos;
-		Count[i].rot = 0.0f;
-		Count[i].Count = 3;
 		Count[i].use = false;
 	}
 }

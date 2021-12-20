@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include "player.h"
 
-GROUND ground;
+GROUND ground[GROUND_MAX] = {};
 static PLAYER* player = GetPlayer();
 static BALL* ball = GetBall();
 
@@ -13,12 +13,13 @@ static BALL* ball = GetBall();
 void InitGround(void)
 {
 	//回数で壊れるブロック
-
-	ground.pos.x = SCREEN_WIDTH / 2;
-	ground.pos.y = (SCREEN_HEIGHT / 20) * 19 ;
-	ground.Texture = LoadTexture("data/TEXTURE/ground.jpeg");
-	ground.size.x = SCREEN_WIDTH;
-	ground.size.y = SCREEN_HEIGHT / 10;
+	for (int i = 0; i < GROUND_MAX; i++)
+	{
+		ground[i].pos = D3DXVECTOR2(0.0f, 0.0f);
+		ground[i].Texture = LoadTexture("data/TEXTURE/ground.jpeg");
+		ground[i].size = D3DXVECTOR2(60.0f, 60.0f);
+		ground[i].use = false;
+	}
 }
 
 void UninitGround(void)
@@ -34,14 +35,36 @@ void DrawGround(void)
 {
 	D3DXCOLOR CountBlockCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	
-		DrawSpriteColorRotate(ground.Texture, ground.pos.x, ground.pos.y,
-			ground.size.x, ground.size.y, 0.0f, 0.0f, 1.0f, 1.0f,
-			CountBlockCol,0.0f);
+	for (int i = 0; i < GROUND_MAX; i++)
+	{
+		if (ground[i].use)
+		{
+			DrawSpriteColorRotate(ground[i].Texture, ground[i].pos.x, ground[i].pos.y,
+				ground[i].size.x, ground[i].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+				CountBlockCol, 0.0f);
+		}
+		else
+		{
+			break;
+		}
+	}
 }
 
 GROUND* GetGround(void)
 {
-	return &ground;
+	return &ground[0];
 }
 
-
+void SetGround(D3DXVECTOR2 pos)
+{
+	for (int i = 0; i < GROUND_MAX; i++)
+	{
+		//まだ表示されていない場所を探す
+		if (!ground[i].use)
+		{
+			ground[i].pos = pos;
+			ground[i].use = true;
+			break;
+		}
+	}
+}

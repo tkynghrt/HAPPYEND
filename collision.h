@@ -10,15 +10,7 @@
 #define VIEW_WIDTH 640 // 画面幅 
 #define VIEW_HEIGHT 480 // 画面高さ 
 #define CIRCLE_VEL 5.0f // 円形速さ 
-struct F_CIRCLE {
-	float x, y; // 中心位置 
-	float r; // 半径 
-};
-struct F_RECT_CIRCLE {
-	float x, y; // 始点位置 
-	D3DXVECTOR2 vector;// ベクトル
-	float hit_size; // 当たりサイズ 
-};
+
 
 //こばの当たり判定
 enum class F_OLD_SURFACE{

@@ -2,6 +2,8 @@
 #include "main.h"
 #include "renderer.h"
 
+#define MAX_ACCELE_BLOCK 100
+
 HRESULT InitAcceleBlock(void);
 void UninitAcceleBlock(void);
 void UpdateAcceleBlock(void);
@@ -17,8 +19,9 @@ struct ACCELE_BLOCK {
 	D3DXVECTOR2 pos{};
 	D3DXVECTOR2 old_pos{};
 	D3DXVECTOR2 size{};
-	bool		Use{};
+	bool		use{};
 	float		rot{};
 };
 
 ACCELE_BLOCK* GetAcceleBlock(void);
+void SetAcceleBlock(D3DXVECTOR2 pos, int level);

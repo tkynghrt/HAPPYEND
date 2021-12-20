@@ -1,0 +1,41 @@
+﻿  accele_block.cpp
+  ball.cpp
+  coin.cpp
+  collision.cpp
+  count_block.cpp
+  fade.cpp
+  game.cpp
+  ground.cpp
+  input.cpp
+  main.cpp
+  map.cpp
+C:\Users\koba2\Desktop\HappyEnd\map.cpp(50,88): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\map.cpp(50,50): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  player.cpp
+C:\Users\koba2\Desktop\HappyEnd\player.cpp(175,136): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  score.cpp
+C:\Users\koba2\Desktop\HappyEnd\score.cpp(116,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\score.cpp(117,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  sound.cpp
+  sprite.cpp
+  move_block.cpp
+  Target_Count.cpp
+  コンパイル中...
+  Target_Normal.cpp
+C:\Users\koba2\Desktop\HappyEnd\Target_Normal.cpp(101,53): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\koba2\Desktop\HappyEnd\Target_Normal.cpp(101,25): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Texture.cpp
+  title.cpp
+  backGround.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\koba2\Desktop\HappyEnd\Target_Normal.cpp(117): warning C4715: 'GetTarget_Normal': 値を返さないコントロール パスがあります。
+C:\Users\koba2\Desktop\HappyEnd\Target_Count.cpp(85): warning C4715: 'GetTarget_Count': 値を返さないコントロール パスがあります。
+C:\Users\koba2\Desktop\HappyEnd\coin.cpp(60): warning C4715: 'GetCoin': 値を返さないコントロール パスがあります。
+C:\Users\koba2\Desktop\HappyEnd\accele_block.cpp(62): warning C4715: 'GetAcceleBlock': 値を返さないコントロール パスがあります。
+  All 203 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  sample.vcxproj -> C:\Users\koba2\Desktop\HappyEnd\Release\sample.exe

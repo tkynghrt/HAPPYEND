@@ -17,7 +17,6 @@
 #include "collision.h"
 #include "ball.h"
 #include "score.h"
-#include "All_Gimmick.h"
 
 
 
@@ -57,8 +56,7 @@ HRESULT InitPlayer(void)
 	Player.Hime_Texture = LoadTexture("data/TEXTURE/hime.png");
 	
 	//初期化
-	Player.pos.x = 200;
-	Player.pos.y = GROUND;
+	Player.pos = D3DXVECTOR2(0.0f, 0.0f);
 	Player.old_pos = Player.pos;
 	Player.size.x = 60.0f;
 	Player.size.y = 60.0f;
@@ -186,5 +184,9 @@ PLAYER *GetPlayer(void)
 	return &Player;
 }
 
+void SetPlayer(D3DXVECTOR2 pos)
+{
 
-
+	Player.pos = pos;			// 座標をセット
+	return;
+}

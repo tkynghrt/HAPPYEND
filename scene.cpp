@@ -88,7 +88,7 @@ void UninitScene(void)
 ------------------------------------------------------------------------------*/
 void UpdateScene(void)
 {
-	switch( g_SceneIndex ) 
+	switch (g_SceneIndex)
 	{
 	case SCENE::SCENE_NONE:
 		break;
@@ -114,7 +114,7 @@ void UpdateScene(void)
 ------------------------------------------------------------------------------*/
 void DrawScene(void)
 {
-	switch( g_SceneIndex )
+	switch (g_SceneIndex)
 	{
 	case SCENE::SCENE_NONE:
 		break;
@@ -150,11 +150,11 @@ void SetScene(SCENE index)
 void CheckScene(void)
 {
 	//現在のシーンと遷移先シーンが違っていたら
-	if( g_SceneIndex != g_SceneNextIndex )
+	if (g_SceneIndex != g_SceneNextIndex)
 	{
 		//現在のシーンを終了させる
 		UninitScene();
-		
+
 		//遷移先シーンの初期化処理を行う
 		InitScene(g_SceneNextIndex);
 	}

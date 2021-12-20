@@ -1,4 +1,3 @@
-#include "All_Gimmick.h"
 #include "Target_Normal.h"
 #include "texture.h"
 #include "sprite.h"
@@ -12,8 +11,7 @@
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-static GIMMICK_POS* All_Normal_Target = GetNormal_Target();
-TARGET_NORMAL Normal[TARGET_MAX];
+TARGET_NORMAL Normal[TARGET_MAX] = {};
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -31,14 +29,10 @@ void InitTarget_Normal(void)
 	{
 		Normal[i].Tex = LoadTexture("data/TEXTURE/Target.png");
 		Normal[i].Bom = LoadTexture("data/TEXTURE/explosion.png");
-		Normal[i].pos = All_Normal_Target[i].normal_target_pos;
 		Normal[i].old_pos = Normal[i].pos;
 		Normal[i].size.x = 70.0f;
 		Normal[i].size.y = 70.0f;
-		Normal[i].rot = 0.0f;
-		Normal[i].flame = 0;
-		Normal[i].normal_target_count = 0;
-		Normal[i].use = true;
+		Normal[i].use = false;
 	}
 }
 
