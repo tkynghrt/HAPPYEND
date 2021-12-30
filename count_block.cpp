@@ -33,9 +33,6 @@ void UninitCountBlock(void)
 void UpdateCountBlock(void)
 {
 	count_block[0].old_pos = count_block[0].pos;
-	
-	
-
 }
 
 void DrawCountBlock(void)
@@ -75,6 +72,5 @@ void SetCountBlock(D3DXVECTOR2 pos, int count)
 
 COUNT_BLOCK* GetCountBlock(void)
 {
-	
 	return count_block;
 }

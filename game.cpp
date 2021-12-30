@@ -23,6 +23,7 @@
 #include "ground.h"
 #include "Target_Count.h"
 #include "Target_Normal.h"
+#include "SpeedPanel.h"
 #include "map.h"
 
 /*------------------------------------------------------------------------------
@@ -58,6 +59,7 @@ void InitGame(void)
 	InitAcceleBlock();
 	InitTarget_Normal();
 	InitTarget_Count();
+	InitSpeedPanel();
 	InitScore();
 	SetMap(1);
 	InitMap();
@@ -76,6 +78,7 @@ void UninitGame()
 	UninitAcceleBlock();
 	UninitTarget_Normal();
 	UninitTarget_Count();
+	UninitSpeedPanel();
 	UninitCoin();
 	UninitGround();
 	UninitBackGround();
@@ -96,6 +99,7 @@ void UpdateGame(void)
 	UpdateAcceleBlock();
 	UpdateTarget_Normal();
 	UpdateTarget_Count();
+	UpdateSpeedPanel();
 	UpdateScore();
 	UpdateGround();
 	UpdateCollision();
@@ -125,5 +129,6 @@ void DrawGame(void)
 	DrawAcceleBlock();
 	DrawTarget_Normal();
 	DrawTarget_Count();
+	DrawSpeedPanel();
 
 }

@@ -90,6 +90,13 @@
     <ClCompile Include="Target_Normal.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedPanel.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="warp.cpp" />
+    <ClCompile Include="ramdom_shot_block.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -162,6 +169,13 @@
       <Filter>ギミック</Filter>
     </ClInclude>
     <ClInclude Include="Target_Count.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedPanel.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="warp.h" />
+    <ClInclude Include="ramdom_shot_block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
   </ItemGroup>

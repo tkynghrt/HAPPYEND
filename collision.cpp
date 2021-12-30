@@ -17,6 +17,8 @@
 #include "Target_Normal.h"
 #include "ground.h"
 #include "coin.h"
+#include "SpeedPanel.h"
+#include "warp.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -34,7 +36,9 @@ static COIN* coin = GetCoin();
 static PLAYER* player = GetPlayer();
 static TARGET_NORMAL* TargetNormal = GetTarget_Normal();
 static TARGET_COUNT* TargetCount = GetTarget_Count();
-static BALL* ball = GetBall();		// バレットのポインターを初期化
+static SPEED_PANEL* pSpeedPanel = GetSpeedPanel();
+static BALL* ball = GetBall();
+static WARP* pwarp = GetWarp();
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -71,7 +75,9 @@ void UpdateCollision(void)
 	bool player_fly = true;			//プレイヤーが空中にいるか
 	ball->Judgment++;
 
+	////////////////////////////////////////////////////
 	//ボールとプレイヤーの判定
+	////////////////////////////////////////////////////
 	//ボールを発射させる
 	if (ball->judgment_time > 0)
 	{
@@ -210,8 +216,9 @@ void UpdateCollision(void)
 	}
 
 
-
+	////////////////////////////////////////////////////
 	//ターゲット編
+	////////////////////////////////////////////////////
 	//普通のターゲットとボールの当たり判定
 	for (int i = 0; i < TARGET_MAX; i++)
 	{
@@ -267,8 +274,9 @@ void UpdateCollision(void)
 		}
 	}
 		
-
+	////////////////////////////////////////////////////
 	//動くブロック編 
+	// /////////////////////////////////////////////////
 	//プレイヤーと動くブロックの当たり判定
 	for (int i = 0; i < MAX_MOVE_BLOCK; i++)
 	{
@@ -337,8 +345,9 @@ void UpdateCollision(void)
 		}
 	}
 
-
+	////////////////////////////////////////////////////
 	//回数で壊れるブロック編
+	// /////////////////////////////////////////////////
 	//プレイヤーと回数で壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_COUNT_BLOCK; i++)
 	{
@@ -416,8 +425,9 @@ void UpdateCollision(void)
 		}
 	}
 
-
+	////////////////////////////////////////////////////
 	//スピードレベルで壊れるブロック編
+	////////////////////////////////////////////////////
 	//プレイヤーとスピードレベルで壊れるブロックの当たり判定
 	for (int i = 0; i < MAX_ACCELE_BLOCK; i++)
 	{
@@ -491,8 +501,85 @@ void UpdateCollision(void)
 		}
 	}
 
+	////////////////////////////////////////////////////
+	//スピードパネルの判定編
+	////////////////////////////////////////////////////
+	for(int i = 0;i < MAX_Panel;i++)
+	{
+		if (pSpeedPanel[i].use && !CollisionBB(ball->old_pos,pSpeedPanel[i].pos,ball->size,pSpeedPanel[i].size))
+		{
+			if (pSpeedPanel[i].type == SPEED_UP)
+			{
+				ball->speed += (BALL_SPEED * 2);
+			}
+			else if (pSpeedPanel[i].type == SPEED_DOWN)
+			{
+				ball->speed -= (BALL_SPEED * 2);
+				if (ball->speed < 0)
+					ball->speed = 0;
+			}
+		}
+	}
+	
+	////////////////////////////////////////////////////
+	//ワープ編
+	////////////////////////////////////////////////////
+	for (int i = 0; i < MAX_WARP; i++)
+	{
+		if (pwarp[i].use)
+		{
+			switch (CollisionKOBA(ball->pos, pwarp[i].pos, ball->old_pos, pwarp[i].pos, ball->size, pwarp[i].size))
+			{
+			case F_OLD_SURFACE::up:
+				//iが偶数なら+1、奇数なら-1したワープに飛ばす
+				if (i % 2 == 0)		
+				{
+					ball->pos.y = pwarp[i + 1].pos.y - (pwarp[i + 1].size.y / 2);
+				}
+				else if (i % 2 == 1)
+				{
+					ball->pos.y = pwarp[i - 1].pos.y - (pwarp[i - 1].size.y / 2);
+				}
+				break;
+			case F_OLD_SURFACE::down:
+				if (i % 2 == 0)
+				{
+					ball->pos.y = pwarp[i + 1].pos.y + (pwarp[i + 1].size.y / 2);
+				}
+				else if (i % 2 == 1)
+				{
+					ball->pos.y = pwarp[i - 1].pos.y + (pwarp[i - 1].size.y / 2);
+				}
+				break;
+			case F_OLD_SURFACE::left:
+				if (i % 2 == 0)
+				{
+					ball->pos.x = pwarp[i + 1].pos.x + (pwarp[i + 1].size.x / 2);
+				}
+				else if (i % 2 == 1)
+				{
+					ball->pos.x = pwarp[i - 1].pos.x + (pwarp[i - 1].size.x / 2);
+				}
+				break;
+			case F_OLD_SURFACE::right:
+				if (i % 2 == 0)
+				{
+					ball->pos.x = pwarp[i + 1].pos.x - (pwarp[i + 1].size.x / 2);
+				}
+				else if (i % 2 == 1)
+				{
+					ball->pos.x = pwarp[i - 1].pos.x - (pwarp[i - 1].size.x / 2);
+				}
+				break;
+			case F_OLD_SURFACE::no_hit:
+				break;
+			}
+		}
+	}
 
+	////////////////////////////////////////////////////
 	//コイン編
+	////////////////////////////////////////////////////
 	for (int i = 0; i < MAX_COIN; i++)
 	{
 		if (coin[i].Use)
@@ -505,8 +592,9 @@ void UpdateCollision(void)
 		}
 	}
 
-
-	//床の当たり判定
+	////////////////////////////////////////////////////
+	//床
+	////////////////////////////////////////////////////
 	//プレイヤーと床の判定
 	for (int i = 0; i < GROUND_MAX; i++)
 	{

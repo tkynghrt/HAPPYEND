@@ -101,13 +101,24 @@ void DrawTarget_Normal(void)
 	}
 }
 
-//=============================================================================
-// バレット構造体の先頭アドレスを取得
-//=============================================================================
 TARGET_NORMAL* GetTarget_Normal(void)
 {
 	for (int i = 0; i < TARGET_MAX; i++)
 	{
 		return &Normal[i];
+	}
+}
+
+void SetTarget(D3DXVECTOR2 pos)
+{
+	for (int i = 0; i < TARGET_MAX; i++)
+	{
+		//まだ表示されていない場所を探す
+		if (!Normal[i].use)
+		{
+			Normal[i].pos = pos;
+			Normal[i].use = true;
+			break;
+		}
 	}
 }

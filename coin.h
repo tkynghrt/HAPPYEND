@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define MAX_COIN 300
+#define MAX_COIN 30
 
 
 void InitCoin(void);
@@ -12,7 +12,7 @@ void DrawCoin(void);
 
 void SetCoin(D3DXVECTOR2 pos);
 
-//回数で壊れるブロックの構造体
+//コインの構造体
 struct COIN {
 	int Texture;
 	int point;

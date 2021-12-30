@@ -9,6 +9,8 @@
 #include "accele_block.h"
 #include "move_block.h"
 #include "coin.h"
+#include "Target_Normal.h"
+#include "SpeedPanel.h"
 
 MAP	map[MAP_Y][MAP_X];
 
@@ -54,28 +56,51 @@ void InitMap(void)
 				break;
 			case 1:
 				SetGround(map[y][x].pos);//床
-				
 				break;
 			case 2:
-				SetCoin(map[y][x].pos);//コイン
+				SetAcceleBlock(map[y][x].pos, 1);//スピードレベル1で壊れるブロック
 				break;
 			case 3:
-				SetAcceleBlock(map[y][x].pos, 1);//2回当てると壊れるブロック
+				SetAcceleBlock(map[y][x].pos, 2);//スピードレベル2で壊れるブロック
 				break;
 			case 4:
-				SetAcceleBlock(map[y][x].pos, 2);//3回当てると壊れるブロック
+				SetAcceleBlock(map[y][x].pos, 3);//スピードレベル3で壊れるブロック
 				break;
 			case 5:
-				SetAcceleBlock(map[y][x].pos, 4);//4回当てると壊れるブロック
+				SetAcceleBlock(map[y][x].pos, 4);//スピードレベル4で壊れるブロック
 				break;
 			case 6:
-				SetAcceleBlock(map[y][x].pos, 5);//5回当てると壊れるブロック
+				SetCountBlock(map[y][x].pos, 1);//1回当てると壊れるブロック
 				break;
 			case 7:
+				SetCountBlock(map[y][x].pos, 2);//2回当てると壊れるブロック
+				break;
+			case 8:
+				SetCountBlock(map[y][x].pos, 3);//3回当てると壊れるブロック
+				break;
+			case 9:
+				SetCountBlock(map[y][x].pos, 4);//4回当てると壊れるブロック
+				break;
+			case 10:
+				SetCountBlock(map[y][x].pos, 5);//5回当てると壊れるブロック
+				break;
+			case 11:
+				SetTarget(map[y][x].pos);//最終ターゲット
+				break;
+			case 12:
 
 				break;
 			case 13:
+				SetCoin(map[y][x].pos);//コイン
+				break;
+			case 14:
 				SetMoveBlock(map[y][x].pos);//動くブロック
+				break;
+			case 15:
+				SetSpeedPanel(map[y][x].pos, SPEED_UP);
+				break;
+			case 16:
+				SetSpeedPanel(map[y][x].pos, SPEED_DOWN);
 				break;
 			case 50:
 				SetPlayer(map[y][x].pos); //プレイヤーの位置初期化

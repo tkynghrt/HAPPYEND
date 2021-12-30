@@ -136,6 +136,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="ramdom_shot_block.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="backGround.cpp" />
+    <ClCompile Include="SpeedPanel.cpp" />
+    <ClCompile Include="warp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accele_block.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="ramdom_shot_block.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
@@ -174,6 +178,8 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="background.h" />
     <ClInclude Include="ground.h" />
+    <ClInclude Include="SpeedPanel.h" />
+    <ClInclude Include="warp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

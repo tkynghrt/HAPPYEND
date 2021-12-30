@@ -28,3 +28,4 @@ void UpdateTarget_Normal(void);
 void DrawTarget_Normal(void);
 
 TARGET_NORMAL* GetTarget_Normal(void);
+void SetTarget(D3DXVECTOR2 pos);
