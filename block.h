@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define MAX_BLOCK 1
+#define MAX_BLOCK 300
 
 HRESULT InitBlock(void);
 void UninitBlock(void);
@@ -16,10 +16,7 @@ void DrawBlock(void);
 struct BLOCK {
 	int			Texture{};
 	D3DXVECTOR2 pos{};
-	D3DXVECTOR2 old_pos{};
 	D3DXVECTOR2 size{};
-	D3DXVECTOR2 velocity{};
-	int			MoveCount{};
 	bool		Use{};
 	float		rot{};
 };
@@ -27,5 +24,5 @@ struct BLOCK {
 
 
 BLOCK* GetBlock(void);
-void SetBlock_1(D3DXVECTOR2 pos);
+void SetBlock(D3DXVECTOR2 pos);
 

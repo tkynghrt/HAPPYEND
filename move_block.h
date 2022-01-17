@@ -11,7 +11,8 @@ void DrawMoveBlock(void);
 
 //移動するブロックの構造体
 struct MOVE_BLOCK {
-	int Texture{};
+	int Left_Texture{};
+	int Right_Texture{};
 	D3DXVECTOR2 pos{};
 	D3DXVECTOR2 old_pos{};
 	D3DXVECTOR2 size{};

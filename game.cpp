@@ -17,6 +17,7 @@
 #include "move_block.h"
 #include "count_block.h"
 #include "accele_block.h"
+#include "block.h"
 #include "background.h"
 #include "coin.h"
 #include "score.h"
@@ -56,6 +57,7 @@ void InitGame(void)
 	InitBall();
 	InitMoveBlock();
 	InitCountBlock();
+	InitBlock();
 	InitAcceleBlock();
 	InitTarget_Normal();
 	InitTarget_Count();
@@ -76,6 +78,7 @@ void UninitGame()
 	UninitMoveBlock();
 	UninitCountBlock();
 	UninitAcceleBlock();
+	UninitBlock();
 	UninitTarget_Normal();
 	UninitTarget_Count();
 	UninitSpeedPanel();
@@ -97,6 +100,7 @@ void UpdateGame(void)
 	UpdateMoveBlock();
 	UpdateCountBlock();
 	UpdateAcceleBlock();
+	UpdateBlock();
 	UpdateTarget_Normal();
 	UpdateTarget_Count();
 	UpdateSpeedPanel();
@@ -127,6 +131,7 @@ void DrawGame(void)
 	DrawMoveBlock();
 	DrawCountBlock();
 	DrawAcceleBlock();
+	DrawBlock();
 	DrawTarget_Normal();
 	DrawTarget_Count();
 	DrawSpeedPanel();

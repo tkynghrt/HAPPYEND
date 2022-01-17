@@ -47,7 +47,7 @@ void UninitResult(void)
 void UpdateResult(void)
 {
 	
-	if (GetKeyboardTrigger(DIK_RETURN) && GetFadeState() == FADE_STATE::FADE_NONE)
+	if ((IsButtonTriggered(0, XINPUT_GAMEPAD_A) || GetKeyboardTrigger(DIK_RETURN)) && GetFadeState() == FADE_STATE::FADE_NONE)
 	{
 		SceneTransition(SCENE::SCENE_TITLE);
 	}

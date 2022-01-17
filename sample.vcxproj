@@ -84,6 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="accele_block.cpp" />
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="block.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="count_block.cpp" />
@@ -155,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="accele_block.h" />
     <ClInclude Include="ball.h" />
+    <ClInclude Include="block.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="count_block.h" />

@@ -9,7 +9,7 @@ static int		BackGroundTexture = 0;
 
 HRESULT InitBackGround()
 {
-	BackGroundTexture = LoadTexture("data/TEXTURE/BackGroung().jpg");
+	BackGroundTexture = LoadTexture("data/TEXTURE/BackGround_2.jpg");
 
 	return S_OK;
 }

@@ -50,7 +50,7 @@ HRESULT InitBall(void)
 {
 	// ボール構造体の初期化
 
-	Ball.BallTexture = LoadTexture("data/TEXTURE/tako.png");
+	Ball.BallTexture = LoadTexture("data/TEXTURE/ball.png");
 	Ball.size = D3DXVECTOR2(40.0f, 40.0f);
 	//Ball.pos   = D3DXVECTOR2(player->pos.x + 60.0f, player->pos.y + 20.0f);
 	Ball.pos   = player->pos;
@@ -89,7 +89,7 @@ void UpdateBall(void)
 	Ball.judgment_time--;
 	//ボール打ち返し編
 	
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X))
+	if ((IsButtonTriggered(0, XINPUT_GAMEPAD_X)) || IsMouseLeftTriggered())
 	{
 		Ball.judgment_time = 5;
 	}
@@ -127,17 +127,17 @@ void UpdateBall(void)
 		Ball.pos.y = 20;
 		Ball.velocity.y *= -1;
 	}
-	if (Ball.pos.x > SCREEN_WIDTH - 20) {
-		Ball.pos.x = SCREEN_WIDTH - 20;
+	if (Ball.pos.x > SCREEN_WIDTH - (20 + 60)) {
+		Ball.pos.x = SCREEN_WIDTH - (20 + 60);
 		Ball.velocity.x *= -1;
 	}
-	if (Ball.pos.x < 20) {
-		Ball.pos.x = 20;
+	if (Ball.pos.x < (20 + 60)) {
+		Ball.pos.x = (20 + 60);
 		Ball.velocity.x *= -1;
 	}
-	if (Ball.pos.y > SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2)) 
+	if (Ball.pos.y > SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2) - 60) 
 	{
-		Ball.pos.y = SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2);
+		Ball.pos.y = SCREEN_HEIGHT - ground->size.y - (Ball.size.y / 2) - 60;
 		Ball.velocity.y *= -1;
 	}
 }
@@ -151,7 +151,7 @@ void DrawBall(void)
 	if (Ball.Use)
 	{
 		DrawSpriteColorRotate(Ball.BallTexture, Ball.pos.x, Ball.pos.y,
-			Ball.size.x, Ball.size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+			Ball.size.x , Ball.size.y , 0.0f, 0.0f, 1.0f, 1.0f,
 			BallCol, Ball.rot);
 	}
 }

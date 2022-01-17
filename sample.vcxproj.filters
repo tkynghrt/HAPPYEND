@@ -93,8 +93,13 @@
     <ClCompile Include="SpeedPanel.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
-    <ClCompile Include="warp.cpp" />
     <ClCompile Include="ramdom_shot_block.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="warp.cpp">
+      <Filter>ギミック</Filter>
+    </ClCompile>
+    <ClCompile Include="block.cpp">
       <Filter>ギミック</Filter>
     </ClCompile>
   </ItemGroup>
@@ -174,8 +179,13 @@
     <ClInclude Include="SpeedPanel.h">
       <Filter>ギミック</Filter>
     </ClInclude>
-    <ClInclude Include="warp.h" />
     <ClInclude Include="ramdom_shot_block.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="warp.h">
+      <Filter>ギミック</Filter>
+    </ClInclude>
+    <ClInclude Include="block.h">
       <Filter>ギミック</Filter>
     </ClInclude>
   </ItemGroup>

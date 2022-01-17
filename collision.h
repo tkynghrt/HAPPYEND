@@ -49,3 +49,14 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 D3DXVECTOR2 CollisionKOBA3(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DXVECTOR2 player_old_pos,
 	D3DXVECTOR2 block_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 block_size, D3DXVECTOR2 ball_velocity);
 
+float CollisionKOBA4_UP(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+						D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity);
+
+float CollisionKOBA4_DOWN(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+						  D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity);
+
+float CollisionKOBA4_LEFT(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+						  D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity);
+
+float CollisionKOBA4_RIGHT(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+						   D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity);

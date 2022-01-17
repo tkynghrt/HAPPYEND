@@ -60,5 +60,5 @@ void SetWarp(D3DXVECTOR2 pos)
 
 WARP* GetWarp(void)
 {
-	return nullptr;
+	return &warp[0];
 }

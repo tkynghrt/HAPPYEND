@@ -5,7 +5,9 @@
 //
 //=============================================================================
 #include "main.h"
+#include "math.h"
 #include "collision.h"
+#include "time.h"
 #include "fade.h"
 #include "player.h"
 #include "ball.h"
@@ -13,12 +15,14 @@
 #include "count_block.h"
 #include "move_block.h"
 #include "accele_block.h"
+#include "block.h"
 #include "Target_Count.h"
 #include "Target_Normal.h"
 #include "ground.h"
 #include "coin.h"
 #include "SpeedPanel.h"
 #include "warp.h"
+#include "ramdom_shot_block.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -29,6 +33,7 @@
 // 構造体定義
 //*****************************************************************************
 static MOVE_BLOCK* move_block = GetMoveBlock();
+static BLOCK* block = GetBlock();
 static COUNT_BLOCK* count_block = GetCountBlock();
 static ACCELE_BLOCK* accele_block = GetAcceleBlock();
 static GROUND* ground = GetGround();
@@ -39,6 +44,7 @@ static TARGET_COUNT* TargetCount = GetTarget_Count();
 static SPEED_PANEL* pSpeedPanel = GetSpeedPanel();
 static BALL* ball = GetBall();
 static WARP* pwarp = GetWarp();
+static RAMDOM_SHOT_BLOCK* pRamdom_Shot_Block = GetRamdom_Shot_Block();
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -62,18 +68,30 @@ int NoFlame = 0;	//当たり判定を〇フレーム消す
 
 //CollisionKOBA3で返ってくるやつ
 static D3DXVECTOR2 koba3_pos = {};
+//CollisionKOBA4で返ってくるやつ
+static float koba4_up = {};
+static float koba4_down = {};
+static float koba4_left = {};
+static float koba4_right = {};
 
 //跳ね返る角度
-static float	reflect;				
-
+static float	reflect;	
+//マウスの座標（マウス操作する時に使う）
+D3DXVECTOR2 mouse_pos = D3DXVECTOR2((float)GetMouseX(), (float)GetMouseY());
+D3DXVECTOR2 old_mouse_pos = mouse_pos;
+float mouse_reflect;
 
 //=============================================================================
 // 当たり判定処理
 //=============================================================================
 void UpdateCollision(void)
 {
+	srand((unsigned int)time(NULL));
 	bool player_fly = true;			//プレイヤーが空中にいるか
-	ball->Judgment++;
+	old_mouse_pos = mouse_pos;
+	mouse_pos = D3DXVECTOR2((float)GetMouseX(), (float)GetMouseY());
+
+	ball->Judgment++;				//複数回当たり判定を貰わないようにするやつ
 
 	////////////////////////////////////////////////////
 	//ボールとプレイヤーの判定
@@ -81,12 +99,16 @@ void UpdateCollision(void)
 	//ボールを発射させる
 	if (ball->judgment_time > 0)
 	{
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) && !ball->Use)
+		if ((IsButtonTriggered(0, XINPUT_GAMEPAD_X) || IsMouseLeftPressed()) && !ball->Use)
 		{
 			ball->speed += BALL_SPEED;
-			if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+			if (((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0)) || IsMouseLeftPressed() /*&& 向き変えるよフラグ*/)
 			{
 				reflect = atan2f((float)GetThumbLeftY(0), (float)GetThumbLeftX(0));
+				if (IsMouseLeftPressed())//マウスの左クリックを押してるとき
+				{
+					reflect = atan2f((mouse_pos.y - old_mouse_pos.y), (mouse_pos.x - old_mouse_pos.x));
+				}
 				ball->velocity.x = ball->speed * cosf(reflect);
 				ball->velocity.y -= ball->speed * sinf(reflect);
 				reflect = 0.0f;
@@ -114,15 +136,21 @@ void UpdateCollision(void)
 			{
 			case F_OLD_SURFACE::up:
 
-				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				if (((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) )/*&& 向き変えるよフラグ*/ || IsMouseLeftPressed())
 				{
 					ball->speed += BALL_SPEED;
 					ball->pos = koba3_pos;
 					reflect = atan2f((float)GetThumbLeftY(0), (float)GetThumbLeftX(0));
+					
+					if(IsMouseLeftPressed())//マウスの左クリックを押してるとき
+					{
+						reflect = atan2f((mouse_pos.y - old_mouse_pos.y), (mouse_pos.x - old_mouse_pos.x));
+					}
 					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 					ball->velocity.x = ball->speed * cosf(reflect);
 					ball->velocity.y -= ball->speed * sinf(reflect);
 					reflect = 0.0f;
+					SetSwing(60);//当たったときの画像に変更するやつ
 				}
 				else
 				{
@@ -130,6 +158,7 @@ void UpdateCollision(void)
 					ball->pos = koba3_pos;
 					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 					ball->velocity.x = ball->speed;
+					SetSwing(60);//当たったときの画像に変更するやつ
 					
 				}
 				ball->Judgment = 0;
@@ -137,15 +166,20 @@ void UpdateCollision(void)
 				break;
 			case F_OLD_SURFACE::down:
 
-				if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) /*&& 向き変えるよフラグ*/)
+				if (((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0)) /*&& 向き変えるよフラグ*/|| IsMouseLeftPressed())
 				{
 					ball->speed += BALL_SPEED;
 					ball->pos = koba3_pos;
 					reflect = atan2f((float)GetThumbLeftY(0), (float)GetThumbLeftX(0));
+					if (IsMouseLeftPressed())//マウスの左クリックを押してるとき
+					{
+						reflect = atan2f((mouse_pos.y - old_mouse_pos.y), (mouse_pos.x - old_mouse_pos.x));
+					}
 					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 					ball->velocity.x = ball->speed * cosf(reflect);
 					ball->velocity.y -= ball->speed * sinf(reflect);
 					reflect = 0.0f;
+					SetSwing(60);//当たったときの画像に変更するやつ
 				}
 				else
 				{
@@ -153,7 +187,8 @@ void UpdateCollision(void)
 					ball->pos = koba3_pos;
 					ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 					ball->velocity.x = ball->speed;
-					
+
+					SetSwing(60);//当たったときの画像に変更するやつ
 				}
 				ball->Judgment = 0;
 
@@ -162,15 +197,21 @@ void UpdateCollision(void)
 
 				if (player->direction == DIRECTION_LEFT)
 				{
-					if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) && ((reflect >= PI / 2 && reflect < PI) || (reflect <= -PI / 2 && reflect > -PI)))
+					if (((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) && ((reflect >= PI / 2 && reflect < PI) || (reflect <= -PI / 2 && reflect > -PI)))
+						|| IsMouseLeftPressed())
 					{
 						ball->speed += BALL_SPEED;
 						ball->pos = koba3_pos;
 						reflect = atan2f((float)GetThumbLeftY(0), (float)GetThumbLeftX(0));
+						if (IsMouseLeftPressed())//マウスの左クリックを押してるとき
+						{
+							reflect = atan2f((mouse_pos.y - old_mouse_pos.y), (mouse_pos.x - old_mouse_pos.x));
+						}
 						ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 						ball->velocity.x = ball->speed * cosf(reflect);
 						ball->velocity.y -= ball->speed * sinf(reflect);
 						reflect = 0.0f;
+						SetSwing(60);//当たったときの画像に変更するやつ
 					}
 					else
 					{
@@ -178,6 +219,7 @@ void UpdateCollision(void)
 						ball->pos = koba3_pos;
 						ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 						ball->velocity.x = ball->speed;
+						SetSwing(60);//当たったときの画像に変更するやつ
 
 					}
 				}
@@ -189,15 +231,21 @@ void UpdateCollision(void)
 
 				if (player->direction == DIRECTION_RIGHT)
 				{
-					if ((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) && (reflect >= -PI / 2 && reflect < PI / 2))
+					if (((GetThumbLeftX(0) != 0 || GetThumbLeftY(0) != 0) && (reflect >= -PI / 2 && reflect < PI / 2))
+						|| IsMouseLeftPressed())
 					{
 						ball->speed += BALL_SPEED;
 						ball->pos = koba3_pos;
 						reflect = atan2f((float)GetThumbLeftY(0), (float)GetThumbLeftX(0));
+						if (IsMouseLeftPressed())//マウスの左クリックを押してるとき
+						{
+							reflect = atan2f((mouse_pos.y - old_mouse_pos.y), (mouse_pos.x - old_mouse_pos.x));
+						}
 						ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 						ball->velocity.x = ball->speed * cosf(reflect);
 						ball->velocity.y -= ball->speed * sinf(reflect);
 						reflect = 0.0f;
+						SetSwing(60);//当たったときの画像に変更するやつ
 					}
 					else
 					{
@@ -205,6 +253,7 @@ void UpdateCollision(void)
 						ball->pos = koba3_pos;
 						ball->velocity = D3DXVECTOR2(0.0f, 0.0f);
 						ball->velocity.x = ball->speed;
+						SetSwing(60);//当たったときの画像に変更するやつ
 
 					}
 				}
@@ -229,24 +278,28 @@ void UpdateCollision(void)
 				TargetNormal[i].use = false;
 				ball->velocity.y *= -1;
 				TargetNormal[i].use = true;
+				SceneTransition(SCENE::SCENE_RESULT);
 			}
 			else if (CollisionKOBA(ball->pos, TargetNormal[i].pos, ball->old_pos, TargetNormal[i].old_pos, ball->size, TargetNormal[i].size) == F_OLD_SURFACE::down)
 			{
 				TargetNormal[i].use = false;
 				ball->velocity.y *= -1;
 				TargetNormal[i].use = true;
+				SceneTransition(SCENE::SCENE_RESULT);
 			}
 			else if (CollisionKOBA(ball->pos, TargetNormal[i].pos, ball->old_pos, TargetNormal[i].old_pos, ball->size, TargetNormal[i].size) == F_OLD_SURFACE::right)
 			{
 				TargetNormal[i].use = false;
 				ball->velocity.x *= -1;
 				TargetNormal[i].use = true;
+				SceneTransition(SCENE::SCENE_RESULT);
 			}
 			else if (CollisionKOBA(ball->pos, TargetNormal[i].pos, ball->old_pos, TargetNormal[i].old_pos, ball->size, TargetNormal[i].size) == F_OLD_SURFACE::left)
 			{
 				TargetNormal[i].use = false;
 				ball->velocity.x *= -1;
 				TargetNormal[i].use = true;
+				SceneTransition(SCENE::SCENE_RESULT);
 			}
 		}
 	}
@@ -372,7 +425,7 @@ void UpdateCollision(void)
 			else if (CollisionKOBA(player->pos, count_block[i].pos, player->old_pos, count_block[i].old_pos,
 				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
-				player->pos.y = count_block[i].pos.y - ((player->size.y / 2) + (count_block[i].size.y / 2));
+				player->pos.y = count_block[i].pos.y + ((player->size.y / 2) + (count_block[i].size.y / 2));
 				player->move.y = 0.0f;
 			}
 		}
@@ -386,41 +439,45 @@ void UpdateCollision(void)
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::up)
 			{
 				ball->velocity.y *= -1;
-				if (count_block[i].HitCount <= 0)
+				count_block[i].HitCount--;
+				if (count_block[i].HitCount < 0)
 				{
 					count_block[i].use = false;
 				}
-				count_block[i].HitCount--;
+				
 			}
 			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::left)
 			{
 				ball->velocity.x *= -1;
-				if (count_block[i].HitCount <= 0)
+				count_block[i].HitCount--;
+				if (count_block[i].HitCount < 0)
 				{
 					count_block[i].use = false;
 				}
-				count_block[i].HitCount--;
+				
 			}
 			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::right)
 			{
 				ball->velocity.x *= -1;
-				if (count_block[i].HitCount <= 0)
+				count_block[i].HitCount--;
+				if (count_block[i].HitCount < 0)
 				{
 					count_block[i].use = false;
 				}
-				count_block[i].HitCount--;
+				
 			}
 			else if (CollisionKOBA(ball->pos, count_block[i].pos, ball->old_pos, count_block[i].old_pos,
 				D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(count_block[i].size.x, count_block[i].size.y)) == F_OLD_SURFACE::down)
 			{
 				ball->velocity.y *= -1;
-				if (count_block[i].HitCount <= 0)
+				count_block[i].HitCount--;
+				if (count_block[i].HitCount < 0)
 				{
 					count_block[i].use = false;
 				}
-				count_block[i].HitCount--;
+				
 			}
 		}
 	}
@@ -571,23 +628,104 @@ void UpdateCollision(void)
 					ball->pos.x = pwarp[i - 1].pos.x - (pwarp[i - 1].size.x / 2);
 				}
 				break;
-			case F_OLD_SURFACE::no_hit:
-				break;
 			}
 		}
 	}
 
 	////////////////////////////////////////////////////
-	//コイン編
+	//ランダム反射ブロック
 	////////////////////////////////////////////////////
-	for (int i = 0; i < MAX_COIN; i++)
+	for (int i = 0; i < MAX_RAMDOM_SHOT_BLOCK; i++)
 	{
-		if (coin[i].Use)
+		if (pRamdom_Shot_Block[i].use)
 		{
-			//ボールが当たった時
-			if (CollisionBB(ball->pos, coin[i].pos, D3DXVECTOR2(ball->size.x, ball->size.y), D3DXVECTOR2(coin[i].size.x, coin[i].size.y)))
+
+			if(CollisionBB(ball->pos, pRamdom_Shot_Block[i].pos, ball->size, pRamdom_Shot_Block[i].size))
 			{
-				coin[i].Use = false;
+				ball->pos = pRamdom_Shot_Block[i].pos;
+				//乱数
+				int ramdom = rand() % 3;
+				//乱数で出た数字に応じて飛ばす向きを決める
+				switch (ramdom)
+				{
+				case 0:
+					reflect = atan2f(1.0f, 1.0f);
+					break;
+				case 1:
+					reflect = atan2f(-1.0f, 1.0f);
+					break;
+				case 2:
+					reflect = atan2f(1.0f, -1.0f);
+					break;
+				case 3:
+					reflect = atan2f(-1.0f, -1.0f);
+					break;
+
+				}
+				ball->velocity.x =  ball->speed * cosf(reflect);
+				ball->velocity.y -= ball->speed * sinf(reflect);
+			}
+		}
+	}
+
+	///////////////////////////////////////
+    //壊れないブロック編
+    // ////////////////////////////////////
+    //ボールとの当たり判定
+	for (int i = 0; i < MAX_BLOCK; i++)
+	{
+		switch (CollisionKOBA(ball->pos, block[i].pos, ball->old_pos, block[i].pos,
+			ball->size, block[i].size))
+		{
+		case F_OLD_SURFACE::no_hit:
+			break;
+
+		case F_OLD_SURFACE::up:
+			ball->pos.y = (block[i].pos.y - ((block[i].size.y / 2) + (block->size.y / 2)));
+			ball->velocity.y *= -1;
+			break;
+
+		case F_OLD_SURFACE::down:
+			ball->pos.y = (block[i].pos.y + ((block[i].size.y / 2) + (ball->size.y / 2)));
+			ball->velocity.y *= -1;
+			break;
+		case F_OLD_SURFACE::left:
+			ball->pos.x = (block[i].pos.x - ((block[i].size.x / 2) + (ball->size.x / 2)));
+			ball->velocity.x *= -1;
+			break;
+		case F_OLD_SURFACE::right:
+			ball->pos.x = (block[i].pos.x + ((block[i].size.x / 2) + (ball->size.x / 2)));
+			ball->velocity.x *= -1;
+			break;
+		}
+	}
+
+	//プレイヤーとの判定
+	for (int i = 0; i < MAX_COUNT_BLOCK; i++)
+	{
+		if (block[i].Use)
+		{
+			if (CollisionKOBA(player->pos, block[i].pos, player->old_pos, block[i].pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(block[i].size.x, block[i].size.y)) == F_OLD_SURFACE::up)
+			{
+				player->pos.y = block[i].pos.y - ((player->size.y / 2) + (block[i].size.y / 2));
+				player_fly = false;
+			}
+			else if (CollisionKOBA(player->pos, block[i].pos, player->old_pos, block[i].pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(block[i].size.x, block[i].size.y)) == F_OLD_SURFACE::left)
+			{
+				player->pos.x = block[i].pos.x - ((player->size.x / 2) + (block[i].size.x / 2));
+			}
+			else if (CollisionKOBA(player->pos, block[i].pos, player->old_pos, block[i].pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(block[i].size.x, block[i].size.y)) == F_OLD_SURFACE::right)
+			{
+				player->pos.x = block[i].pos.x + ((player->size.x / 2) + (block[i].size.x / 2));
+			}
+			else if (CollisionKOBA(player->pos, block[i].pos, player->old_pos, block[i].pos,
+				D3DXVECTOR2(player->size.x, player->size.y), D3DXVECTOR2(block[i].size.x, block[i].size.y)) == F_OLD_SURFACE::down)
+			{
+				player->pos.y = block[i].pos.y + ((player->size.y / 2) + (block[i].size.y / 2));
+				player->move.y = 0.0f;
 			}
 		}
 	}
@@ -610,11 +748,11 @@ void UpdateCollision(void)
 			break;
 
 		case F_OLD_SURFACE::left:
-			player->pos.x = ground[i].pos.x - ((player->size.x / 2) + (ground[i].size.x / 2));
+			//player->pos.x = ground[i].pos.x - ((player->size.x / 2) + (ground[i].size.x / 2));
 			break;
 
 		case F_OLD_SURFACE::right:
-			player->pos.x = ground[i].pos.x + ((player->size.x / 2) + (ground[i].size.x / 2));
+			//player->pos.x = ground[i].pos.x + ((player->size.x / 2) + (ground[i].size.x / 2));
 			break;
 
 		case F_OLD_SURFACE::down:
@@ -622,6 +760,7 @@ void UpdateCollision(void)
 			break;
 		}
 	}
+
 	//ボールの床の判定
 	for (int i = 0; i < GROUND_MAX; i++)
 	{
@@ -891,7 +1030,6 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 
 
 
-
 	//X軸の判定
 	if (player_min.x < block_max.x && player_max.x > block_min.x)
 	{
@@ -1126,11 +1264,14 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 
 
 //=============================================================================
-// ボールを跳ね返すとき専用のCollisionKOBA3
+// プレイヤーとボールのベクトル座標を出すCollisionKOBA3
 //=============================================================================
 	D3DXVECTOR2 CollisionKOBA3(D3DXVECTOR2 player_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 player_old_pos,
 							   D3DXVECTOR2 ball_old_pos, D3DXVECTOR2 player_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
 	{
+		//交点座標の初期化
+		koba3_pos = D3DXVECTOR2(0.0f, 0.0f);
+
 		D3DXVECTOR2 player_min, player_max;
 		D3DXVECTOR2 ball_min, ball_max;
 		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
@@ -1408,4 +1549,197 @@ F_OLD_SURFACE CollisionKOBA2(D3DXVECTOR2 player_pos, D3DXVECTOR2 block_pos, D3DX
 
 		return (koba3_pos);
 
+	}
+
+//=============================================================================
+// ブロックとボールの交点座標とボールのposの長さを出すCollisionKOBA4
+//=============================================================================	
+	//ブロックからみて上
+	float CollisionKOBA4_UP(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+							D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
+	{
+		//交点座標の初期化
+		koba3_pos = D3DXVECTOR2(0.0f, 0.0f);
+
+		D3DXVECTOR2 block_min, block_max;
+		D3DXVECTOR2 ball_min, ball_max;
+		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+		D3DXVECTOR2 ball_next_pos;
+		//交点座標
+		D3DXVECTOR2 Intersection_pos;
+		//ボールの過去の座標から交点座標の加速度
+		D3DXVECTOR2 ball_Intersection_vector;
+
+		block_min.x = block_size.x - block_size.x / 2;
+		block_min.y = block_size.y - block_size.y / 2;
+		block_max.x = block_size.x + block_size.x / 2;
+		block_max.y = block_size.y + block_size.y / 2;
+
+		ball_min.x = ball_pos.x - ball_size.x / 2;
+		ball_min.y = ball_pos.y - ball_size.y / 2;
+		ball_max.x = ball_pos.x + ball_size.x / 2;
+		ball_max.y = ball_pos.y + ball_size.y / 2;
+
+		//ボールの次の座標
+		ball_next_pos = ball_pos + ball_velocity;
+
+		float Bunbo = (block_max.x - ball_min.x)
+			* (ball_pos.y - ball_next_pos.y)
+			- (block_max.y - block_max.y)
+			* (ball_pos.x - ball_next_pos.x);
+
+		D3DXVECTOR2 vectorUP = ball_next_pos - ball_min;
+
+		float dS = ((block_max.y - block_max.y) * vectorUP.x
+			- (block_max.x - ball_min.x) * vectorUP.y) / Bunbo;
+
+		ball_Intersection_vector = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+		ball_Intersection_vector = Intersection_pos - ball_old_pos;
+		//ボールの過去の座標から交点座標の長さの2乗
+		koba4_up = fabsf((ball_Intersection_vector.x + ball_Intersection_vector.x) + (ball_Intersection_vector.y + ball_Intersection_vector.y));
+		return(koba4_up);
+	}
+
+	//ブロックからみて下
+	float CollisionKOBA4_DOWN(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+						      D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
+	{
+		
+		D3DXVECTOR2 block_min, block_max;
+		D3DXVECTOR2 ball_min, ball_max;
+		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+		D3DXVECTOR2 ball_next_pos;
+		//交点座標
+		D3DXVECTOR2 Intersection_pos;
+		//ボールの過去の座標から交点座標の加速度
+		D3DXVECTOR2 ball_Intersection_vector;
+
+		block_min.x = block_size.x - block_size.x / 2;
+		block_min.y = block_size.y - block_size.y / 2;
+		block_max.x = block_size.x + block_size.x / 2;
+		block_max.y = block_size.y + block_size.y / 2;
+
+		ball_min.x = ball_pos.x - ball_size.x / 2;
+		ball_min.y = ball_pos.y - ball_size.y / 2;
+		ball_max.x = ball_pos.x + ball_size.x / 2;
+		ball_max.y = ball_pos.y + ball_size.y / 2;
+
+		//ボールの次の座標
+		ball_next_pos = ball_pos + ball_velocity;
+
+		float Bunbo = (block_max.x - block_min.x)
+			* (ball_pos.y - ball_next_pos.y)
+			- (block_min.y - block_min.y)
+			* (ball_pos.x - ball_next_pos.x);
+
+		D3DXVECTOR2 vectorDOWN = ball_next_pos - block_min;
+
+		float dS = ((block_min.y - block_min.y) * vectorDOWN.x
+			- (block_max.x - block_min.x) * vectorDOWN.y) / Bunbo;
+
+		Intersection_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+		ball_Intersection_vector = Intersection_pos - ball_old_pos;
+		//ボールの過去の座標から交点座標の長さの2乗
+		koba4_down = fabsf((ball_Intersection_vector.x + ball_Intersection_vector.x) + (ball_Intersection_vector.y + ball_Intersection_vector.y));
+
+		return(koba4_down);
+	}
+
+	//ブロックからみて左
+	float CollisionKOBA4_LEFT(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+							  D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
+	{
+		//交点座標の初期化
+		koba3_pos = D3DXVECTOR2(0.0f, 0.0f);
+
+		D3DXVECTOR2 block_min, block_max;
+		D3DXVECTOR2 ball_min, ball_max;
+		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+		D3DXVECTOR2 ball_next_pos;
+		//交点座標
+		D3DXVECTOR2 Intersection_pos;
+		//ボールの過去の座標から交点座標の加速度
+		D3DXVECTOR2 ball_Intersection_vector;
+
+		block_min.x = block_size.x - block_size.x / 2;
+		block_min.y = block_size.y - block_size.y / 2;
+		block_max.x = block_size.x + block_size.x / 2;
+		block_max.y = block_size.y + block_size.y / 2;
+
+		ball_min.x = ball_pos.x - ball_size.x / 2;
+		ball_min.y = ball_pos.y - ball_size.y / 2;
+		ball_max.x = ball_pos.x + ball_size.x / 2;
+		ball_max.y = ball_pos.y + ball_size.y / 2;
+
+		//ボールの次の座標
+		ball_next_pos = ball_pos + ball_velocity;
+		
+			float Bunbo = (block_min.x - block_min.x)
+				* (ball_pos.y - ball_next_pos.y)
+				- (block_max.y - block_min.y)
+				* (ball_pos.x - ball_next_pos.x);
+
+			D3DXVECTOR2 vectorLEFT = ball_next_pos - block_min;
+
+			float dS = ((block_max.y - block_min.y) * vectorLEFT.x
+				- (block_min.x - block_min.x) * vectorLEFT.y) / Bunbo;
+
+			ball_Intersection_vector = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+		ball_Intersection_vector = Intersection_pos - ball_old_pos;
+		//ボールの過去の座標から交点座標の長さの2乗
+		koba4_up = fabsf((ball_Intersection_vector.x + ball_Intersection_vector.x) + (ball_Intersection_vector.y + ball_Intersection_vector.y));
+
+
+		return(koba4_left);
+	}
+
+	//ブロックからみて右
+	float CollisionKOBA4_RIGHT(D3DXVECTOR2 block_pos, D3DXVECTOR2 ball_pos, D3DXVECTOR2 ball_old_pos,
+							   D3DXVECTOR2 block_size, D3DXVECTOR2 ball_size, D3DXVECTOR2 ball_velocity)
+	{
+		//交点座標の初期化
+		koba3_pos = D3DXVECTOR2(0.0f, 0.0f);
+
+		D3DXVECTOR2 block_min, block_max;
+		D3DXVECTOR2 ball_min, ball_max;
+		D3DXVECTOR2 vertual_player_old_min, vertual_player_old_max;
+		D3DXVECTOR2 ball_next_pos;
+		//交点座標
+		D3DXVECTOR2 Intersection_pos;
+		//ボールの過去の座標から交点座標の加速度
+		D3DXVECTOR2 ball_Intersection_vector;
+
+		block_min.x = block_size.x - block_size.x / 2;
+		block_min.y = block_size.y - block_size.y / 2;
+		block_max.x = block_size.x + block_size.x / 2;
+		block_max.y = block_size.y + block_size.y / 2;
+
+		ball_min.x = ball_pos.x - ball_size.x / 2;
+		ball_min.y = ball_pos.y - ball_size.y / 2;
+		ball_max.x = ball_pos.x + ball_size.x / 2;
+		ball_max.y = ball_pos.y + ball_size.y / 2;
+
+		//ボールの次の座標
+		ball_next_pos = ball_pos + ball_velocity;
+
+		float Bunbo = (block_max.x - block_max.x)
+			* (ball_pos.y - ball_next_pos.y)
+			- (block_max.y - block_min.y)
+			* (ball_pos.x - ball_next_pos.x);
+
+		D3DXVECTOR2 vectorRIGHT = ball_next_pos - block_min;
+
+		float dS = ((block_max.y - block_min.y) * vectorRIGHT.x
+			- (block_max.x - block_max.x) * vectorRIGHT.y) / Bunbo;
+
+		Intersection_pos = ball_next_pos + dS * (ball_pos - ball_next_pos);
+
+		ball_Intersection_vector = Intersection_pos - ball_old_pos;
+		//ボールの過去の座標から交点座標の長さの2乗
+		koba4_right = fabsf((ball_Intersection_vector.x + ball_Intersection_vector.x) + (ball_Intersection_vector.y + ball_Intersection_vector.y));
+
+		return(koba4_right);
 	}

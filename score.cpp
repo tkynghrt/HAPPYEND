@@ -89,7 +89,7 @@ void UpdateScore(void)
 void DrawScore(void)
 {
 	//有効化フラグがONなら描画する
-	if (g_Use)
+	if (!g_Use)
 	{
 		// テクスチャ設定
 		if (IsResult == true)

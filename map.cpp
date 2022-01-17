@@ -11,6 +11,7 @@
 #include "coin.h"
 #include "Target_Normal.h"
 #include "SpeedPanel.h"
+#include "warp.h"
 
 MAP	map[MAP_Y][MAP_X];
 
@@ -21,7 +22,7 @@ int SetMap(int mapnum) {
 	case 0:
 		break;
 	case 1://caseの中身全部コピーして読み込むファイルだけ変える
-		char fname[] = "base.txt";//開くファイルの名前//cppファイルと同じ所に.txtを入れる
+		char fname[] = "stage1.txt";//開くファイルの名前//cppファイルと同じ所に.txtを入れる
 		FILE* fp;
 		fp = fopen(fname, "r"); // ファイルを開く。失敗するとNULLを返す。
 		if (fp == NULL) {
@@ -55,7 +56,7 @@ void InitMap(void)
 
 				break;
 			case 1:
-				SetGround(map[y][x].pos);//床
+				SetBlock(map[y][x].pos);
 				break;
 			case 2:
 				SetAcceleBlock(map[y][x].pos, 1);//スピードレベル1で壊れるブロック
@@ -70,40 +71,37 @@ void InitMap(void)
 				SetAcceleBlock(map[y][x].pos, 4);//スピードレベル4で壊れるブロック
 				break;
 			case 6:
-				SetCountBlock(map[y][x].pos, 1);//1回当てると壊れるブロック
+				SetWarp(map[y][x].pos);
 				break;
 			case 7:
-				SetCountBlock(map[y][x].pos, 2);//2回当てると壊れるブロック
+				SetGround(map[y][x].pos);//床
 				break;
 			case 8:
-				SetCountBlock(map[y][x].pos, 3);//3回当てると壊れるブロック
+				SetMoveBlock(map[y][x].pos);//動くブロック
 				break;
 			case 9:
-				SetCountBlock(map[y][x].pos, 4);//4回当てると壊れるブロック
+				SetPlayer(map[y][x].pos); //プレイヤーの位置初期化
 				break;
 			case 10:
-				SetCountBlock(map[y][x].pos, 5);//5回当てると壊れるブロック
-				break;
-			case 11:
 				SetTarget(map[y][x].pos);//最終ターゲット
 				break;
+			case 11:
+				SetCountBlock(map[y][x].pos, 0);//1回当てると壊れるブロック
+				break;
 			case 12:
-
+				SetCountBlock(map[y][x].pos, 1);//2回当てると壊れるブロック
 				break;
 			case 13:
-				SetCoin(map[y][x].pos);//コイン
+				SetCountBlock(map[y][x].pos, 2);//3回当てると壊れるブロック
 				break;
 			case 14:
-				SetMoveBlock(map[y][x].pos);//動くブロック
+				
 				break;
 			case 15:
 				SetSpeedPanel(map[y][x].pos, SPEED_UP);
 				break;
 			case 16:
 				SetSpeedPanel(map[y][x].pos, SPEED_DOWN);
-				break;
-			case 50:
-				SetPlayer(map[y][x].pos); //プレイヤーの位置初期化
 				break;
 			}
 		}

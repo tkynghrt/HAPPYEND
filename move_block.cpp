@@ -11,14 +11,16 @@ static BALL* ball = GetBall();
 
 HRESULT InitMoveBlock(void)
 {
+
 	for (int i = 0; i < MAX_MOVE_BLOCK; i++)
 	{
-		move_block[i].Texture = LoadTexture("data/TEXTURE/move_block.png");
+		move_block[i].Left_Texture = LoadTexture("data/TEXTURE/MoveBlock_Left.png");
+		move_block[i].Right_Texture = LoadTexture("data/TEXTURE/MoveBlock_Right.png");
 		move_block[i].old_pos = move_block[i].pos;
-		move_block[i].size = D3DXVECTOR2(60.0f,60.0f);
+		move_block[i].size = D3DXVECTOR2(150.0f,60.0f);
 		move_block[i].velocity.x = 3.0f;
 		move_block[i].velocity.y = 3.0f;
-		move_block[i].rot = PI / 2;
+		move_block[i].rot = 0.0f;
 		move_block[i].use = false;
 	}
 	return S_OK;
@@ -38,11 +40,10 @@ void UpdateMoveBlock(void)
 		//ブロックの往復（時間で計ってる）
 		move_block[i].pos.x += move_block[i].velocity.x;
 		move_block[i].MoveCount++;
-		if (move_block[i].MoveCount >= 90)
+		if (move_block[i].MoveCount >= 60)
 		{
 			move_block[i].velocity.x *= -1;
 			move_block[i].MoveCount = 0;
-			move_block[i].rot *= -1;
 		}
 	}
 
@@ -56,9 +57,18 @@ void DrawMoveBlock(void)
 	{
 		if (move_block[i].use)
 		{
-			DrawSpriteColorRotate(move_block[i].Texture, move_block[i].pos.x, move_block[i].pos.y,
-				move_block[i].size.x, move_block[i].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
-				MoveBlockCol, move_block[i].rot);
+			if (move_block[i].velocity.x > 0.0f)
+			{
+				DrawSpriteColorRotate(move_block[i].Right_Texture, move_block[i].pos.x, move_block[i].pos.y,
+					move_block[i].size.x + 60.0f, move_block[i].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+					MoveBlockCol, move_block[i].rot);
+			}
+			else
+			{
+				DrawSpriteColorRotate(move_block[i].Left_Texture, move_block[i].pos.x, move_block[i].pos.y,
+					move_block[i].size.x + 60.0f, move_block[i].size.y, 0.0f, 0.0f, 1.0f, 1.0f,
+					MoveBlockCol, move_block[i].rot);
+			}
 		}
 		else
 		{

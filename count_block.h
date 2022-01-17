@@ -14,6 +14,7 @@ void SetCountBlock(D3DXVECTOR2 pos,int count);
 //回数で壊れるブロックの構造体
 struct COUNT_BLOCK {
 	int Texture{};
+	int Texture_Number{};
 	int HitCount{};
 	D3DXVECTOR2 pos{};
 	D3DXVECTOR2 old_pos{};
