@@ -2,7 +2,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define GROUND_MAX 100
+#define MAX_GROUND 100
 
 void InitGround(void);
 void UninitGround(void);

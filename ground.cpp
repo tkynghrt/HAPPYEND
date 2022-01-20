@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include "player.h"
 
-GROUND ground[GROUND_MAX] = {};
+GROUND ground[MAX_GROUND] = {};
 static PLAYER* player = GetPlayer();
 static BALL* ball = GetBall();
 
@@ -13,7 +13,7 @@ static BALL* ball = GetBall();
 void InitGround(void)
 {
 	//回数で壊れるブロック
-	for (int i = 0; i < GROUND_MAX; i++)
+	for (int i = 0; i < MAX_GROUND; i++)
 	{
 		ground[i].pos = D3DXVECTOR2(0.0f, 0.0f);
 		ground[i].Texture = LoadTexture("data/TEXTURE/ground.jpeg");
@@ -35,7 +35,7 @@ void DrawGround(void)
 {
 	D3DXCOLOR CountBlockCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	for (int i = 0; i < GROUND_MAX; i++)
+	for (int i = 0; i < MAX_GROUND; i++)
 	{
 		if (ground[i].use)
 		{
@@ -57,7 +57,7 @@ GROUND* GetGround(void)
 
 void SetGround(D3DXVECTOR2 pos)
 {
-	for (int i = 0; i < GROUND_MAX; i++)
+	for (int i = 0; i < MAX_GROUND; i++)
 	{
 		//まだ表示されていない場所を探す
 		if (!ground[i].use)
